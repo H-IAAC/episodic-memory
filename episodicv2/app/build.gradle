@@ -12,9 +12,26 @@ plugins {
 }
 
 repositories {
+    flatDir {
+        dirs 'libs'
+        dirs '../cst/build/libs'
+        dirs '../cst-desktop/build/libs'
+    }
+    jcenter()
     // Use Maven Central for resolving dependencies.
     mavenCentral()
-    maven { url 'https://jitpack.io' }
+    maven {
+        url "https://github.com/rosjava/rosjava_mvn_repo/raw/master"
+    }
+    maven {
+        url "https://repository.springsource.com/maven/bundles/release"
+    }
+    maven {
+        url "https://repository.springsource.com/maven/bundles/external"
+    }
+    maven { 
+    	url 'https://jitpack.io'
+    }
 }
 
 dependencies {
@@ -24,7 +41,9 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.0.1-jre'
 
-    implementation 'com.github.CST-Group:cst:1.2.0'
+    //implementation 'com.github.CST-Group:cst:1.2.0'
+    implementation 'com.github.CST-Group:cst-desktop:1.0.4'
+    //implementation 'com.github.CST-Group:cst-desktop:1.0.3'
 }
 
 application {
