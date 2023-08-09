@@ -4,7 +4,6 @@
 package episodicv2;
 
 import br.unicamp.cst.core.entities.Codelet;
-import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
 import br.unicamp.cst.io.rest.RESTServer;
 import br.unicamp.cst.util.viewer.MindViewer;
@@ -25,35 +24,39 @@ public final class App {
         //declare Ideas
         //TODO: review as categorias
         
+        Idea imagePerceptedIdea = new Idea("imagePerceptedIdea");
+        Idea byteArrayIdea = new Idea("byteArrayIdea");
+        imagePerceptedIdea.add(byteArrayIdea);
+              
         Idea x = new Idea("x",null, "Property", 1);
         Idea y = new Idea("y",null, "Property", 1);
-        Idea pid1 = new Idea("pid",0, "Property", 1);
-        Idea object1 = new Idea("object",null, "Property", 1);
-        object1.add(x);
-        object1.add(y);
-        object1.add(pid1);      
+        Idea pid = new Idea("pid",0, "Property", 1);
+        Idea object = new Idea("object",null, "Property", 1);
+        object.add(x);
+        object.add(y);
+        object.add(pid);      
         
-        Idea currrentFrame1 = new Idea("currrentFrame",null, "Property", 1);
-        Idea time1 = new Idea("time",null, "Property", 1);
-        time1.add(currrentFrame1);
+        Idea currrentFrame = new Idea("currrentFrame",null, "Property", 1);
+        Idea time = new Idea("time",null, "Property", 1);
+        time.add(currrentFrame);
         
         Idea ppcIdea = new Idea("ppc","","Property",1);
-        ppcIdea.add(object1);
-        ppcIdea.add(time1);
+        ppcIdea.add(object);
+        ppcIdea.add(time);
         
         Idea centerPointsSpikeIdea = new Idea("centerPointsSpikeIdea","","Property",1);
         centerPointsSpikeIdea.add(ppcIdea);
         
         
         Idea pid2 = new Idea("pid",null, "Property", 1);
-        Idea id1 = new Idea("id",null, "Property", 1);
+        Idea id = new Idea("id",null, "Property", 1);
         Idea class1 = new Idea("class",null, "Property", 1);
-        Idea features1 = new Idea("features",null, "Property", 1);
+        Idea features = new Idea("features",null, "Property", 1);
         Idea object2 = new Idea("object",null, "Property", 1);
         object2.add(pid2);
-        object2.add(id1);
+        object2.add(id);
         object2.add(class1);
-        object2.add(features1);
+        object2.add(features);
         
         //TODO: isso poderia ser law? já que não muda!
         Idea imageWidth1 = new Idea("imageWidth",640, "Property", 1);
@@ -89,6 +92,507 @@ public final class App {
         Idea time2 = new Idea("time",null, "Property", 1);
         time2.add(currrentFrame2);
         unintegratedScenePatternIdea.add(time2);
+        
+        
+        Idea recognizedObjectsSpikeIdea = new Idea("recognizedObjectsSpikeIdea" );
+        Idea iTCSpikeIdea = new Idea("iTCSpikeIdea" );
+        recognizedObjectsSpikeIdea.add(iTCSpikeIdea);
+        
+        
+        Idea pid3 = new Idea("pid",null, "Property", 1);
+        Idea id2 = new Idea("id",null, "Property", 1);
+        Idea class2 = new Idea("class",null, "Property", 1);
+        Idea features2 = new Idea("features",null, "Property", 1);
+        Idea object3 = new Idea("object",null, "Property", 1);
+        object3.add(pid3);
+        object3.add(id2);
+        object3.add(class2);
+        object3.add(features2);
+        
+        iTCSpikeIdea.add(object3);
+        
+        Idea currrentFrame3 = new Idea("currrentFrame",null, "Property", 1);
+        Idea time3 = new Idea("time",null, "Property", 1);
+        time3.add(currrentFrame3);
+        iTCSpikeIdea.add(time3);
+        
+        
+        Idea requestObjectSpikeIdea = new Idea("requestObjectSpikeIdea");
+        Idea objectId = new Idea("objectId",null, "Property", 1);
+        Idea time4 = new Idea("time",null, "Property", 1);
+        requestObjectSpikeIdea.add(objectId);
+        requestObjectSpikeIdea.add(time4);
+        
+        Idea retrievedObjectTopDown = new Idea("retrievedObjectTopDown");
+        Idea cObjectIdea = new Idea("cObjectIdea");
+        Idea preId = new Idea("preId",null, "Property", 1);
+        Idea classId = new Idea("classId",null, "Property", 1);
+        Idea affect = new Idea("affect",null, "Property", 1);
+        Idea x2 = new Idea("x",null, "Property", 1);
+        Idea y2 = new Idea("y",null, "Property", 1);
+        Idea label = new Idea("time",null, "Property", 1);
+        Idea features3 = new Idea("time",null, "Property", 1);
+        Idea time5 = new Idea("time",null, "Property", 1);
+        Idea time6 = new Idea("time",null, "Property", 1);
+        cObjectIdea.add(preId);
+        cObjectIdea.add(classId);
+        cObjectIdea.add(affect);
+        cObjectIdea.add(x2);
+        cObjectIdea.add(y2);
+        cObjectIdea.add(label);
+        cObjectIdea.add(features3);
+        cObjectIdea.add(time5);
+        retrievedObjectTopDown.add(cObjectIdea);
+        retrievedObjectTopDown.add(time6);
+        
+        Idea pid4 = new Idea("pid",null, "Property", 1);
+        Idea id3 = new Idea("id",null, "Property", 1);
+        Idea class3 = new Idea("class",null, "Property", 1);
+        Idea features4 = new Idea("features",null, "Property", 1);
+        Idea object4 = new Idea("object",null, "Property", 1);
+        object4.add(pid4);
+        object4.add(id3);
+        object4.add(class3);
+        object4.add(features4);
+        
+        Idea iTCFeaturesSpikeIdea = new Idea("iTCFeaturesSpikeIdea");
+        iTCFeaturesSpikeIdea.add(object4);
+        
+        Idea currrentFrame4 = new Idea("currrentFrame",null, "Property", 1);
+        Idea time7 = new Idea("time",null, "Property", 1);
+        time7.add(currrentFrame4);
+        iTCFeaturesSpikeIdea.add(time7);
+        
+        Idea relationsIdea = new Idea("relationsIdea");
+        Idea objectRelation = new Idea("objectRelation");
+        relationsIdea.add(objectRelation);
+        
+        Idea objectId1_1 = new Idea("objectId1",null, "Property", 1);
+        Idea objectId2_1 = new Idea("objectId2",null, "Property", 1);
+        Idea activation = new Idea("activation",null, "Property", 1);
+        Idea repetitions = new Idea("repetitions",null, "Property", 1);
+        Idea time8 = new Idea("time",null, "Property", 1);
+        Idea timestamp = new Idea("timestamp",null, "Property", 1);
+        Idea recent = new Idea("recent",null, "Property", 1);
+        Idea updated = new Idea("updated",null, "Property", 1);
+        objectRelation.add(objectId1_1);
+        objectRelation.add(objectId2_1);
+        objectRelation.add(activation);
+        objectRelation.add(repetitions);
+        objectRelation.add(time8);
+        objectRelation.add(timestamp);
+        objectRelation.add(recent);
+        objectRelation.add(updated);
+        
+        
+        Idea midTermMemoryObjectRelationsIdea = new Idea("midTermMemoryObjectRelationsIdea");
+        Idea objectRelation2 = new Idea("objectRelation");
+        midTermMemoryObjectRelationsIdea.add(objectRelation);
+        
+        Idea objectId1_2 = new Idea("objectId1",null, "Property", 1);
+        Idea objectId2_2 = new Idea("objectId2",null, "Property", 1);
+        Idea activation2 = new Idea("activation",null, "Property", 1);
+        Idea repetitions2 = new Idea("repetitions",null, "Property", 1);
+        Idea time9 = new Idea("time",null, "Property", 1);
+        Idea timestamp2 = new Idea("timestamp",null, "Property", 1);
+        Idea recent2 = new Idea("recent",null, "Property", 1);
+        Idea updated2 = new Idea("updated",null, "Property", 1);
+        objectRelation2.add(objectId1_2);
+        objectRelation2.add(objectId2_2);
+        objectRelation2.add(activation2);
+        objectRelation2.add(repetitions2);
+        objectRelation2.add(time9);
+        objectRelation2.add(timestamp2);
+        objectRelation2.add(recent2);
+        objectRelation2.add(updated2);
+        
+        Idea retrievedObjectRelationTopDownSpikeIdea = new Idea("retrievedObjectRelationTopDownSpikeIdea");
+        Idea objectRelations = new Idea("objectRelations");
+        retrievedObjectRelationTopDownSpikeIdea.add(objectRelations);
+        
+        Idea objectId2 = new Idea("objectId",null, "Property", 1);
+        Idea repetitions3 = new Idea("repetitions",null, "Property", 1);
+        Idea positiveAffect = new Idea("positiveAffect",null, "Property", 1);
+        Idea negativeAffect = new Idea("negativeAffect",null, "Property", 1);
+        Idea activation3 = new Idea("activation",null, "Property", 1);
+        Idea time10 = new Idea("time",null, "Property", 1);
+        Idea timestamp3 = new Idea("timestamp",null, "Property", 1);
+        Idea relations = new Idea("relations",null, "Property", 1);
+        
+        objectRelations.add(objectId2);
+        objectRelations.add(repetitions3);
+        objectRelations.add(positiveAffect);
+        objectRelations.add(negativeAffect);
+        objectRelations.add(activation3);
+        objectRelations.add(time10);
+        objectRelations.add(timestamp3);
+        objectRelations.add(relations);
+        
+        Idea objectRelationsSpikeIdea = new Idea("objectRelationsSpikeIdea");
+        Idea objectRelations2 = new Idea("objectRelations");
+        objectRelationsSpikeIdea.add(objectRelations2);
+        
+        Idea objectId3 = new Idea("objectId",null, "Property", 1);
+        Idea repetitions4 = new Idea("repetitions",null, "Property", 1);
+        Idea positiveAffect2 = new Idea("positiveAffect",null, "Property", 1);
+        Idea negativeAffect2 = new Idea("negativeAffect",null, "Property", 1);
+        Idea activation4 = new Idea("activation",null, "Property", 1);
+        Idea time11 = new Idea("time",null, "Property", 1);
+        Idea timestamp4 = new Idea("timestamp",null, "Property", 1);
+        Idea relations2 = new Idea("relations",null, "Property", 1);
+        
+        objectRelations.add(objectId3);
+        objectRelations.add(repetitions4);
+        objectRelations.add(positiveAffect2);
+        objectRelations.add(negativeAffect2);
+        objectRelations.add(activation4);
+        objectRelations.add(time11);
+        objectRelations.add(timestamp4);
+        objectRelations.add(relations2);
+        
+        
+        Idea newEncodedSceneSpikeIdea = new Idea("newEncodedSceneSpikeIdea");
+        Idea scene = new Idea("scene");
+        newEncodedSceneSpikeIdea.add(scene);
+        Idea time12 = new Idea("time",null, "Property", 1);
+        newEncodedSceneSpikeIdea.add(time12);
+        
+        Idea id4 = new Idea("objectId",null, "Property", 1);
+        Idea pattern2 = new Idea("pattern2",null, "Property", 1);
+        Idea time13 = new Idea("time",null, "Property", 1);
+        Idea repetitions5 = new Idea("repetitions",null, "Property", 1);
+        Idea positiveAffect3 = new Idea("positiveAffect",null, "Property", 1);
+        Idea negativeAffect3 = new Idea("negativeAffect",null, "Property", 1);
+        Idea activation5 = new Idea("activation",null, "Property", 1);
+        Idea timestamp5 = new Idea("timestamp",null, "Property", 1);
+        Idea relations3 = new Idea("relations",null, "Property", 1);
+        Idea activeSimilarity = new Idea("activeSimilarity",null, "Property", 1);
+        Idea recent3 = new Idea("recent",null, "Property", 1);
+        
+        scene.add(id4);
+        scene.add(pattern2);
+        scene.add(time13);
+        scene.add(repetitions5);
+        scene.add(positiveAffect3);
+        scene.add(negativeAffect3);
+        scene.add(activation5);
+        scene.add(timestamp5);
+        scene.add(relations3);
+        scene.add(activeSimilarity);
+        scene.add(recent3);
+        
+        Idea midTermMemoyScenesIdea = new Idea("midTermMemoyScenesIdea");
+        Idea scene2 = new Idea("scene");
+        midTermMemoyScenesIdea.add(scene);
+        
+        Idea id5 = new Idea("objectId",null, "Property", 1);
+        Idea pattern3 = new Idea("pattern2",null, "Property", 1);
+        Idea time14 = new Idea("time",null, "Property", 1);
+        Idea repetitions6 = new Idea("repetitions",null, "Property", 1);
+        Idea positiveAffect4 = new Idea("positiveAffect",null, "Property", 1);
+        Idea negativeAffect4 = new Idea("negativeAffect",null, "Property", 1);
+        Idea activation6 = new Idea("activation",null, "Property", 1);
+        Idea timestamp6 = new Idea("timestamp",null, "Property", 1);
+        Idea relations4 = new Idea("relations",null, "Property", 1);
+        Idea activeSimilarity2 = new Idea("activeSimilarity",null, "Property", 1);
+        Idea recent4 = new Idea("recent",null, "Property", 1);
+        
+        scene2.add(id5);
+        scene2.add(pattern3);
+        scene2.add(time14);
+        scene2.add(repetitions6);
+        scene2.add(positiveAffect4);
+        scene2.add(negativeAffect4);
+        scene2.add(activation6);
+        scene2.add(timestamp6);
+        scene2.add(relations4);
+        scene2.add(activeSimilarity2);
+        scene2.add(recent4);
+        
+        Idea midTermMemoryScenesByIDDGIdea = new Idea("midTermMemoryScenesByIDIdea");
+        Idea integer = new Idea("integer");
+        midTermMemoryScenesByIDDGIdea.add(integer);
+        Idea scene3 = new Idea("scene");
+        midTermMemoryScenesByIDDGIdea.add(scene3);
+        
+        Idea id6 = new Idea("objectId",null, "Property", 1);
+        Idea pattern4 = new Idea("pattern2",null, "Property", 1);
+        Idea time15 = new Idea("time",null, "Property", 1);
+        Idea repetitions7 = new Idea("repetitions",null, "Property", 1);
+        Idea positiveAffect5 = new Idea("positiveAffect",null, "Property", 1);
+        Idea negativeAffect5 = new Idea("negativeAffect",null, "Property", 1);
+        Idea activation7 = new Idea("activation",null, "Property", 1);
+        Idea timestamp7= new Idea("timestamp",null, "Property", 1);
+        Idea relations5 = new Idea("relations",null, "Property", 1);
+        Idea activeSimilarity3 = new Idea("activeSimilarity",null, "Property", 1);
+        Idea recent5 = new Idea("recent",null, "Property", 1);
+        
+        scene3.add(id6);
+        scene3.add(pattern4);
+        scene3.add(time15);
+        scene3.add(repetitions7);
+        scene3.add(positiveAffect5);
+        scene3.add(negativeAffect5);
+        scene3.add(activation7);
+        scene3.add(timestamp7);
+        scene3.add(relations5);
+        scene3.add(activeSimilarity3);
+        scene3.add(recent5);
+        
+        Idea midTermMemoryScenesByIDCA3Idea = new Idea("midTermMemoryScenesByIDIdea");
+        Idea integer2 = new Idea("integer");
+        midTermMemoryScenesByIDCA3Idea.add(integer2);
+        Idea scene4 = new Idea("scene");
+        midTermMemoryScenesByIDCA3Idea.add(scene4);
+        
+        Idea id7 = new Idea("objectId",null, "Property", 1);
+        Idea pattern5 = new Idea("pattern2",null, "Property", 1);
+        Idea time16 = new Idea("time",null, "Property", 1);
+        Idea repetitions8 = new Idea("repetitions",null, "Property", 1);
+        Idea positiveAffect6 = new Idea("positiveAffect",null, "Property", 1);
+        Idea negativeAffect6 = new Idea("negativeAffect",null, "Property", 1);
+        Idea activation8 = new Idea("activation",null, "Property", 1);
+        Idea timestamp8= new Idea("timestamp",null, "Property", 1);
+        Idea relations6 = new Idea("relations",null, "Property", 1);
+        Idea activeSimilarity4 = new Idea("activeSimilarity",null, "Property", 1);
+        Idea recent6 = new Idea("recent",null, "Property", 1);
+        
+        scene4.add(id7);
+        scene4.add(pattern5);
+        scene4.add(time16);
+        scene4.add(repetitions8);
+        scene4.add(positiveAffect6);
+        scene4.add(negativeAffect6);
+        scene4.add(activation8);
+        scene4.add(timestamp8);
+        scene4.add(relations6);
+        scene4.add(activeSimilarity4);
+        scene4.add(recent6);
+        
+        Idea currentSceneSpikeIdea = new Idea("midTermMemoryScenesByIDIdea");
+        
+        Idea time17 = new Idea("time");
+        currentSceneSpikeIdea.add(time17);
+        
+        Idea scene5 = new Idea("scene");
+        Idea similarScenes = new Idea("similarScenes");
+        similarScenes.add(scene5);
+        currentSceneSpikeIdea.add(similarScenes);
+        
+        Idea id8 = new Idea("objectId",null, "Property", 1);
+        Idea pattern6 = new Idea("pattern2",null, "Property", 1);
+        Idea time18 = new Idea("time",null, "Property", 1);
+        Idea repetitions9 = new Idea("repetitions",null, "Property", 1);
+        Idea positiveAffect7 = new Idea("positiveAffect",null, "Property", 1);
+        Idea negativeAffect7 = new Idea("negativeAffect",null, "Property", 1);
+        Idea activation9 = new Idea("activation",null, "Property", 1);
+        Idea timestamp9 = new Idea("timestamp",null, "Property", 1);
+        Idea relations7 = new Idea("relations",null, "Property", 1);
+        Idea activeSimilarity5 = new Idea("activeSimilarity",null, "Property", 1);
+        Idea recent7 = new Idea("recent",null, "Property", 1);
+        
+        scene5.add(id8);
+        scene5.add(pattern6);
+        scene5.add(time18);
+        scene5.add(repetitions9);
+        scene5.add(positiveAffect7);
+        scene5.add(negativeAffect7);
+        scene5.add(activation9);
+        scene5.add(timestamp9);
+        scene5.add(relations7);
+        scene5.add(activeSimilarity5);
+        scene5.add(recent7);
+        
+        Idea resquestSceneByIDSpikeIdea = new Idea("resquestSceneByIDSpikeIdea");
+        Idea integer3 = new Idea("integer");
+        resquestSceneByIDSpikeIdea.add(integer3);
+        
+        Idea time19 = new Idea("time");
+        resquestSceneByIDSpikeIdea.add(time19);
+        
+        
+        Idea requestSimilarScenesSpikeIdea = new Idea("requestSimilarScenesSpikeIdea");
+        
+        Idea time20 = new Idea("time");
+        requestSimilarScenesSpikeIdea.add(time20);
+        
+        Idea scene6 = new Idea("scene");
+        requestSimilarScenesSpikeIdea.add(scene6);
+        
+        Idea id9 = new Idea("objectId",0, "Property", 1);
+        Idea pattern7 = new Idea("pattern2",null, "Property", 1);
+        Idea time21 = new Idea("time",0, "Property", 1);
+        Idea repetitions10 = new Idea("repetitions",null, "Property", 1);
+        Idea positiveAffect8 = new Idea("positiveAffect",0, "Property", 1);
+        Idea negativeAffect8 = new Idea("negativeAffect",0, "Property", 1);
+        Idea activation10 = new Idea("activation",0.5, "Property", 1);
+        Idea timestamp10 = new Idea("timestamp",null, "Property", 1);
+        Idea relations8 = new Idea("relations",null, "Property", 1);
+        Idea activeSimilarity6 = new Idea("activeSimilarity",null, "Property", 1);
+        Idea recent8 = new Idea("recent",null, "Property", 1);
+        
+        scene6.add(id9);
+        scene6.add(pattern7);
+        scene6.add(time21);
+        scene6.add(repetitions10);
+        scene6.add(positiveAffect8);
+        scene6.add(negativeAffect8);
+        scene6.add(activation10);
+        scene6.add(timestamp10);
+        scene6.add(relations8);
+        scene6.add(activeSimilarity6);
+        scene6.add(recent8);
+    
+        
+        Idea retrievedSceneTopDownSpikeIdea = new Idea("retrievedSceneTopDownSpikeIdea");
+        
+        Idea time22 = new Idea("time");
+        retrievedSceneTopDownSpikeIdea.add(time22);
+        
+        Idea scene7 = new Idea("scene");
+        Idea similarScenes2 = new Idea("similarScenes");
+        similarScenes2.add(scene7);
+        retrievedSceneTopDownSpikeIdea.add(similarScenes2);
+        
+        Idea id10 = new Idea("objectId",null, "Property", 1);
+        Idea pattern8 = new Idea("pattern2",null, "Property", 1);
+        Idea time23 = new Idea("time",null, "Property", 1);
+        Idea repetitions11 = new Idea("repetitions",null, "Property", 1);
+        Idea positiveAffect9 = new Idea("positiveAffect",null, "Property", 1);
+        Idea negativeAffect9 = new Idea("negativeAffect",null, "Property", 1);
+        Idea activation11 = new Idea("activation",null, "Property", 1);
+        Idea timestamp11 = new Idea("timestamp",null, "Property", 1);
+        Idea relations9 = new Idea("relations",null, "Property", 1);
+        Idea activeSimilarity7 = new Idea("activeSimilarity",null, "Property", 1);
+        Idea recent9 = new Idea("recent",null, "Property", 1);
+        
+        scene7.add(id10);
+        scene7.add(pattern8);
+        scene7.add(time23);
+        scene7.add(repetitions11);
+        scene7.add(positiveAffect9);
+        scene7.add(negativeAffect9);
+        scene7.add(activation11);
+        scene7.add(timestamp11);
+        scene7.add(relations9);
+        scene7.add(activeSimilarity7);
+        scene7.add(recent9);
+        
+        Idea sceneRelationIdea = new Idea("sceneRelationIdea");
+        
+        Idea scene1Id = new Idea("scene1Id",null, "Property", 1);
+        Idea scene2Id = new Idea("scene2Id",null, "Property", 1);
+        Idea activation12 = new Idea("activation",null, "Property", 1);
+        Idea repetitions12 = new Idea("repetitions",null, "Property", 1);
+        Idea time24 = new Idea("time",null, "Property", 1);
+        Idea timestamp12 = new Idea("timestamp",null, "Property", 1);
+        Idea recent10 = new Idea("recent",null, "Property", 1);
+        Idea updated3 = new Idea("recent",null, "Property", 1);
+        
+        sceneRelationIdea.add(scene1Id);
+        sceneRelationIdea.add(scene2Id);
+        sceneRelationIdea.add(activation12);
+        sceneRelationIdea.add(repetitions12);
+        sceneRelationIdea.add(time24);
+        sceneRelationIdea.add(timestamp12);
+        sceneRelationIdea.add(recent10);
+        sceneRelationIdea.add(updated3);
+        
+        
+        Idea midTermMemorySceneRelationsCA1Idea = new Idea("midTermMemorySceneRelationsCA1Idea");
+        
+        Idea integer4 = new Idea("integer");
+        
+        Idea sceneRelationIdea2 = new Idea("sceneRelation");
+        midTermMemorySceneRelationsCA1Idea.add(integer4);
+        midTermMemorySceneRelationsCA1Idea.add(sceneRelationIdea2);
+        
+        Idea scene1Id2 = new Idea("scene1Id",null, "Property", 1);
+        Idea scene2Id2 = new Idea("scene2Id",null, "Property", 1);
+        Idea activation13 = new Idea("activation",null, "Property", 1);
+        Idea repetitions13 = new Idea("repetitions",null, "Property", 1);
+        Idea time25 = new Idea("time",null, "Property", 1);
+        Idea timestamp13 = new Idea("timestamp",null, "Property", 1);
+        Idea recent11 = new Idea("recent",null, "Property", 1);
+        Idea updated4 = new Idea("recent",null, "Property", 1);
+        
+        sceneRelationIdea2.add(scene1Id2);
+        sceneRelationIdea2.add(scene2Id2);
+        sceneRelationIdea2.add(activation13);
+        sceneRelationIdea2.add(repetitions13);
+        sceneRelationIdea2.add(time25);
+        sceneRelationIdea2.add(timestamp13);
+        sceneRelationIdea2.add(recent11);
+        sceneRelationIdea2.add(updated4);
+        
+        Idea sceneRelationsSpikeIdea = new Idea("sceneRelationsSpikeIdea");
+        
+        Idea time26 = new Idea("integer");
+        
+        sceneRelationsSpikeIdea.add(time26);
+        Idea sceneRelationsIdea = new Idea("sceneRelations");
+        Idea sceneRelationIdea3 = new Idea("sceneRelation");
+        sceneRelationsIdea.add(sceneRelationIdea3);
+        sceneRelationsSpikeIdea.add(sceneRelationsIdea);
+        
+        Idea scene1Id3 = new Idea("scene1Id",null, "Property", 1);
+        Idea scene2Id3 = new Idea("scene2Id",null, "Property", 1);
+        Idea activation14 = new Idea("activation",null, "Property", 1);
+        Idea repetitions14 = new Idea("repetitions",null, "Property", 1);
+        Idea time27 = new Idea("time",null, "Property", 1);
+        Idea timestamp14 = new Idea("timestamp",null, "Property", 1);
+        Idea recent12 = new Idea("recent",null, "Property", 1);
+        Idea updated5 = new Idea("recent",null, "Property", 1);
+        
+        sceneRelationIdea3.add(scene1Id3);
+        sceneRelationIdea3.add(scene2Id3);
+        sceneRelationIdea3.add(activation14);
+        sceneRelationIdea3.add(repetitions14);
+        sceneRelationIdea3.add(time27);
+        sceneRelationIdea3.add(timestamp14);
+        sceneRelationIdea3.add(recent12);
+        sceneRelationIdea3.add(updated5);
+        
+        Idea retrievedSceneTopDownLTM = new Idea("retrievedSceneTopDownLTM");
+        
+        Idea time28 = new Idea("integer");
+        retrievedSceneTopDownLTM.add(time28);
+        
+        Idea sceneRelationsIdea2 = new Idea("sceneRelations");
+        Idea sceneRelationIdea4 = new Idea("sceneRelation");
+        sceneRelationsIdea2.add(sceneRelationIdea4);
+        retrievedSceneTopDownLTM.add(sceneRelationsIdea2);
+        
+        Idea scene1Id4 = new Idea("scene1Id",null, "Property", 1);
+        Idea scene2Id4 = new Idea("scene2Id",null, "Property", 1);
+        Idea activation15 = new Idea("activation",null, "Property", 1);
+        Idea repetitions15 = new Idea("repetitions",null, "Property", 1);
+        Idea time29 = new Idea("time",null, "Property", 1);
+        Idea timestamp15 = new Idea("timestamp",null, "Property", 1);
+        Idea recent13 = new Idea("recent",null, "Property", 1);
+        Idea updated6 = new Idea("recent",null, "Property", 1);
+        
+        sceneRelationIdea4.add(scene1Id4);
+        sceneRelationIdea4.add(scene2Id4);
+        sceneRelationIdea4.add(activation15);
+        sceneRelationIdea4.add(repetitions15);
+        sceneRelationIdea4.add(time29);
+        sceneRelationIdea4.add(timestamp15);
+        sceneRelationIdea4.add(recent13);
+        sceneRelationIdea4.add(updated6);
+        
+        Idea taskSetSpikeIdea = new Idea("taskSetSpikeIdea");
+        Idea allowBottom = new Idea("ALLOW_BUTTON_UP",1, "Property", 3);
+        Idea allowTop = new Idea("ALLOW_BUTTON_UP",2, "Property", 3);
+        Idea allowedProcessingFlow = new Idea("allowedProcessingFlow",0, "Property", 3);
+        Idea allowedScenePattern = new Idea("allowedScenePattern","", "Property", 3);
+        Idea allowedObjectRelation = new Idea("allowedObjectRelation",0, "Property", 3);
+        taskSetSpikeIdea.add(allowBottom);
+        taskSetSpikeIdea.add(allowTop);
+        taskSetSpikeIdea.add(allowedProcessingFlow);
+        taskSetSpikeIdea.add(allowedScenePattern);
+        taskSetSpikeIdea.add(allowedObjectRelation);
+       
         
 //        
 //        Idea preId = new Idea("preID","", "Property", 1 );
