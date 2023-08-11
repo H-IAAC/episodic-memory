@@ -4,6 +4,7 @@
 package episodicv2;
 
 import br.unicamp.cst.core.entities.Codelet;
+import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
 import br.unicamp.cst.io.rest.RESTServer;
 import br.unicamp.cst.util.viewer.MindViewer;
@@ -47,7 +48,6 @@ public final class App {
         Idea centerPointsSpikeIdea = new Idea("centerPointsSpikeIdea","","Property",1);
         centerPointsSpikeIdea.add(ppcIdea);
         
-        
         Idea pid2 = new Idea("pid",null, "Property", 1);
         Idea id = new Idea("id",null, "Property", 1);
         Idea class1 = new Idea("class",null, "Property", 1);
@@ -76,14 +76,12 @@ public final class App {
         Idea gridColumnsX2 = new Idea("gridColumns",10, "Property", 1);
         Idea gridRowsY2 = new Idea("gridRows",7, "Property", 1);
         
-        
         Idea pattern = new Idea("pattern");
         pattern.add(occupancyGrid);
         pattern.add(imageWidth2);
         pattern.add(imageHeight2);
         pattern.add(gridColumnsX2);
         pattern.add(gridRowsY2);
-        
         
         Idea unintegratedScenePatternIdea = new Idea("unintegratedScenePatternIdea");
         unintegratedScenePatternIdea.add(pattern);
@@ -93,11 +91,9 @@ public final class App {
         time2.add(currrentFrame2);
         unintegratedScenePatternIdea.add(time2);
         
-        
         Idea recognizedObjectsSpikeIdea = new Idea("recognizedObjectsSpikeIdea" );
         Idea iTCSpikeIdea = new Idea("iTCSpikeIdea" );
         recognizedObjectsSpikeIdea.add(iTCSpikeIdea);
-        
         
         Idea pid3 = new Idea("pid",null, "Property", 1);
         Idea id2 = new Idea("id",null, "Property", 1);
@@ -115,7 +111,6 @@ public final class App {
         Idea time3 = new Idea("time",null, "Property", 1);
         time3.add(currrentFrame3);
         iTCSpikeIdea.add(time3);
-        
         
         Idea requestObjectSpikeIdea = new Idea("requestObjectSpikeIdea");
         Idea objectId = new Idea("objectId",null, "Property", 1);
@@ -184,7 +179,6 @@ public final class App {
         objectRelation.add(recent);
         objectRelation.add(updated);
         
-        
         Idea midTermMemoryObjectRelationsIdea = new Idea("midTermMemoryObjectRelationsIdea");
         Idea objectRelation2 = new Idea("objectRelation");
         midTermMemoryObjectRelationsIdea.add(objectRelation);
@@ -249,7 +243,6 @@ public final class App {
         objectRelations.add(time11);
         objectRelations.add(timestamp4);
         objectRelations.add(relations2);
-        
         
         Idea newEncodedSceneSpikeIdea = new Idea("newEncodedSceneSpikeIdea");
         Idea scene = new Idea("scene");
@@ -369,15 +362,13 @@ public final class App {
         scene4.add(activeSimilarity4);
         scene4.add(recent6);
         
-        Idea currentSceneSpikeIdea = new Idea("midTermMemoryScenesByIDIdea");
+        Idea currentSceneSpikeIdea = new Idea("currentSceneSpikeIdea");
         
         Idea time17 = new Idea("time");
         currentSceneSpikeIdea.add(time17);
         
         Idea scene5 = new Idea("scene");
-        Idea similarScenes = new Idea("similarScenes");
-        similarScenes.add(scene5);
-        currentSceneSpikeIdea.add(similarScenes);
+        currentSceneSpikeIdea.add(scene5);
         
         Idea id8 = new Idea("objectId",null, "Property", 1);
         Idea pattern6 = new Idea("pattern2",null, "Property", 1);
@@ -403,13 +394,46 @@ public final class App {
         scene5.add(activeSimilarity5);
         scene5.add(recent7);
         
-        Idea resquestSceneByIDSpikeIdea = new Idea("resquestSceneByIDSpikeIdea");
+        Idea similarScenesSpikeIdea = new Idea("similarScenesSpikeIdea");
+        
+        Idea time30 = new Idea("time");
+        similarScenesSpikeIdea.add(time30);
+        
+        Idea scene8 = new Idea("scene");
+        Idea similarScenes = new Idea("similarScenes");
+        similarScenes.add(scene8);
+        similarScenesSpikeIdea.add(similarScenes);
+        
+        Idea id11 = new Idea("objectId",null, "Property", 1);
+        Idea pattern9 = new Idea("pattern2",null, "Property", 1);
+        Idea time31 = new Idea("time",null, "Property", 1);
+        Idea repetitions16 = new Idea("repetitions",null, "Property", 1);
+        Idea positiveAffect10 = new Idea("positiveAffect",null, "Property", 1);
+        Idea negativeAffect10 = new Idea("negativeAffect",null, "Property", 1);
+        Idea activation16 = new Idea("activation",null, "Property", 1);
+        Idea timestamp16 = new Idea("timestamp",null, "Property", 1);
+        Idea relations10 = new Idea("relations",null, "Property", 1);
+        Idea activeSimilarity8 = new Idea("activeSimilarity",null, "Property", 1);
+        Idea recent14 = new Idea("recent",null, "Property", 1);
+        
+        scene8.add(id11);
+        scene8.add(pattern9);
+        scene8.add(time31);
+        scene8.add(repetitions16);
+        scene8.add(positiveAffect10);
+        scene8.add(negativeAffect10);
+        scene8.add(activation16);
+        scene8.add(timestamp16);
+        scene8.add(relations10);
+        scene8.add(activeSimilarity8);
+        scene8.add(recent14);
+        
+        Idea requestSceneByIDSpikeIdea = new Idea("resquestSceneByIDSpikeIdea");
         Idea integer3 = new Idea("integer");
-        resquestSceneByIDSpikeIdea.add(integer3);
+        requestSceneByIDSpikeIdea.add(integer3);
         
         Idea time19 = new Idea("time");
-        resquestSceneByIDSpikeIdea.add(time19);
-        
+        requestSceneByIDSpikeIdea.add(time19);
         
         Idea requestSimilarScenesSpikeIdea = new Idea("requestSimilarScenesSpikeIdea");
         
@@ -592,87 +616,40 @@ public final class App {
         taskSetSpikeIdea.add(allowedProcessingFlow);
         taskSetSpikeIdea.add(allowedScenePattern);
         taskSetSpikeIdea.add(allowedObjectRelation);
-       
-        
-//        
-//        Idea preId = new Idea("preID","", "Property", 1 );
-//        Idea classId = new Idea("classId","", "Property", 1 );
-//        Idea affect = new Idea("affect","", "Property", 1 );
-//        Idea time = new Idea("time","", "Property", 1 );
-//        Idea label = new Idea("label","", "Property", 1 );
-//        Idea features2 = new Idea("preID","", "Property", 1 );
-//        
-//        Idea CObjectITCIdea = new Idea("CObjectITCIdea");
-//        CObjectITCIdea.add(preId);
-//        CObjectITCIdea.add(classId);
-//        CObjectITCIdea.add(affect);
-//        CObjectITCIdea.add(x);
-//        CObjectITCIdea.add(y);
-//        CObjectITCIdea.add(time);
-//        CObjectITCIdea.add(label);
-//        CObjectITCIdea.add(features2);
-//        
-//        Idea recognizedObjectsIdea = new Idea("recognizedObjectsIdea");
-//        recognizedObjectsIdea.add(CObjectITCIdea);
-//        
-//        Idea id = new Idea("id","", "Property", 1 );
-//        Idea classIdea = new Idea("classIdea","", "Property", 1 );
-//        
-//        Idea sceneObjectITCIdea = new Idea("sceneObjectITCIdea");
-//        sceneObjectITCIdea.add(pid);
-//        sceneObjectITCIdea.add(id);
-//        sceneObjectITCIdea.add(classIdea);
-//        sceneObjectITCIdea.add(features);
-//        
-//        
-//        Idea object1Id = new Idea("object1Id","", "Property", 1 );
-//        Idea object2Id = new Idea("object2Id","", "Property", 1 );
-//        Idea activation = new Idea("activation","", "Property", 1 );
-//        Idea repetitions = new Idea("repetitions","", "Property", 1 );
-////        Idea time = new Idea("object1Id","", "Property", 1 );
-//        Idea timestamp = new Idea("timestamp","", "Property", 1 );
-//        Idea recent = new Idea("recent",true, "Property", 1 );
-//        Idea updated = new Idea("updated",false, "Property", 1 );
-//        
-//        Idea objectRelationIdea = new Idea("objectRelationIdea");
-//        objectRelationIdea.add((object1Id));
-//        objectRelationIdea.add(object2Id);
-//        objectRelationIdea.add(activation);
-//        objectRelationIdea.add(repetitions);
-//        objectRelationIdea.add(time);
-//        objectRelationIdea.add(timestamp);
-//        objectRelationIdea.add(recent);
-//        objectRelationIdea.add(updated);
-//        
-//        
-////        Idea pattern = new Idea("pattern","", "Property", 1 );
-////        Idea time = new Idea("time","", "Property", 1 );
-////        Idea repetitions = new Idea("repetitions","", "Property", 1 );
-//        Idea positiveAffect = new Idea("positiveAffect","", "Property", 1 );
-//        Idea negativeAffect = new Idea("negativeAffect","", "Property", 1 );
-//        Idea relations = new Idea("relations","", "Property", 1 );
-//        Idea activeSimilarity = new Idea("activeSimilarity","", "Property", 1 );
-//
-//        Idea sceneIdea = new Idea("sceneIdea");
-//        sceneIdea.add(id);
-//        sceneIdea.add(pattern);
-//        sceneIdea.add(time);
-//        sceneIdea.add(repetitions);
-//        sceneIdea.add(positiveAffect);
-//        sceneIdea.add(negativeAffect);
-//        sceneIdea.add(activation);
-//        sceneIdea.add(timestamp);
-//        sceneIdea.add(relations);
-//        sceneIdea.add(activeSimilarity);
-//        sceneIdea.add(recent);
-//        idea.add(new Idea("idea1",0.1D,"Property",1));
-        
-    
         
         
+        Idea root = new Idea("root");
         
-        //Declare Memory Objects
-
+        root.add(imagePerceptedIdea);
+        root.add(centerPointsSpikeIdea);
+        root.add(unintegratedScenePatternIdea);
+        root.add(recognizedObjectsSpikeIdea);
+        root.add(requestObjectSpikeIdea);
+        root.add(retrievedObjectRelationTopDownSpikeIdea);
+        root.add(iTCFeaturesSpikeIdea);
+        root.add(relationsIdea);
+        root.add(midTermMemoryObjectRelationsIdea);
+        root.add(retrievedObjectRelationTopDownSpikeIdea);
+        root.add(objectRelationsSpikeIdea);
+        root.add(newEncodedSceneSpikeIdea);
+        root.add(midTermMemoyScenesIdea);
+        root.add(midTermMemoryScenesByIDCA3Idea);
+        root.add(midTermMemoryScenesByIDDGIdea);
+        root.add(currentSceneSpikeIdea);
+        root.add(similarScenesSpikeIdea);
+        root.add(requestSceneByIDSpikeIdea);
+        root.add(requestSimilarScenesSpikeIdea);
+        root.add(retrievedSceneTopDownSpikeIdea);
+        root.add(sceneRelationIdea);
+        root.add(midTermMemorySceneRelationsCA1Idea);
+        root.add(sceneRelationsSpikeIdea);
+        root.add(retrievedSceneTopDownLTM);
+        root.add(taskSetSpikeIdea);
+        
+        
+        MemoryObject mo;
+        mo = m.createMemoryObject("rootMO");
+        mo.setI(root);
         
         //Create Sensor Codelets
         Codelet vision=new Vision();

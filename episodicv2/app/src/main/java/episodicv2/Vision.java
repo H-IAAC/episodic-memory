@@ -19,7 +19,10 @@ public class Vision extends Codelet{
     
     @Override
     public void proc() {
-        
+        //DÚVIDA: receber imagem de um simulador
+        //extrair os dados de localização e categoria
+        //recebe dados de onde?
+        //EXTRAIR COMO?
     }
     
     @Override
