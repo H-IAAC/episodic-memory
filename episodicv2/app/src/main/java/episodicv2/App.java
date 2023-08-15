@@ -10,6 +10,8 @@ import br.unicamp.cst.io.rest.RESTServer;
 import br.unicamp.cst.util.viewer.MindViewer;
 import br.unicamp.cst.representation.idea.Idea;
 import java.util.ArrayList; 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class App {
     
@@ -569,13 +571,12 @@ public final class App {
         sceneRelationIdea.add(recent10);
         sceneRelationIdea.add(updated3);
         
+        Map<Integer, ConcurrentHashMap<Integer, Idea>> midTermMemorySceneRelationsCA1IdeaMap = new ConcurrentHashMap<>();
         
-        Idea midTermMemorySceneRelationsCA1Idea = new Idea("midTermMemorySceneRelationsCA1Idea");
         
-        Idea integer4 = new Idea("integer");
-        
+        Idea midTermMemorySceneRelationsCA1Idea = new Idea("midTermMemorySceneRelationsCA1Idea", midTermMemorySceneRelationsCA1IdeaMap);
+                
         Idea sceneRelationIdea2 = new Idea("sceneRelation");
-        midTermMemorySceneRelationsCA1Idea.add(integer4);
         midTermMemorySceneRelationsCA1Idea.add(sceneRelationIdea2);
         
         Idea scene1Id2 = new Idea("scene1Id",null, "Property", 1);
