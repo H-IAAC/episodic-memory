@@ -9,6 +9,7 @@ import br.unicamp.cst.core.entities.Mind;
 import br.unicamp.cst.io.rest.RESTServer;
 import br.unicamp.cst.util.viewer.MindViewer;
 import br.unicamp.cst.representation.idea.Idea;
+import java.util.ArrayList; 
 
 public final class App {
     
@@ -100,12 +101,17 @@ public final class App {
         Idea class2 = new Idea("class",null, "Property", 1);
         Idea features2 = new Idea("features",null, "Property", 1);
         Idea object3 = new Idea("object",null, "Property", 1);
+        ArrayList<Idea> objectsArray = new ArrayList<Idea>();
+        
         object3.add(pid3);
         object3.add(id2);
         object3.add(class2);
         object3.add(features2);
         
-        iTCSpikeIdea.add(object3);
+        objectsArray.add(object3);
+        
+        Idea objectsArrayIdea = new Idea("objectsArrayIdea", objectsArray);
+        iTCSpikeIdea.add(objectsArrayIdea);
         
         Idea currrentFrame3 = new Idea("currrentFrame",null, "Property", 1);
         Idea time3 = new Idea("time",null, "Property", 1);
@@ -150,17 +156,22 @@ public final class App {
         object4.add(class3);
         object4.add(features4);
         
+        ArrayList<Idea> objectsArray1 =  new ArrayList<Idea>();
+        objectsArray1.add(object4);
+        Idea objectsArrayIdea2 = new Idea("objectsArrayIdea2", objectsArray1);
+        
         Idea iTCFeaturesSpikeIdea = new Idea("iTCFeaturesSpikeIdea");
-        iTCFeaturesSpikeIdea.add(object4);
+        iTCFeaturesSpikeIdea.add(objectsArrayIdea2);
         
         Idea currrentFrame4 = new Idea("currrentFrame",null, "Property", 1);
         Idea time7 = new Idea("time",null, "Property", 1);
         time7.add(currrentFrame4);
         iTCFeaturesSpikeIdea.add(time7);
         
-        Idea relationsIdea = new Idea("relationsIdea");
         Idea objectRelation = new Idea("objectRelation");
-        relationsIdea.add(objectRelation);
+        ArrayList<Idea> relationsArray = new ArrayList<Idea>();
+        relationsArray.add(objectRelation);
+        Idea relationsArrayIdea = new Idea("relationsArrayIdea", relationsArray);
         
         Idea objectId1_1 = new Idea("objectId1",null, "Property", 1);
         Idea objectId2_1 = new Idea("objectId2",null, "Property", 1);
@@ -211,7 +222,11 @@ public final class App {
         Idea activation3 = new Idea("activation",null, "Property", 1);
         Idea time10 = new Idea("time",null, "Property", 1);
         Idea timestamp3 = new Idea("timestamp",null, "Property", 1);
-        Idea relations = new Idea("relations",null, "Property", 1);
+        Idea integer = new Idea("integer",null, "Property", 1);
+        ArrayList<Idea> relationsArray1 = new ArrayList<Idea>();
+        relationsArray1.add(integer);
+        Idea relationsArrayIdea1 = new Idea("relationsIdeaTest",relationsArray1, "Property", 1);
+        objectRelations.add(relationsArrayIdea1);
         
         objectRelations.add(objectId2);
         objectRelations.add(repetitions3);
@@ -220,7 +235,7 @@ public final class App {
         objectRelations.add(activation3);
         objectRelations.add(time10);
         objectRelations.add(timestamp3);
-        objectRelations.add(relations);
+        
         
         Idea objectRelationsSpikeIdea = new Idea("objectRelationsSpikeIdea");
         Idea objectRelations2 = new Idea("objectRelations");
@@ -275,8 +290,13 @@ public final class App {
         scene.add(recent3);
         
         Idea midTermMemoyScenesIdea = new Idea("midTermMemoyScenesIdea");
+        ArrayList<Idea> sceneArray = new ArrayList<Idea>();
+        
+        Idea sceneArrayIdea = new Idea("sceneArrayIdea", sceneArray);
+        
         Idea scene2 = new Idea("scene");
-        midTermMemoyScenesIdea.add(scene);
+        sceneArray.add(scene2);
+        midTermMemoyScenesIdea.add(sceneArrayIdea);
         
         Idea id5 = new Idea("objectId",null, "Property", 1);
         Idea pattern3 = new Idea("pattern2",null, "Property", 1);
@@ -286,7 +306,30 @@ public final class App {
         Idea negativeAffect4 = new Idea("negativeAffect",null, "Property", 1);
         Idea activation6 = new Idea("activation",null, "Property", 1);
         Idea timestamp6 = new Idea("timestamp",null, "Property", 1);
-        Idea relations4 = new Idea("relations",null, "Property", 1);
+        ArrayList<Idea> relationsArray2 = new ArrayList<Idea>();
+        
+        Idea sceneRelationIdea5 = new Idea("sceneRelation");
+        Idea scene1Id4 = new Idea("scene1Id",null, "Property", 1);
+        Idea scene2Id4 = new Idea("scene2Id",null, "Property", 1);
+        Idea activation15 = new Idea("activation",null, "Property", 1);
+        Idea repetitions16 = new Idea("repetitions",null, "Property", 1);
+        Idea time28 = new Idea("time",null, "Property", 1);
+        Idea timestamp15 = new Idea("timestamp",null, "Property", 1);
+        Idea recent13 = new Idea("recent",null, "Property", 1);
+        Idea updated6 = new Idea("recent",null, "Property", 1);
+        
+        sceneRelationIdea5.add(scene1Id4);
+        sceneRelationIdea5.add(scene2Id4);
+        sceneRelationIdea5.add(activation15);
+        sceneRelationIdea5.add(repetitions16);
+        sceneRelationIdea5.add(time28);
+        sceneRelationIdea5.add(timestamp15);
+        sceneRelationIdea5.add(recent13);
+        sceneRelationIdea5.add(updated6);
+       
+        relationsArray2.add(sceneRelationIdea5);
+        
+        Idea relationsArrayIdea2 = new Idea("relations",relationsArray2, "Property", 1);
         Idea activeSimilarity2 = new Idea("activeSimilarity",null, "Property", 1);
         Idea recent4 = new Idea("recent",null, "Property", 1);
         
@@ -298,13 +341,13 @@ public final class App {
         scene2.add(negativeAffect4);
         scene2.add(activation6);
         scene2.add(timestamp6);
-        scene2.add(relations4);
+        scene2.add(relationsArrayIdea2);
         scene2.add(activeSimilarity2);
         scene2.add(recent4);
         
         Idea midTermMemoryScenesByIDDGIdea = new Idea("midTermMemoryScenesByIDIdea");
-        Idea integer = new Idea("integer");
-        midTermMemoryScenesByIDDGIdea.add(integer);
+        Idea integer1 = new Idea("integer");
+        midTermMemoryScenesByIDDGIdea.add(integer1);
         Idea scene3 = new Idea("scene");
         midTermMemoryScenesByIDDGIdea.add(scene3);
         
@@ -400,14 +443,16 @@ public final class App {
         similarScenesSpikeIdea.add(time30);
         
         Idea scene8 = new Idea("scene");
-        Idea similarScenes = new Idea("similarScenes");
-        similarScenes.add(scene8);
-        similarScenesSpikeIdea.add(similarScenes);
+        ArrayList<Idea> similarScenesArray = new ArrayList<Idea>();
+        similarScenesArray.add(scene8);
+        Idea similarScenesArrayIdea = new Idea("similarScenesArrayIdea", similarScenesArray);
+        
+        similarScenesSpikeIdea.add(similarScenesArrayIdea);
         
         Idea id11 = new Idea("objectId",null, "Property", 1);
         Idea pattern9 = new Idea("pattern2",null, "Property", 1);
         Idea time31 = new Idea("time",null, "Property", 1);
-        Idea repetitions16 = new Idea("repetitions",null, "Property", 1);
+        Idea repetitions17 = new Idea("repetitions",null, "Property", 1);
         Idea positiveAffect10 = new Idea("positiveAffect",null, "Property", 1);
         Idea negativeAffect10 = new Idea("negativeAffect",null, "Property", 1);
         Idea activation16 = new Idea("activation",null, "Property", 1);
@@ -419,7 +464,7 @@ public final class App {
         scene8.add(id11);
         scene8.add(pattern9);
         scene8.add(time31);
-        scene8.add(repetitions16);
+        scene8.add(repetitions17);
         scene8.add(positiveAffect10);
         scene8.add(negativeAffect10);
         scene8.add(activation16);
@@ -474,9 +519,11 @@ public final class App {
         retrievedSceneTopDownSpikeIdea.add(time22);
         
         Idea scene7 = new Idea("scene");
-        Idea similarScenes2 = new Idea("similarScenes");
-        similarScenes2.add(scene7);
-        retrievedSceneTopDownSpikeIdea.add(similarScenes2);
+        
+        ArrayList<Idea> similarScenesArray2 = new ArrayList<>();
+        Idea similarScenesArrayIdea2 = new Idea("similarScenesArrayIdea", similarScenesArray2);
+        similarScenesArrayIdea2.add(scene7);
+        retrievedSceneTopDownSpikeIdea.add(similarScenesArrayIdea2);
         
         Idea id10 = new Idea("objectId",null, "Property", 1);
         Idea pattern8 = new Idea("pattern2",null, "Property", 1);
@@ -552,12 +599,14 @@ public final class App {
         Idea sceneRelationsSpikeIdea = new Idea("sceneRelationsSpikeIdea");
         
         Idea time26 = new Idea("integer");
-        
         sceneRelationsSpikeIdea.add(time26);
-        Idea sceneRelationsIdea = new Idea("sceneRelations");
+        
+        ArrayList<Idea> sceneRelationsArray3 = new ArrayList<Idea>();
         Idea sceneRelationIdea3 = new Idea("sceneRelation");
-        sceneRelationsIdea.add(sceneRelationIdea3);
-        sceneRelationsSpikeIdea.add(sceneRelationsIdea);
+        sceneRelationsArray3.add(sceneRelationIdea3);
+        
+        Idea sceneRelationsArrayIdea = new Idea("sceneRelationsArrayIdea", sceneRelationsArray3);
+        sceneRelationsSpikeIdea.add(sceneRelationsArrayIdea);
         
         Idea scene1Id3 = new Idea("scene1Id",null, "Property", 1);
         Idea scene2Id3 = new Idea("scene2Id",null, "Property", 1);
@@ -579,31 +628,31 @@ public final class App {
         
         Idea retrievedSceneTopDownLTM = new Idea("retrievedSceneTopDownLTM");
         
-        Idea time28 = new Idea("integer");
-        retrievedSceneTopDownLTM.add(time28);
+        Idea time29 = new Idea("integer");
+        retrievedSceneTopDownLTM.add(time29);
         
         Idea sceneRelationsIdea2 = new Idea("sceneRelations");
         Idea sceneRelationIdea4 = new Idea("sceneRelation");
         sceneRelationsIdea2.add(sceneRelationIdea4);
         retrievedSceneTopDownLTM.add(sceneRelationsIdea2);
         
-        Idea scene1Id4 = new Idea("scene1Id",null, "Property", 1);
-        Idea scene2Id4 = new Idea("scene2Id",null, "Property", 1);
-        Idea activation15 = new Idea("activation",null, "Property", 1);
+        Idea scene1Id5 = new Idea("scene1Id",null, "Property", 1);
+        Idea scene2Id5 = new Idea("scene2Id",null, "Property", 1);
+        Idea activation17 = new Idea("activation",null, "Property", 1);
         Idea repetitions15 = new Idea("repetitions",null, "Property", 1);
-        Idea time29 = new Idea("time",null, "Property", 1);
-        Idea timestamp15 = new Idea("timestamp",null, "Property", 1);
-        Idea recent13 = new Idea("recent",null, "Property", 1);
-        Idea updated6 = new Idea("recent",null, "Property", 1);
+        Idea time32 = new Idea("time",null, "Property", 1);
+        Idea timestamp17 = new Idea("timestamp",null, "Property", 1);
+        Idea recent15 = new Idea("recent",null, "Property", 1);
+        Idea updated7 = new Idea("recent",null, "Property", 1);
         
-        sceneRelationIdea4.add(scene1Id4);
-        sceneRelationIdea4.add(scene2Id4);
-        sceneRelationIdea4.add(activation15);
+        sceneRelationIdea4.add(scene1Id5);
+        sceneRelationIdea4.add(scene2Id5);
+        sceneRelationIdea4.add(activation17);
         sceneRelationIdea4.add(repetitions15);
-        sceneRelationIdea4.add(time29);
-        sceneRelationIdea4.add(timestamp15);
-        sceneRelationIdea4.add(recent13);
-        sceneRelationIdea4.add(updated6);
+        sceneRelationIdea4.add(time32);
+        sceneRelationIdea4.add(timestamp17);
+        sceneRelationIdea4.add(recent15);
+        sceneRelationIdea4.add(updated7);
         
         Idea taskSetSpikeIdea = new Idea("taskSetSpikeIdea");
         Idea allowBottom = new Idea("ALLOW_BUTTON_UP",1, "Property", 3);
@@ -627,7 +676,7 @@ public final class App {
         root.add(requestObjectSpikeIdea);
         root.add(retrievedObjectRelationTopDownSpikeIdea);
         root.add(iTCFeaturesSpikeIdea);
-        root.add(relationsIdea);
+        root.add(relationsArrayIdea);
         root.add(midTermMemoryObjectRelationsIdea);
         root.add(retrievedObjectRelationTopDownSpikeIdea);
         root.add(objectRelationsSpikeIdea);
