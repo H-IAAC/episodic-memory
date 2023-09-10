@@ -3,6 +3,44 @@
  */
 package episodicv2;
 
+import episodicv2.FutureCodelets.CA1;
+import episodicv2.FutureCodelets.CA1Process3;
+import episodicv2.FutureCodelets.CA3Process3;
+import episodicv2.FutureCodelets.VLPFCProcess2;
+import episodicv2.FutureCodelets.PRCProcess3;
+import episodicv2.FutureCodelets.CA1Process1;
+import episodicv2.FutureCodelets.ENC;
+import episodicv2.FutureCodelets.MPFCProcess1;
+import episodicv2.FutureCodelets.CA3Process1;
+import episodicv2.FutureCodelets.PHCBridge;
+import episodicv2.FutureCodelets.PCBridge;
+import episodicv2.FutureCodelets.ITCProcess1;
+import episodicv2.FutureCodelets.PRCBridge;
+import episodicv2.FutureCodelets.TaskFrame;
+import episodicv2.FutureCodelets.DLPFCPlanning;
+import episodicv2.FutureCodelets.DGProcess;
+import episodicv2.FutureCodelets.PRCStorageHandler;
+import episodicv2.FutureCodelets.MPFC;
+import episodicv2.FutureCodelets.CA3StorageHandler;
+import episodicv2.FutureCodelets.DLPFC;
+import episodicv2.FutureCodelets.VLPFCProcess1;
+import episodicv2.FutureCodelets.DLPFCBaseController;
+import episodicv2.FutureCodelets.CA1StorageHandler;
+import episodicv2.FutureCodelets.CA3;
+import episodicv2.FutureCodelets.DGBridge;
+import episodicv2.FutureCodelets.ITCFeatures;
+import episodicv2.FutureCodelets.PRCProcess2;
+import episodicv2.FutureCodelets.VLPFC;
+import episodicv2.FutureCodelets.CA3Process2;
+import episodicv2.FutureCodelets.ITCBridge;
+import episodicv2.Codelets.PPCCodelet;
+import episodicv2.FutureCodelets.SB;
+import episodicv2.FutureCodelets.CA1Process2;
+import episodicv2.Codelets.ITCCodelet;
+import episodicv2.FutureCodelets.PRCProcess1;
+import episodicv2.Codelets.PHCProcess1;
+import episodicv2.Codelets.ImageCodelet;
+import episodicv2.Codelets.VisionCodelet;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
@@ -27,98 +65,37 @@ public final class App {
         
         //declare Ideas
         //TODO: review as categorias
+        Idea imageReceivedPathIdea = new Idea("imageReceivedPathIdea","/yolo/files/simu.jpeg", "Property", 3);
+        Idea centerPointsandClassesIdea = new Idea("centerPointsandClassesIdea", null,"Property",1);
+        Idea recognizedObjectsSpikeIdea = new Idea("recognizedObjectsSpikeIdea", null,"Property",1);
+        Idea centerPointsSpikeIdea = new Idea("centerPointsSpikeIdea",null,"Property",1);
+        Idea unintegratedScenePatternIdea = new Idea("unintegratedScenePatternIdea",null,"Property",1);
         
-        Idea imagePerceptedIdea = new Idea("imagePerceptedIdea");
-        Idea byteArrayIdea = new Idea("byteArrayIdea");
-        imagePerceptedIdea.add(byteArrayIdea);
-              
-        Idea x = new Idea("x",null, "Property", 1);
-        Idea y = new Idea("y",null, "Property", 1);
-        Idea pid = new Idea("pid",0, "Property", 1);
-        Idea object = new Idea("object",null, "Property", 1);
-        object.add(x);
-        object.add(y);
-        object.add(pid);      
         
-        Idea currrentFrame = new Idea("currrentFrame",null, "Property", 1);
-        Idea time = new Idea("time",null, "Property", 1);
-        time.add(currrentFrame);
+//        Idea iTCSpikeIdea = new Idea("iTCSpikeIdea" );
+//        recognizedObjectsSpikeIdea.add(iTCSpikeIdea);
         
-        Idea ppcIdea = new Idea("ppc","","Property",1);
-        ppcIdea.add(object);
-        ppcIdea.add(time);
-        
-        Idea centerPointsSpikeIdea = new Idea("centerPointsSpikeIdea","","Property",1);
-        centerPointsSpikeIdea.add(ppcIdea);
-        
-        Idea pid2 = new Idea("pid",null, "Property", 1);
-        Idea id = new Idea("id",null, "Property", 1);
-        Idea class1 = new Idea("class",null, "Property", 1);
-        Idea features = new Idea("features",null, "Property", 1);
-        Idea object2 = new Idea("object",null, "Property", 1);
-        object2.add(pid2);
-        object2.add(id);
-        object2.add(class1);
-        object2.add(features);
-        
-        //TODO: isso poderia ser law? já que não muda!
-        Idea imageWidth1 = new Idea("imageWidth",640, "Property", 1);
-        Idea imageHeight1 = new Idea("imageHeight",480, "Property", 1);
-        Idea gridColumnsX1 = new Idea("gridColumns",10, "Property", 1);
-        Idea gridRowsY1 = new Idea("gridRows",7, "Property", 1);
-        
-        Idea occupancyGrid = new Idea("occupancyGrid");
-        occupancyGrid.add(object2);
-        occupancyGrid.add(imageWidth1);
-        occupancyGrid.add(imageHeight1);
-        occupancyGrid.add(gridColumnsX1);
-        occupancyGrid.add(gridRowsY1);
-        
-        Idea imageWidth2 = new Idea("imageWidth",640, "Property", 1);
-        Idea imageHeight2 = new Idea("imageHeight",480, "Property", 1);
-        Idea gridColumnsX2 = new Idea("gridColumns",10, "Property", 1);
-        Idea gridRowsY2 = new Idea("gridRows",7, "Property", 1);
-        
-        Idea pattern = new Idea("pattern");
-        pattern.add(occupancyGrid);
-        pattern.add(imageWidth2);
-        pattern.add(imageHeight2);
-        pattern.add(gridColumnsX2);
-        pattern.add(gridRowsY2);
-        
-        Idea unintegratedScenePatternIdea = new Idea("unintegratedScenePatternIdea");
-        unintegratedScenePatternIdea.add(pattern);
-        
-        Idea currrentFrame2 = new Idea("currrentFrame",null, "Property", 1);
-        Idea time2 = new Idea("time",null, "Property", 1);
-        time2.add(currrentFrame2);
-        unintegratedScenePatternIdea.add(time2);
-        
-        Idea recognizedObjectsSpikeIdea = new Idea("recognizedObjectsSpikeIdea" );
-        Idea iTCSpikeIdea = new Idea("iTCSpikeIdea" );
-        recognizedObjectsSpikeIdea.add(iTCSpikeIdea);
-        
-        Idea pid3 = new Idea("pid",null, "Property", 1);
-        Idea id2 = new Idea("id",null, "Property", 1);
-        Idea class2 = new Idea("class",null, "Property", 1);
-        Idea features2 = new Idea("features",null, "Property", 1);
-        Idea object3 = new Idea("object",null, "Property", 1);
-        ArrayList<Idea> objectsArray = new ArrayList<Idea>();
-        
-        object3.add(pid3);
-        object3.add(id2);
-        object3.add(class2);
-        object3.add(features2);
-        
-        objectsArray.add(object3);
-        
-        Idea objectsArrayIdea = new Idea("objectsArrayIdea", objectsArray);
-        iTCSpikeIdea.add(objectsArrayIdea);
-        
-        Idea currrentFrame3 = new Idea("currrentFrame",null, "Property", 1);
-        Idea time3 = new Idea("time",null, "Property", 1);
-        time3.add(currrentFrame3);
-        iTCSpikeIdea.add(time3);
+//        Idea pid3 = new Idea("pid",null, "Property", 1);
+//        Idea id2 = new Idea("id",null, "Property", 1);
+//        Idea class2 = new Idea("class",null, "Property", 1);
+//        Idea features2 = new Idea("features",null, "Property", 1);
+//        Idea object3 = new Idea("object",null, "Property", 1);
+//        ArrayList<Idea> objectsArray = new ArrayList<Idea>();
+//        
+//        object3.add(pid3);
+//        object3.add(id2);
+//        object3.add(class2);
+//        object3.add(features2);
+//        
+//        objectsArray.add(object3);
+//        
+//        Idea objectsArrayIdea = new Idea("objectsArrayIdea", objectsArray);
+//        iTCSpikeIdea.add(objectsArrayIdea);
+//        
+//        Idea currrentFrame3 = new Idea("currrentFrame",null, "Property", 1);
+//        Idea time3 = new Idea("time",null, "Property", 1);
+//        time3.add(currrentFrame3);
+//        iTCSpikeIdea.add(time3);
         
         Idea requestObjectSpikeIdea = new Idea("requestObjectSpikeIdea");
         Idea objectId = new Idea("objectId",null, "Property", 1);
@@ -347,9 +324,10 @@ public final class App {
         scene2.add(activeSimilarity2);
         scene2.add(recent4);
         
-        Idea midTermMemoryScenesByIDDGIdea = new Idea("midTermMemoryScenesByIDIdea");
-        Idea integer1 = new Idea("integer");
-        midTermMemoryScenesByIDDGIdea.add(integer1);
+        Map<Integer, Idea> midTermMemoryScenesByIDDGIdeaMap = new  ConcurrentHashMap<>();
+                
+        Idea midTermMemoryScenesByIDDGIdea = new Idea("midTermMemoryScenesByIDIdea", midTermMemoryScenesByIDDGIdeaMap);
+
         Idea scene3 = new Idea("scene");
         midTermMemoryScenesByIDDGIdea.add(scene3);
         
@@ -377,9 +355,9 @@ public final class App {
         scene3.add(activeSimilarity3);
         scene3.add(recent5);
         
-        Idea midTermMemoryScenesByIDCA3Idea = new Idea("midTermMemoryScenesByIDIdea");
-        Idea integer2 = new Idea("integer");
-        midTermMemoryScenesByIDCA3Idea.add(integer2);
+        Map<Integer, Idea> midTermMemoryScenesByIDCA3IdeaMap = new  ConcurrentHashMap<>();        
+        Idea midTermMemoryScenesByIDCA3Idea = new Idea("midTermMemoryScenesByIDIdea", midTermMemoryScenesByIDCA3IdeaMap);
+
         Idea scene4 = new Idea("scene");
         midTermMemoryScenesByIDCA3Idea.add(scene4);
         
@@ -670,10 +648,6 @@ public final class App {
         
         Idea root = new Idea("root");
         
-        root.add(imagePerceptedIdea);
-        root.add(centerPointsSpikeIdea);
-        root.add(unintegratedScenePatternIdea);
-        root.add(recognizedObjectsSpikeIdea);
         root.add(requestObjectSpikeIdea);
         root.add(retrievedObjectRelationTopDownSpikeIdea);
         root.add(iTCFeaturesSpikeIdea);
@@ -696,21 +670,68 @@ public final class App {
         root.add(retrievedSceneTopDownLTM);
         root.add(taskSetSpikeIdea);
         
-        
         MemoryObject mo;
         mo = m.createMemoryObject("rootMO");
         mo.setI(root);
         
+        MemoryObject imageReceivedPathMO;
+        imageReceivedPathMO = m.createMemoryObject("imageReceivedPathMO");
+        imageReceivedPathMO.setI(imageReceivedPathIdea);
+        
+        MemoryObject centerPointsandClassesMO;
+        centerPointsandClassesMO = m.createMemoryObject("centerPointsandClassesMO");
+        centerPointsandClassesMO.setI(centerPointsandClassesIdea);
+        
+        MemoryObject centerPointsSpikeMO;
+        centerPointsSpikeMO = m.createMemoryObject("centerPointsSpikeMO");
+        centerPointsSpikeMO.setI(centerPointsSpikeIdea);
+        
+        MemoryObject unintegratedScenePatternMO;
+        unintegratedScenePatternMO = m.createMemoryObject("unintegratedScenePatternMO");
+        unintegratedScenePatternMO.setI(unintegratedScenePatternIdea);
+        
+        MemoryObject recognizedObjectsSpikeMO;
+        recognizedObjectsSpikeMO = m.createMemoryObject("recognizedObjectsSpikeMO");
+        recognizedObjectsSpikeMO.setI(recognizedObjectsSpikeIdea);
+        
         //Create Sensor Codelets
-        Codelet vision=new Vision();
+        ImageCodelet imageCodelet = new ImageCodelet();
+        imageCodelet.setName("IMAGE");
+        imageCodelet.addOutput(imageReceivedPathMO);
+        m.insertCodelet(imageCodelet, "VISION_Cs");
+        
+        //Gets the image and returns objects points and classes
+        VisionCodelet vision = new VisionCodelet();
         vision.setName("VISION");
+        vision.addInput(imageReceivedPathMO);
+        vision.addOutput(centerPointsandClassesMO);
         m.insertCodelet(vision, "VISION_Cs");
+        
+        PPCCodelet ppcCodelet = new PPCCodelet();
+        ppcCodelet.setName("PPC");
+        ppcCodelet.addInput(centerPointsandClassesMO);
+        ppcCodelet.addOutput(centerPointsSpikeMO);
+        m.insertCodelet(ppcCodelet, "DORSAL_Cs");
+        
+        PHCProcess1 pHCProcess1 = new PHCProcess1();
+        pHCProcess1.setName("PHC_PROCESS_1");
+        pHCProcess1.addInput(centerPointsSpikeMO);
+        pHCProcess1.addOutput(unintegratedScenePatternMO);
+        m.insertCodelet(pHCProcess1, "DORSAL_Cs");
+        
+        
+        ITCCodelet iTCCodelet = new ITCCodelet();
+        iTCCodelet.setName("ITC");
+        iTCCodelet.addInput(centerPointsandClassesMO);
+        iTCCodelet.addOutput(recognizedObjectsSpikeMO);
+        m.insertCodelet(iTCCodelet, "VENTRAL_Cs");
+        
         
         Codelet taskFrame=new TaskFrame();
         taskFrame.setName("TASK_NAME");
         m.insertCodelet(taskFrame, "VISION_Cs");
         
-        Codelet pC=new PC();
+        Codelet pC=new PPCCodelet();
         pC.setName("PC");
         m.insertCodelet(pC, "DORSAL_Cs");
         
@@ -718,9 +739,6 @@ public final class App {
         pCBridge.setName("PC_BRIDGE");
         m.insertCodelet(pCBridge, "DORSAL_Cs");
         
-        Codelet iTCObject=new ITCObject();
-        iTCObject.setName("ITC_OBJECT");
-        m.insertCodelet(iTCObject, "VENTRAL_Cs");
         
         Codelet iTCFeatures=new ITCFeatures();
         iTCFeatures.setName("ITC_FEATURES");
@@ -738,9 +756,7 @@ public final class App {
         pHCBridge.setName("PHC_BRIDGE");
         m.insertCodelet(pHCBridge, "DORSAL_Cs");
         
-        Codelet pHCProcess1=new PHCProcess1();
-        pHCProcess1.setName("PHC_PROCESS_1");
-        m.insertCodelet(pHCProcess1, "DORSAL_Cs");
+    
         
         Codelet pRCBridge=new PRCBridge();
         pRCBridge.setName("PRC_BRIDGE");
@@ -851,6 +867,7 @@ public final class App {
         m.insertCodelet(sB, "SB_Cs");
        
         m.start();
+        
         return(m);
     }
     
@@ -860,6 +877,8 @@ public final class App {
         createAndShowGUI(m);
         // The next line can be commented if you don't use the MindViewer Web
         RESTServer rs = new RESTServer(m,5001,true);
+        
+        
     }
     public String getGreeting() {
         return "Hello World!";
