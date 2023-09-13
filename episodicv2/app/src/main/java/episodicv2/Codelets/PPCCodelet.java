@@ -7,6 +7,7 @@ package episodicv2.Codelets;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
+import static episodicv2.configuration.Configuration.*;
 import java.util.ArrayList;
 
 /**
@@ -15,11 +16,11 @@ import java.util.ArrayList;
  */
 public class PPCCodelet extends Codelet {
     
-    Idea centerPointsandClassesIdea;
     MemoryObject centerPointsandClassesMO;
-        
-    Idea centerPointsSpikeIdea;
+    Idea centerPointsandClassesIdea;
+    
     MemoryObject centerPointsMO;
+    Idea centerPointsSpikeIdea;
     
     public PPCCodelet() {
         
@@ -31,10 +32,10 @@ public class PPCCodelet extends Codelet {
     public void accessMemoryObjects() {
         System.out.println("Executing accessMemoryObjects PPCCodelet");
         
-        centerPointsandClassesMO = (MemoryObject) getInput("centerPointsandClassesMO");
+        centerPointsandClassesMO = (MemoryObject) getInput(CENTER_POINTS_CLASSES_MO);
         centerPointsandClassesIdea = (Idea) centerPointsandClassesMO.getI();
         
-        centerPointsMO = (MemoryObject) getOutput("centerPointsSpikeMO");
+        centerPointsMO = (MemoryObject) getOutput(CENTER_POINTS_SPIKE_MO);
         centerPointsSpikeIdea = (Idea) centerPointsMO.getI();
     }
     
@@ -48,31 +49,29 @@ public class PPCCodelet extends Codelet {
         if (!centerPointsandClassesIdea.getL().isEmpty()) {
                //TODO: ver de dar copy na Idea
             centerPointsSpikeIdea.setL(new ArrayList());
-            ArrayList<Idea> objectsPoints = (ArrayList<Idea>) centerPointsandClassesIdea.get("objectsPoints").getValue();
-            Integer currentFrame = (Integer) centerPointsandClassesIdea.get("currentFrame").getValue();
+            ArrayList<Idea> objectsPoints = (ArrayList<Idea>) centerPointsandClassesIdea.get(OBJECTS_POINTS_IDEA).getValue();
+            Integer currentFrame = (Integer) centerPointsandClassesIdea.get(CURRENT_FRAME_IDEA).getValue();
 
             ArrayList<Idea> objects = new ArrayList<Idea>();
 
 
             for (int i = 0; i < objectsPoints.size(); i++){
-                Idea x = new Idea("x",objectsPoints.get(i).get("x").getValue());
-                Idea y = new Idea("y",objectsPoints.get(i).get("y").getValue());
-                Idea pid = new Idea("pid",i);
+                Idea x = new Idea(X_IDEA,objectsPoints.get(i).get(X_IDEA).getValue());
+                Idea y = new Idea(Y_IDEA,objectsPoints.get(i).get(Y_IDEA).getValue());
+                Idea pid = new Idea(PID_IDEA,i);
 
-                Idea object = new Idea("object",null, "Property", 1);
+                Idea object = new Idea(OBJECT_IDEA, null, "Property", 1);
                 object.add(x);
                 object.add(y);
                 object.add(pid);  
                 objects.add(object);
 
             }
-            Idea objectsArray = new Idea("objects", objects, "Property", 1);
+            Idea objectsArray = new Idea(OBJECTS_IDEA, objects, "Property", 1);
             centerPointsSpikeIdea.add(objectsArray);
 
-            Idea currrentFrame = new Idea("currrentFrame",currentFrame, "Property", 1);
-            Idea time = new Idea("time",null, "Property", 1);
-            time.add(currrentFrame);
-            centerPointsSpikeIdea.add(time);
+            Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame, "Property", 1);
+            centerPointsSpikeIdea.add(currentFrameIdea);
 
             centerPointsMO.setI(centerPointsSpikeIdea);
         }

@@ -7,6 +7,7 @@ package episodicv2.Codelets;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
+import static episodicv2.configuration.Configuration.*;
 import java.util.ArrayList;
 
 /**
@@ -15,11 +16,11 @@ import java.util.ArrayList;
  */
 public class ITCCodelet extends Codelet {
     
-    Idea centerPointsandClassesIdea;
     MemoryObject centerPointsandClassesMO;
-        
-    Idea recognizedObjectsSpikeIdea;
+    Idea centerPointsandClassesIdea;
+       
     MemoryObject recognizedObjectsSpikeMO;
+    Idea recognizedObjectsSpikeIdea;
     
     public ITCCodelet() {
         
@@ -31,10 +32,10 @@ public class ITCCodelet extends Codelet {
     public void accessMemoryObjects() {
         System.out.println("Executing accessMemoryObjects ITCCodelet");
         
-        centerPointsandClassesMO = (MemoryObject) getInput("centerPointsandClassesMO");
+        centerPointsandClassesMO = (MemoryObject) getInput(CENTER_POINTS_CLASSES_MO);
         centerPointsandClassesIdea = (Idea) centerPointsandClassesMO.getI();
         
-        recognizedObjectsSpikeMO = (MemoryObject) getOutput("recognizedObjectsSpikeMO");
+        recognizedObjectsSpikeMO = (MemoryObject) getOutput(RECOGNIZED_OBJECTS_SPIKE_MO);
         recognizedObjectsSpikeIdea = (Idea) recognizedObjectsSpikeMO.getI();
     }
     
@@ -48,19 +49,19 @@ public class ITCCodelet extends Codelet {
         if (!centerPointsandClassesIdea.getL().isEmpty()) {
                //TODO: ver de dar copy na Idea
             recognizedObjectsSpikeIdea.setL(new ArrayList());
-            ArrayList<Idea> objectsClasses = (ArrayList<Idea>) centerPointsandClassesIdea.get("objectsClasses").getValue();
-            Integer currentFrame = (Integer) centerPointsandClassesIdea.get("currentFrame").getValue();
+            ArrayList<Idea> objectsClasses = (ArrayList<Idea>) centerPointsandClassesIdea.get(OBJECTS_CLASSES_IDEA).getValue();
+            Integer currentFrame = (Integer) centerPointsandClassesIdea.get(CURRENT_FRAME_IDEA).getValue();
 
             ArrayList<Idea> objects = new ArrayList<Idea>();
 
 
             for (int i = 0; i < objectsClasses.size(); i++){
-                Idea classIdea = new Idea("class",objectsClasses.get(i).get("label").getValue());
-                Idea idIdea = new Idea("id",objectsClasses.get(i).get("classId").getValue());
-                Idea pid = new Idea("pid",i);
-                Idea features = new Idea("features","");
+                Idea classIdea = new Idea(CLASS_IDEA,objectsClasses.get(i).get(LABEL_IDEA).getValue());
+                Idea idIdea = new Idea(ID_IDEA,objectsClasses.get(i).get(CLASS_ID_IDEA).getValue());
+                Idea pid = new Idea(PID_IDEA,i);
+                Idea features = new Idea(FEATURES_IDEA,"");
 
-                Idea object = new Idea("object",null, "Property", 1);
+                Idea object = new Idea(OBJECT_IDEA,null, "Property", 1);
                 object.add(classIdea);
                 object.add(idIdea);
                 object.add(pid);  
@@ -68,13 +69,12 @@ public class ITCCodelet extends Codelet {
                 objects.add(object);
 
             }
-            Idea objectsArray = new Idea("objects", objects, "Property", 1);
+            Idea objectsArray = new Idea(OBJECTS_IDEA, objects, "Property", 1);
             recognizedObjectsSpikeIdea.add(objectsArray);
 
-            Idea currrentFrame = new Idea("currrentFrame",currentFrame, "Property", 1);
-            Idea time = new Idea("time",null, "Property", 1);
-            time.add(currrentFrame);
-            recognizedObjectsSpikeIdea.add(time);
+            Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame, "Property", 1);
+
+            recognizedObjectsSpikeIdea.add(currentFrameIdea);
 
             recognizedObjectsSpikeMO.setI(recognizedObjectsSpikeIdea);
         }

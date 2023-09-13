@@ -22,7 +22,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfRect2d;
-import org.opencv.core.Point;
 import org.opencv.core.Rect2d;
 import org.opencv.core.Scalar;
 import org.opencv.dnn.Dnn;
@@ -30,6 +29,8 @@ import org.opencv.dnn.Net;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.utils.Converters;
 import org.opencv.core.Size;
+
+import static episodicv2.configuration.Configuration.*;
 
 
 
@@ -39,11 +40,11 @@ import org.opencv.core.Size;
  */
 public class VisionCodelet extends Codelet{
     
-    Idea imageReceivedPathIdea;
     MemoryObject imageReceivedMO;
+    Idea imageReceivedPathIdea;
     
-    Idea centerPointsandClassesIdea;
     MemoryObject centerPointsandClassesMO;
+    Idea centerPointsandClassesIdea;
     
     Integer currentFrame = 0;
         
@@ -70,10 +71,10 @@ public class VisionCodelet extends Codelet{
     @Override
     public void accessMemoryObjects() {
         System.out.println("Executing accessMemoryObjects Vision Codelet");
-        imageReceivedMO = (MemoryObject) getInput("imageReceivedPathMO");
+        imageReceivedMO = (MemoryObject) getInput(IMAGE_RECEIVED_PATH_MO);
         imageReceivedPathIdea = (Idea) imageReceivedMO.getI();
         
-        centerPointsandClassesMO = (MemoryObject) getOutput("centerPointsandClassesMO");
+        centerPointsandClassesMO = (MemoryObject) getOutput(CENTER_POINTS_CLASSES_MO);
         centerPointsandClassesIdea = (Idea) centerPointsandClassesMO.getI();
  
     }
@@ -99,14 +100,14 @@ public class VisionCodelet extends Codelet{
      private void saveObjectsIdea() {//TODO: ver se precisa criar essas novas ideas msms
         centerPointsandClassesIdea.setL(new ArrayList());
         
-        Idea objectsClassesIdea = new Idea("objectsClasses", objectsClasses);
-        Idea objectsPointsIdea = new Idea("objectsPoints", objectsPoints);
+        Idea objectsClassesIdea = new Idea(OBJECTS_CLASSES_IDEA, objectsClasses);
+        Idea objectsPointsIdea = new Idea(OBJECTS_POINTS_IDEA, objectsPoints);
         centerPointsandClassesIdea.add(objectsClassesIdea);
         centerPointsandClassesIdea.add(objectsPointsIdea);
          
          
         currentFrame+=1;
-        Idea currentFrameIdea = new Idea("currentFrame",currentFrame);
+        Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame);
         
         centerPointsandClassesIdea.add(currentFrameIdea);
         
@@ -166,7 +167,7 @@ public class VisionCodelet extends Codelet{
         MatOfInt indices =  getBBoxIndicesFromNonMaximumSuppression(boxes,
                 confidences);
 
-        getObjectsCenterAndClassesID(indices, boxes, class_ids);
+        getObjectsCenterAndClasses(indices, boxes, class_ids);
       }
       
 
@@ -253,7 +254,7 @@ public class VisionCodelet extends Codelet{
         return result;
     }
     
-    private void getObjectsCenterAndClassesID(MatOfInt indices,
+    private void getObjectsCenterAndClasses(MatOfInt indices,
                                     ArrayList<Rect2d> boxes,
                                     ArrayList<Integer> class_ids) {
         objectsClasses.clear();
@@ -267,16 +268,16 @@ public class VisionCodelet extends Codelet{
                 Double xpoint =  box.x + (box.width/2);
                 Double ypoint = box.y + (box.height/2);
                 
-                Idea xpointIdea = new Idea("x", xpoint.intValue());
-                Idea ypointIdea = new Idea("y", ypoint.intValue());
+                Idea xpointIdea = new Idea(X_IDEA, xpoint.intValue());
+                Idea ypointIdea = new Idea(Y_IDEA, ypoint.intValue());
                 
-                Idea point = new Idea("point");
+                Idea point = new Idea(POINT_IDEA);
                 point.add(xpointIdea);
                 point.add(ypointIdea);
                 
-                Idea classIdea = new Idea("classIdea");
-                Idea labelIdea = new Idea("label", label);
-                Idea classIdIdea = new Idea("classId", i);
+                Idea classIdea = new Idea(CLASS_IDEA);
+                Idea labelIdea = new Idea(LABEL_IDEA, label);
+                Idea classIdIdea = new Idea(CLASS_ID_IDEA, i);
                 classIdea.add(labelIdea);
                 classIdea.add(classIdIdea);
                 
