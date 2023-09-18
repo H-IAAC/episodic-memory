@@ -11,7 +11,10 @@ import episodicv2.configuration.Configuration;
 import static episodicv2.configuration.Configuration.*;
 import episodicv2.emotions.ActivationFunctions;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import t2dstring.T2DString;
 
 /**
@@ -36,16 +39,46 @@ public class DGStorageHandlerCodelet extends Codelet {
     private static ArrayList<Idea> midTermMemoryScenes;
     private static Map<Integer, Idea> midTermMemoryScenesByID;
     
+    public DGStorageHandlerCodelet(Boolean load) {
+        
+        setIsMemoryObserver(true);
+        midTermMemoryScenes = new ArrayList<>();
+        midTermMemoryScenesByID = new HashMap<>();
+
+        if (load) {
+            load();
+            loadDGSize();
+        }
+//        consolidationTimer = new Timer("Consolidation." + this.getClass().getName());
+//
+//        startConsolidation();
+        
+    }
+    
+//      public void startConsolidation() { 
+//        //each X seconds it persists the scenes
+//
+//        long delay = Configuration.CONSOLIDATION_INTERVAL;
+//
+//        consolidationTimer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                //SimpleLogger.log(this, "Storing...");
+//                persistScenes();
+//            }
+//        }, delay, delay);
+//    }
+//    
     @Override
     public void accessMemoryObjects() {
         //  TODO: revisar o que deve ser entrada ou saída para que modifique a root mas não notifique para ativar o codelet sempre que a root alterar
-        rootMO = (MemoryObject) getInput("rootMO");
+        rootMO = (MemoryObject) getInput(ROOT_MO);
         rootIdea = (Idea) rootMO.getI();
         
-        patternReplacedMO = (MemoryObject) getInput("patternReplacedMO");
+        patternReplacedMO = (MemoryObject) getInput(PATTERN_REPLACED_MO);
         patternReplacedIdea = (Idea) patternReplacedMO.getI();
         
-        newEncodedSceneSpikeMO = (MemoryObject) getOutput("newEncodedSceneSpikeMO");
+        newEncodedSceneSpikeMO = (MemoryObject) getOutput(NEW_ENCODED_SCENE_SPIKE_MO);
         newEncodedSceneSpikeIdea = (Idea) newEncodedSceneSpikeMO.getI();
     }
     
@@ -57,7 +90,7 @@ public class DGStorageHandlerCodelet extends Codelet {
             Double negativeAffect = (double) patternReplacedIdea.get(NEGATIVE_AFFECT_IDEA).getValue();
             Double affectIntensity = (double) patternReplacedIdea.get(AFFECT_INTENSITY_IDEA).getValue();
             
-          /**
+            /**
              * INTENTA CREAR UNA NUEVA ESCENA SINO EXISTE UN PATRON SIMILAR SI
              * EL PATRON EXISTE LO RETORNA PARA ASOCIACION
              */
@@ -73,7 +106,7 @@ public class DGStorageHandlerCodelet extends Codelet {
         
     }
     
-        /**
+     /**
      * STORES A NEW 2D STRING PATTERN
      *
      * @param pattern
@@ -92,12 +125,12 @@ public class DGStorageHandlerCodelet extends Codelet {
         if (scene == null) {
 
             DG_SIZE = DG_SIZE + 1;
-            scene = new Idea("scene", null, "Property", 1);
+            scene = new Idea(SCENE_IDEA, null, "Property", 1);
             assignedId = DG_SIZE;
             Idea idIdea = new Idea(ID_IDEA,assignedId, "Property", 1);
             Idea patternIdea = new Idea(PATTERN_IDEA,pattern, "Property", 1);
             Idea timeIdea = new Idea(TIME_IDEA,time, "Property", 1);
-            Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,null, "Property", 1);
+            Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,1, "Property", 1);
             Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,0.0, "Property", 1);
             Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,0.0, "Property", 1);
             Idea activationIdea = new Idea(ACTIVATION_IDEA,0.5, "Property", 1);
@@ -139,49 +172,54 @@ public class DGStorageHandlerCodelet extends Codelet {
     public Idea getSimilar(String pattern, Double affect) {
 
         Idea similar = null;
+        if (midTermMemoryScenes != null) {
+            for (int i = 0; i < midTermMemoryScenes.size(); i++) {
+                Idea scene = midTermMemoryScenes.get(i);
+                String patternToCompare = (String) scene.get(PATTERN_IDEA).getValue();
 
-        for (int i = 0; i < midTermMemoryScenes.size(); i++) {
+                float similarity = T2DString.lcs2DString(pattern, patternToCompare, T2DString.SIMILARITY_TYPE_1);
 
-            Idea scene = midTermMemoryScenes.get(i);
-            String patternToCompare = (String) scene.get("patternReplaced").getValue();
+                if (similarity >= SIMILARITY_THRESHOLD) {
+                    similar = scene;
+                    scene = updateSceneActivationWithAffect(affect, scene);
+                    scene.get(TIMESTAMP_IDEA).setValue(System.currentTimeMillis());
 
-            float similarity = T2DString.lcs2DString(pattern, patternToCompare, T2DString.SIMILARITY_TYPE_1);
+                    break;
+                }
 
-            if (similarity >= SIMILARITY_THRESHOLD) {
-                similar = scene;
-                scene = updateSceneActivationWithAffect(affect, scene);
-                scene.get("timestamp").setValue(System.currentTimeMillis());
-
-                break;
             }
-
         }
+        
 
         //SI NO HAY UN PATRON SIMILAR EN MID-TERM LO BUSCA EN LONG-TERM
         if (similar == null) {
-            Idea sceneLinesStoredIdea = rootIdea.get("dgMemoyScenesIdea");
-                ArrayList<String> sceneLines = (ArrayList<String>) sceneLinesStoredIdea.get("sceneLines").getValue();
-                for (String line: sceneLines) {
-                    Idea sceneIdea = storedSceneToIdea(line);
-
-                    String patternToCompare = (String) sceneIdea.get("patternReplaced").getValue();
-
-                    float similarity = T2DString.lcs2DString(pattern, patternToCompare, T2DString.SIMILARITY_TYPE_1);
-
-                    if (similarity >= SIMILARITY_THRESHOLD) {
-
-                        similar = sceneIdea;
-
-                        sceneIdea = updateSceneActivationWithAffect(affect, sceneIdea);
-                        sceneIdea.get("timestamp").setValue(System.currentTimeMillis());
-
-                        Integer idScene = (Integer) sceneIdea.get("id").getValue();
-                        midTermMemoryScenes.add(sceneIdea);
-                        midTermMemoryScenesByID.put(idScene, sceneIdea);
-
-                        break;
-                    }
-                }
+            Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
+            if (dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue() != null) {
+                System.out.println(DG_MEMORY_SCENES_IDEA);
+                System.out.println(dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue());
+//                ArrayList<String> sceneLines = (ArrayList<String>) dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue();
+//                for (String line: sceneLines) {
+//                    Idea sceneIdea = storedSceneToIdea(line);
+//
+//                    String patternToCompare = (String) sceneIdea.get(PATTERN_IDEA).getValue();
+//
+//                    float similarity = T2DString.lcs2DString(pattern, patternToCompare, T2DString.SIMILARITY_TYPE_1);
+//
+//                    if (similarity >= SIMILARITY_THRESHOLD) {
+//
+//                        similar = sceneIdea;
+//
+//                        sceneIdea = updateSceneActivationWithAffect(affect, sceneIdea);
+//                        sceneIdea.get(TIMESTAMP_IDEA).setValue(System.currentTimeMillis());
+//
+//                        Integer idScene = (Integer) sceneIdea.get(ID_IDEA).getValue();
+//                        midTermMemoryScenes.add(sceneIdea);
+//                        midTermMemoryScenesByID.put(idScene, sceneIdea);
+//
+//                        break;
+//                    }
+//                }
+            }
         }
 
         return similar;
@@ -189,9 +227,9 @@ public class DGStorageHandlerCodelet extends Codelet {
     
     public Idea updateSceneActivationWithAffect(double affectIntensity, Idea scene) {
 
-        Double repetitions = (double) scene.get("repetitions").getValue();
-        Double activation = (double) scene.get("activation").getValue();
-        Integer id = (Integer) scene.get("objectId").getValue();
+        Integer repetitions = (Integer) scene.get(REPETITIONS_IDEA).getValue();
+        Double activation = (Double) scene.get(ACTIVATION_IDEA).getValue();
+        Integer id = (Integer) scene.get(ID_IDEA).getValue();
         repetitions++;
 
         double scale = Configuration.SIGMOID_SCALE;
@@ -203,47 +241,60 @@ public class DGStorageHandlerCodelet extends Codelet {
         double currentActivation = ActivationFunctions.sigmoid(weight);
         activation = (activation + currentActivation) / 2.0;
         
-        System.out.println("Scene: "+id+" activation: "+this.activation+" repetition: "+repetitions);
+        System.out.println("Scene: "+id+" activation: "+ activation +" repetition: " + repetitions);
         
-        scene.get("repetitions").setValue(repetitions);
-        scene.get("activation").setValue(activation);
+        scene.get(REPETITIONS_IDEA).setValue(repetitions);
+        scene.get(ACTIVATION_IDEA).setValue(activation);
         
         return scene;
         
     }
     
     public Idea updateScenePositiveAffect(double affect, Idea scene) {
-        Double positiveAffect = (double) scene.get("positiveAffect").getValue();
+        Double positiveAffect = (double) scene.get(POSITIVE_AFFECT_IDEA).getValue();
         positiveAffect = (positiveAffect + affect) / 2;
-        scene.get("positiveAffect").setValue(positiveAffect);
+        scene.get(POSITIVE_AFFECT_IDEA).setValue(positiveAffect);
         return scene;
     }
 
     public Idea updateSceneNegativeAffect(double affect, Idea scene) {
-        Double negativeAffect = (double) scene.get("negativeAffect").getValue();
+        Double negativeAffect = (double) scene.get(NEGATIVE_AFFECT_IDEA).getValue();
         negativeAffect = (negativeAffect + affect) / 2;
-        scene.get("negativeAffect").setValue(negativeAffect);
+        scene.get(NEGATIVE_AFFECT_IDEA).setValue(negativeAffect);
         return scene;
     }
     
         // 1,<(59)<<(63)<(64)<<<(60),<(60)<(59)<(63)(64),(4)(1)(2)(3),(2)(4)(5)(8),(3)(4)(4)(2),0000000176,0.93745,0.14345,1.00000,00000000000000000002,1607465245977
 
+    private String ideatoStoredScene(Idea idea){
+        Integer id = (Integer) idea.get(ID_IDEA).getValue();
+        String pattern = (String) idea.get(PATTERN_IDEA).getValue();
+        Integer repetitions = (Integer) idea.get(REPETITIONS_IDEA).getValue();
+        Double positiveAffect = (Double) idea.get(POSITIVE_AFFECT_IDEA).getValue();
+        Double negativeAffect = (Double) idea.get(NEGATIVE_AFFECT_IDEA).getValue();
+        Double activation = (Double) idea.get(ACTIVATION_IDEA).getValue();
+        Integer time = (Integer) idea.get(TIME_IDEA).getValue();
+        Long timeStamp = (Long) idea.get(TIMESTAMP_IDEA).getValue();
+        
+        return id + "," + pattern + "," + String.format("%010d", repetitions) + "," + String.format("%.5f", positiveAffect) + "," + String.format("%.5f", negativeAffect) + "," + String.format("%.5f", activation) + "," + String.format("%020d", time) + "," + timeStamp;
+    }
+    
     private Idea storedSceneToIdea(String storedString) {
-        Idea storedSceneIdea = new Idea("storedScene", null, "Property", 1);
+        Idea storedSceneIdea = new Idea(STORED_SCENE_IDEA, null, "Property", 1);
         
         String data[] = storedString.split(",");
         
-        Idea idIdea = new Idea("id", Integer.parseInt(data[0]), "Property", 1);
-        Idea patternIdea = new Idea("pattern",data[1] + "," + data[2] + "," + data[3] + "," + data[4] + "," + data[5], "Property", 1);
-        Idea timeIdea = new Idea("time",Integer.parseInt(data[10]), "Property", 1);
-        Idea repetitionsIdea = new Idea("repetitions",Integer.parseInt(data[6]), "Property", 1);
-        Idea positiveAffectIdea = new Idea("positiveAffect",Double.parseDouble(data[7]), "Property", 1);
-        Idea negativeAffectIdea = new Idea("negativeAffect",Double.parseDouble(data[8]), "Property", 1);
-        Idea activationIdea = new Idea("activation", Double.parseDouble(data[9]), "Property", 1);
-        Idea timestampIdea = new Idea("timestamp",Long.parseLong(data[11]), "Property", 1);
-        Idea relationsIdea = new Idea("relations",null, "Property", 1);
-        Idea activeSimilarityIdea = new Idea("activeSimilarity",null, "Property", 1);
-        Idea recentIdea = new Idea("recent",false, "Property", 1);
+        Idea idIdea = new Idea(ID_IDEA, Integer.parseInt(data[0]), "Property", 1);
+        Idea patternIdea = new Idea(PATTERN_IDEA,data[1] + "," + data[2] + "," + data[3] + "," + data[4] + "," + data[5], "Property", 1);
+        Idea timeIdea = new Idea(TIME_IDEA,Integer.parseInt(data[10]), "Property", 1);
+        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,Integer.parseInt(data[6]), "Property", 1);
+        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,Double.parseDouble(data[7]), "Property", 1);
+        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,Double.parseDouble(data[8]), "Property", 1);
+        Idea activationIdea = new Idea(ACTIVATION_IDEA, Double.parseDouble(data[9]), "Property", 1);
+        Idea timestampIdea = new Idea(TIMESTAMP_IDEA,Long.parseLong(data[11]), "Property", 1);
+        Idea relationsIdea = new Idea(RELATIONS_IDEA,null, "Property", 1);
+        Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, "Property", 1);
+        Idea recentIdea = new Idea(RECENT_IDEA,false, "Property", 1);
         
         storedSceneIdea.add(idIdea);
         storedSceneIdea.add(patternIdea);
@@ -260,5 +311,76 @@ public class DGStorageHandlerCodelet extends Codelet {
         
         return storedSceneIdea;
     }
+    
+    /**
+     * *
+     * LOAD THE PATTERNS ON ROOT MEMORY
+     */
+    private void load() {
+        //load from rootMO
+        //TODO: what if is repeated??
+        Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
+        ArrayList<String> sceneLines = (ArrayList<String>) dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue();
+        for (String line: sceneLines) {
+            midTermMemoryScenes.add(storedSceneToIdea(line));
+        }
+    }
+    
+    /**
+     * STORES ALL THE TEMPORAL PATTERNS
+     */
+    private void persistScenes() {
+        //store at rootMO
+        //verify if there is data
+        //scenes to update is the midTermScenesByID
+        //from each previous data verify if has to update, if yes, replace with new data, else, just save again
+        //if still have scenes to update, save them
+        //save DGSize
+        
+        Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
+        ArrayList<String> previousData = (ArrayList<String>) dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue();
+        HashMap<Integer, Idea> scenesToUpdate = new HashMap<>();
+        scenesToUpdate.putAll(midTermMemoryScenesByID);
+        ArrayList<String> ideasToBeStored = new ArrayList<String>();
+        for (String line: previousData) {
+            Idea previousScene = storedSceneToIdea(line);
+            Integer previousSceneId = (Integer) previousScene.get(ID_IDEA).getValue();
+            if (scenesToUpdate.containsKey(previousSceneId)) {
+                //FALTA EVALUAR SI TIENE LA ACTIVACION SUFICIENTE PARA SER ACTUALIZADO ANTES DE GUARDAR
+                previousScene = scenesToUpdate.get(previousSceneId);
+                scenesToUpdate.remove(previousSceneId);
+            }
+            ideasToBeStored.add(ideatoStoredScene(previousScene));
+        } 
+        SortedSet<Integer> sceneIDs = new TreeSet<>(scenesToUpdate.keySet());
+
+        for (Integer sceneID : sceneIDs) {
+
+            Idea scene = scenesToUpdate.get(sceneID);
+            ideasToBeStored.add(ideatoStoredScene(scene));
+            //FALTA EVALUAR SI TIENE LA ACTIVACION SUFICIENTE PARA SER GUARDADO
+        }
+        dgDataIdea.get(DG_MEMORY_SCENES_IDEA).setValue(ideasToBeStored);
+        dgDataIdea.get(DG_SIZE_IDEA).setValue(ideasToBeStored.size());
+        rootIdea.get(DG_DATA_IDEA).setL(null);
+        rootIdea.add(dgDataIdea);
+        rootMO.setI(rootIdea);
+        
+    }
+    
+     /**
+     * *
+     * CARGA EL ARCHIVO DG_SIZE PARA SABER EL INDICE DE LA ULTIMA ESCENA
+     * GUARDADA
+     */
+    private void loadDGSize() {
+        //load size of dg
+        Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
+        Integer dgSize = (Integer) dgDataIdea.get(DG_SIZE_IDEA).getValue();
+        DG_SIZE = dgSize;
+        
+    }
+    
+  
     
 }

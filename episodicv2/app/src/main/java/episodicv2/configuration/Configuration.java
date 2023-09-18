@@ -102,8 +102,8 @@ public class Configuration {
     public static final String RELATIONS_IDEA = "relations";
     public static final String ACTIVE_SIMILARITY_IDEA = "activeSimilarity";
     public static final String RECENT_IDEA = "recent";
-    
-    
+    public static final String DG_SIZE_IDEA = "dgSize";
+    public static final String DG_MEMORY_SCENES_IDEA = "dgMemoyScenes";
     
     
     // COMPLEX IDEAS
@@ -114,8 +114,11 @@ public class Configuration {
     public static final String UNINTEGRATED_SCENE_PATTERN_IDEA = "unintegratedScenePatternIdea";
     public static final String NEW_ENCODED_SCENE_SPIKE_IDEA = "newEncodedSceneSpikeIdea";
     public static final String PATTERN_REPLACED_IDEA = "patternReplacedIdea";
-    public static final String DG_MEMORY_SCENES_IDEA = "dgMemoyScenesIdea";
+    public static final String DG_DATA_IDEA = "dgDataIdea";
     public static final String ROOT_IDEA = "rootIdea";
+    public static final String SCENE_IDEA = "sceneIdea";
+    public static final String STORED_SCENE_IDEA = "storedSceneIdea";
+    
     
     
     // MEMORY OBJECTS

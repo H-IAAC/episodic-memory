@@ -242,23 +242,23 @@ public final class App {
 //        scene.add(recent3);
 //        
 
-        Idea midTermMemoyScenesIdea = new Idea("midTermMemoyScenesIdea");
-        ArrayList<Idea> sceneArray = new ArrayList<Idea>();
+//        Idea midTermMemoyScenesIdea = new Idea("midTermMemoyScenesIdea");
+//        ArrayList<Idea> sceneArray = new ArrayList<Idea>();
+//        
+//        Idea sceneArrayIdea = new Idea("sceneArrayIdea", sceneArray);
+//        
+//        Idea scene2 = new Idea("scene");
+//        sceneArray.add(scene2);
+//        midTermMemoyScenesIdea.add(sceneArrayIdea);
         
-        Idea sceneArrayIdea = new Idea("sceneArrayIdea", sceneArray);
-        
-        Idea scene2 = new Idea("scene");
-        sceneArray.add(scene2);
-        midTermMemoyScenesIdea.add(sceneArrayIdea);
-        
-        Idea id5 = new Idea("objectId",null, "Property", 1);
-        Idea pattern3 = new Idea("pattern2",null, "Property", 1);
-        Idea time14 = new Idea("time",null, "Property", 1);
-        Idea repetitions6 = new Idea("repetitions",null, "Property", 1);
-        Idea positiveAffect4 = new Idea("positiveAffect",null, "Property", 1);
-        Idea negativeAffect4 = new Idea("negativeAffect",null, "Property", 1);
-        Idea activation6 = new Idea("activation",null, "Property", 1);
-        Idea timestamp6 = new Idea("timestamp",null, "Property", 1);
+//        Idea id5 = new Idea("objectId",null, "Property", 1);
+//        Idea pattern3 = new Idea("pattern2",null, "Property", 1);
+//        Idea time14 = new Idea("time",null, "Property", 1);
+//        Idea repetitions6 = new Idea("repetitions",null, "Property", 1);
+//        Idea positiveAffect4 = new Idea("positiveAffect",null, "Property", 1);
+//        Idea negativeAffect4 = new Idea("negativeAffect",null, "Property", 1);
+//        Idea activation6 = new Idea("activation",null, "Property", 1);
+//        Idea timestamp6 = new Idea("timestamp",null, "Property", 1);
         ArrayList<Idea> relationsArray2 = new ArrayList<Idea>();
         
         Idea sceneRelationIdea5 = new Idea("sceneRelation");
@@ -282,21 +282,21 @@ public final class App {
        
         relationsArray2.add(sceneRelationIdea5);
         
-        Idea relationsArrayIdea2 = new Idea("relations",relationsArray2, "Property", 1);
-        Idea activeSimilarity2 = new Idea("activeSimilarity",null, "Property", 1);
-        Idea recent4 = new Idea("recent",null, "Property", 1);
+//        Idea relationsArrayIdea2 = new Idea("relations",relationsArray2, "Property", 1);
+//        Idea activeSimilarity2 = new Idea("activeSimilarity",null, "Property", 1);
+//        Idea recent4 = new Idea("recent",null, "Property", 1);
         
-        scene2.add(id5);
-        scene2.add(pattern3);
-        scene2.add(time14);
-        scene2.add(repetitions6);
-        scene2.add(positiveAffect4);
-        scene2.add(negativeAffect4);
-        scene2.add(activation6);
-        scene2.add(timestamp6);
-        scene2.add(relationsArrayIdea2);
-        scene2.add(activeSimilarity2);
-        scene2.add(recent4);
+//        scene2.add(id5);
+//        scene2.add(pattern3);
+//        scene2.add(time14);
+//        scene2.add(repetitions6);
+//        scene2.add(positiveAffect4);
+//        scene2.add(negativeAffect4);
+//        scene2.add(activation6);
+//        scene2.add(timestamp6);
+//        scene2.add(relationsArrayIdea2);
+//        scene2.add(activeSimilarity2);
+//        scene2.add(recent4);
         
         Map<Integer, Idea> midTermMemoryScenesByIDDGIdeaMap = new  ConcurrentHashMap<>();
                 
@@ -622,28 +622,30 @@ public final class App {
        
         
         
-        Idea root = new Idea(ROOT_IDEA, null, "Property", 1);
         
-        root.add(requestObjectSpikeIdea);
-        root.add(retrievedObjectRelationTopDownSpikeIdea);
-        root.add(iTCFeaturesSpikeIdea);
-        root.add(relationsArrayIdea);
-        root.add(midTermMemoryObjectRelationsIdea);
-        root.add(retrievedObjectRelationTopDownSpikeIdea);
-        root.add(objectRelationsSpikeIdea);
-        root.add(midTermMemoyScenesIdea);
-        root.add(midTermMemoryScenesByIDCA3Idea);
-        root.add(midTermMemoryScenesByIDDGIdea);
-        root.add(currentSceneSpikeIdea);
-        root.add(similarScenesSpikeIdea);
-        root.add(requestSceneByIDSpikeIdea);
-        root.add(requestSimilarScenesSpikeIdea);
-        root.add(retrievedSceneTopDownSpikeIdea);
-        root.add(sceneRelationIdea);
-        root.add(midTermMemorySceneRelationsCA1Idea);
-        root.add(sceneRelationsSpikeIdea);
-        root.add(retrievedSceneTopDownLTM);
-        root.add(taskSetSpikeIdea);
+        
+//        rootIdea.add(requestObjectSpikeIdea);
+//        rootIdea.add(retrievedObjectRelationTopDownSpikeIdea);
+//        rootIdea.add(iTCFeaturesSpikeIdea);
+//        rootIdea.add(relationsArrayIdea);
+//        rootIdea.add(midTermMemoryObjectRelationsIdea);
+//        rootIdea.add(retrievedObjectRelationTopDownSpikeIdea);
+//        rootIdea.add(objectRelationsSpikeIdea);
+//        rootIdea.add(midTermMemoryScenesByIDCA3Idea);
+//        rootIdea.add(midTermMemoryScenesByIDDGIdea);
+//        rootIdea.add(currentSceneSpikeIdea);
+//        rootIdea.add(similarScenesSpikeIdea);
+//        rootIdea.add(requestSceneByIDSpikeIdea);
+//        rootIdea.add(requestSimilarScenesSpikeIdea);
+//        rootIdea.add(retrievedSceneTopDownSpikeIdea);
+//        rootIdea.add(sceneRelationIdea);
+//        rootIdea.add(midTermMemorySceneRelationsCA1Idea);
+//        rootIdea.add(sceneRelationsSpikeIdea);
+//        rootIdea.add(retrievedSceneTopDownLTM);
+//        rootIdea.add(taskSetSpikeIdea);
+
+      
+
         
           //declare Ideas
         //TODO: review as categorias
@@ -655,12 +657,17 @@ public final class App {
         Idea newEncodedSceneSpikeIdea = new Idea(NEW_ENCODED_SCENE_SPIKE_IDEA,null,"Property",1);
         Idea patternReplacedIdea = new Idea(PATTERN_REPLACED_IDEA,null,"Property",1);
         Idea dgMemoyScenesIdea = new Idea(DG_MEMORY_SCENES_IDEA, null, "Property", 1);
-
-        root.add(dgMemoyScenesIdea);
+        Idea dgSizeIdea = new Idea(DG_SIZE_IDEA,null,"Property",1);
+        Idea dgDataIdea = new Idea(DG_DATA_IDEA,null,"Property",1);
+        dgDataIdea.add(dgMemoyScenesIdea);
+        dgDataIdea.add(dgSizeIdea);
+        
+        Idea rootIdea = new Idea(ROOT_IDEA, null, "Property", 1);
+        rootIdea.add(dgDataIdea);
         
         MemoryObject rootMO;
         rootMO = m.createMemoryObject(ROOT_MO);
-        rootMO.setI(root);
+        rootMO.setI(rootIdea);
         
         MemoryObject imageReceivedPathMO;
         imageReceivedPathMO = m.createMemoryObject(IMAGE_RECEIVED_PATH_MO);
@@ -731,7 +738,7 @@ public final class App {
         dGProcessCodelet.addOutput(patternReplacedMO);
         m.insertCodelet(dGProcessCodelet, "DG_Cs");
         
-        DGStorageHandlerCodelet dGStorageHandlerCodelet = new DGStorageHandlerCodelet();
+        DGStorageHandlerCodelet dGStorageHandlerCodelet = new DGStorageHandlerCodelet(false);
         dGStorageHandlerCodelet.setName("DG_STORAGE");
         dGStorageHandlerCodelet.addInput(rootMO);
         dGStorageHandlerCodelet.addInput(patternReplacedMO);
