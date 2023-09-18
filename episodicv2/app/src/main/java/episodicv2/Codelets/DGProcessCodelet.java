@@ -89,12 +89,12 @@ public class DGProcessCodelet extends Codelet {
             
             affectIntensity = emotionalDecay.getActivation();
             
-            Idea patternReplacedIdea = new Idea(PATTERN_REPLACED, patternReplaced, "Property", 1);
+            Idea patternReplacedAtributeIdea = new Idea(PATTERN_IDEA, patternReplaced, "Property", 1);
             Idea sincTimeIdea = new Idea(TIME_IDEA, synchronizer.getTime(),"Property", 1);
             Idea positiveActivationIdea = new Idea(POSITIVE_AFFECT_IDEA, emotionalDecay.getPositiveActivation(), "Property", 1);
             Idea negativeActivationIdea = new Idea(NEGATIVE_AFFECT_IDEA, emotionalDecay.getNegativeActivation(), "Property", 1);
             Idea affectIntensityIdea = new Idea(AFFECT_INTENSITY_IDEA, affectIntensity, "Property", 1);
-            patternReplacedIdea.add(patternReplacedIdea);
+            patternReplacedIdea.add(patternReplacedAtributeIdea);
             patternReplacedIdea.add(sincTimeIdea);
             patternReplacedIdea.add(positiveActivationIdea);
             patternReplacedIdea.add(negativeActivationIdea);

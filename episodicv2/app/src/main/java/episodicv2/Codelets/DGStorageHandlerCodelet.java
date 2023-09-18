@@ -8,6 +8,7 @@ import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
 import episodicv2.configuration.Configuration;
+import static episodicv2.configuration.Configuration.*;
 import episodicv2.emotions.ActivationFunctions;
 import java.util.ArrayList;
 import java.util.Map;
@@ -50,11 +51,11 @@ public class DGStorageHandlerCodelet extends Codelet {
     
     @Override
     public void proc() {
-            String patternReplaced = (String) patternReplacedIdea.get("patternReplaced").getValue();
-            Integer time = (Integer) patternReplacedIdea.get("time").getValue();
-            Double positiveAffect = (double) patternReplacedIdea.get("positiveAffect").getValue();
-            Double negativeAffect = (double) patternReplacedIdea.get("negativeAffect").getValue();
-            Double affectIntensity = (double) patternReplacedIdea.get("affectIntensity").getValue();
+            String patternReplaced = (String) patternReplacedIdea.get(PATTERN_IDEA).getValue();
+            Integer time = (Integer) patternReplacedIdea.get(TIME_IDEA).getValue();
+            Double positiveAffect = (double) patternReplacedIdea.get(POSITIVE_AFFECT_IDEA).getValue();
+            Double negativeAffect = (double) patternReplacedIdea.get(NEGATIVE_AFFECT_IDEA).getValue();
+            Double affectIntensity = (double) patternReplacedIdea.get(AFFECT_INTENSITY_IDEA).getValue();
             
           /**
              * INTENTA CREAR UNA NUEVA ESCENA SINO EXISTE UN PATRON SIMILAR SI
@@ -91,19 +92,19 @@ public class DGStorageHandlerCodelet extends Codelet {
         if (scene == null) {
 
             DG_SIZE = DG_SIZE + 1;
-
+            scene = new Idea("scene", null, "Property", 1);
             assignedId = DG_SIZE;
-            Idea idIdea = new Idea("id",assignedId, "Property", 1);
-            Idea patternIdea = new Idea("patternReplaced",pattern, "Property", 1);
-            Idea timeIdea = new Idea("time",time, "Property", 1);
-            Idea repetitionsIdea = new Idea("repetitions",null, "Property", 1);
-            Idea positiveAffectIdea = new Idea("positiveAffect",0.0, "Property", 1);
-            Idea negativeAffectIdea = new Idea("negativeAffect",0.0, "Property", 1);
-            Idea activationIdea = new Idea("activation",0.5, "Property", 1);
-            Idea timestampIdea = new Idea("timestamp",System.currentTimeMillis(), "Property", 1);
-            Idea relationsIdea = new Idea("relations",null, "Property", 1);
-            Idea activeSimilarityIdea = new Idea("activeSimilarity",null, "Property", 1);
-            Idea recentIdea = new Idea("recent",null, "Property", 1);
+            Idea idIdea = new Idea(ID_IDEA,assignedId, "Property", 1);
+            Idea patternIdea = new Idea(PATTERN_IDEA,pattern, "Property", 1);
+            Idea timeIdea = new Idea(TIME_IDEA,time, "Property", 1);
+            Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,null, "Property", 1);
+            Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,0.0, "Property", 1);
+            Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,0.0, "Property", 1);
+            Idea activationIdea = new Idea(ACTIVATION_IDEA,0.5, "Property", 1);
+            Idea timestampIdea = new Idea(TIMESTAMP_IDEA,System.currentTimeMillis(), "Property", 1);
+            Idea relationsIdea = new Idea(RELATIONS_IDEA,null, "Property", 1);
+            Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, "Property", 1);
+            Idea recentIdea = new Idea(RECENT_IDEA,null, "Property", 1);
             scene.add(idIdea);
             scene.add(patternIdea);
             scene.add(timeIdea);
