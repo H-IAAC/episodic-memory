@@ -104,6 +104,13 @@ public class Configuration {
     public static final String RECENT_IDEA = "recent";
     public static final String DG_SIZE_IDEA = "dgSize";
     public static final String DG_MEMORY_SCENES_IDEA = "dgMemoyScenes";
+    public static final String MID_TERM_MEMORY_SCENES = "midTermMemoryScenes";
+    public static final String MID_TERM_MEMORY_SCENES_BY_ID = "midTermMemoryScenesByID";
+    public static final String MID_TERM_MEMORY_OBJECTS = "midTermMemoryObjects";
+    public static final String MID_TERM_MEMORY_OBJECTS_BY_ID = "midTermMemoryObjectsByID";
+    public static final String OBJECT_1_ID_IDEA = "object1IdIdea";
+    public static final String OBJECT_2_ID_IDEA = "object2IdIdea2";
+    public static final String UPDATED_IDEA = "updatedIdea";
     
     
     // COMPLEX IDEAS
@@ -113,11 +120,14 @@ public class Configuration {
     public static final String CENTER_POINTS_SPIKE_IDEA = "centerPointsSpikeIdea";
     public static final String UNINTEGRATED_SCENE_PATTERN_IDEA = "unintegratedScenePatternIdea";
     public static final String NEW_ENCODED_SCENE_SPIKE_IDEA = "newEncodedSceneSpikeIdea";
+    public static final String PRC_MID_TERM_OBJECT_RELATIONS_IDEA = "pRCMidTermMemoryObjectRelationsIdea";
     public static final String PATTERN_REPLACED_IDEA = "patternReplacedIdea";
     public static final String DG_DATA_IDEA = "dgDataIdea";
     public static final String ROOT_IDEA = "rootIdea";
     public static final String SCENE_IDEA = "sceneIdea";
     public static final String STORED_SCENE_IDEA = "storedSceneIdea";
+    public static final String DG_MID_TERM_MEMORY_SCENES_IDEA = "dgMidTermMemoryScenesIdea";
+    public static final String OBJECT_RELATION_IDEA = "objectRelationIdea";
     
     
     
@@ -130,7 +140,10 @@ public class Configuration {
     public static final String UNINTEGRATED_SCENE_PATTERN_MO = "unintegratedScenePatternMO";
     public static final String RECOGNIZED_OBJECTS_SPIKE_MO = "recognizedObjectsSpikeMO";
     public static final String NEW_ENCODED_SCENE_SPIKE_MO = "newEncodedSceneSpikeMO";
+    public static final String PRC_MID_TERM_OBJECT_RELATIONS_MO = "pRCMidTermMemoryObjectRelationsMO";
     public static final String PATTERN_REPLACED_MO = "patternReplacedMO";
+    public static final String DG_MID_TERM_MEMORY_SCENES_MO = "dgMidTermMemoryScenesMO";
+    
     
     
     

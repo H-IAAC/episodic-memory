@@ -12,14 +12,14 @@ import episodicv2.FutureCodelets.CA1Process1;
 import episodicv2.FutureCodelets.ENC;
 import episodicv2.FutureCodelets.MPFCProcess1;
 import episodicv2.FutureCodelets.CA3Process1;
-import episodicv2.FutureCodelets.PHCBridge;
+import episodicv2.Codelets.DGStorageHandler;
 import episodicv2.FutureCodelets.PCBridge;
 import episodicv2.FutureCodelets.ITCProcess1;
 import episodicv2.FutureCodelets.PRCBridge;
 import episodicv2.FutureCodelets.TaskFrame;
 import episodicv2.FutureCodelets.DLPFCPlanning;
-import episodicv2.Codelets.DGProcessCodelet;
-import episodicv2.FutureCodelets.PRCStorageHandler;
+import episodicv2.Codelets.DGBridgeCodelet;
+import episodicv2.Codelets.PRCStorageHandlerCodelet;
 import episodicv2.FutureCodelets.MPFC;
 import episodicv2.FutureCodelets.CA3StorageHandler;
 import episodicv2.FutureCodelets.DLPFC;
@@ -27,9 +27,9 @@ import episodicv2.FutureCodelets.VLPFCProcess1;
 import episodicv2.FutureCodelets.DLPFCBaseController;
 import episodicv2.FutureCodelets.CA1StorageHandler;
 import episodicv2.FutureCodelets.CA3;
-import episodicv2.Codelets.DGStorageHandlerCodelet;
+import episodicv2.Codelets.DGProcessCodelet;
 import episodicv2.FutureCodelets.ITCFeatures;
-import episodicv2.FutureCodelets.PRCProcess2;
+import episodicv2.Codelets.PRCProcess2Codelet;
 import episodicv2.FutureCodelets.VLPFC;
 import episodicv2.FutureCodelets.CA3Process2;
 import episodicv2.FutureCodelets.ITCBridge;
@@ -142,26 +142,25 @@ public final class App {
         objectRelation.add(recent);
         objectRelation.add(updated);
         
-        Idea midTermMemoryObjectRelationsIdea = new Idea("midTermMemoryObjectRelationsIdea");
-        Idea objectRelation2 = new Idea("objectRelation");
-        midTermMemoryObjectRelationsIdea.add(objectRelation);
-        
-        Idea objectId1_2 = new Idea("objectId1",null, "Property", 1);
-        Idea objectId2_2 = new Idea("objectId2",null, "Property", 1);
-        Idea activation2 = new Idea("activation",null, "Property", 1);
-        Idea repetitions2 = new Idea("repetitions",null, "Property", 1);
-        Idea time9 = new Idea("time",null, "Property", 1);
-        Idea timestamp2 = new Idea("timestamp",null, "Property", 1);
-        Idea recent2 = new Idea("recent",null, "Property", 1);
-        Idea updated2 = new Idea("updated",null, "Property", 1);
-        objectRelation2.add(objectId1_2);
-        objectRelation2.add(objectId2_2);
-        objectRelation2.add(activation2);
-        objectRelation2.add(repetitions2);
-        objectRelation2.add(time9);
-        objectRelation2.add(timestamp2);
-        objectRelation2.add(recent2);
-        objectRelation2.add(updated2);
+//        Idea objectRelation2 = new Idea("objectRelation");
+//        midTermMemoryObjectRelationsIdea.add(objectRelation);
+//        
+//        Idea objectId1_2 = new Idea("objectId1",null, "Property", 1);
+//        Idea objectId2_2 = new Idea("objectId2",null, "Property", 1);
+//        Idea activation2 = new Idea("activation",null, "Property", 1);
+//        Idea repetitions2 = new Idea("repetitions",null, "Property", 1);
+//        Idea time9 = new Idea("time",null, "Property", 1);
+//        Idea timestamp2 = new Idea("timestamp",null, "Property", 1);
+//        Idea recent2 = new Idea("recent",null, "Property", 1);
+//        Idea updated2 = new Idea("updated",null, "Property", 1);
+//        objectRelation2.add(objectId1_2);
+//        objectRelation2.add(objectId2_2);
+//        objectRelation2.add(activation2);
+//        objectRelation2.add(repetitions2);
+//        objectRelation2.add(time9);
+//        objectRelation2.add(timestamp2);
+//        objectRelation2.add(recent2);
+//        objectRelation2.add(updated2);
         
         Idea retrievedObjectRelationTopDownSpikeIdea = new Idea("retrievedObjectRelationTopDownSpikeIdea");
         Idea objectRelations = new Idea("objectRelations");
@@ -655,12 +654,20 @@ public final class App {
         Idea centerPointsSpikeIdea = new Idea(CENTER_POINTS_SPIKE_IDEA,null,"Property",1);
         Idea unintegratedScenePatternIdea = new Idea(UNINTEGRATED_SCENE_PATTERN_IDEA,null,"Property",1);
         Idea newEncodedSceneSpikeIdea = new Idea(NEW_ENCODED_SCENE_SPIKE_IDEA,null,"Property",1);
+        Idea midTermMemoryObjectRelationsIdea = new Idea(PRC_MID_TERM_OBJECT_RELATIONS_IDEA,null,"Property",1);
+        Idea dgMidTermMemoryScenesIdea = new Idea(DG_MID_TERM_MEMORY_SCENES_IDEA,null,"Property",1);
+        Idea dgSizeMidIdea = new Idea(DG_SIZE_IDEA,0,"Property",1);
+        dgMidTermMemoryScenesIdea.add(dgSizeMidIdea);
+        
         Idea patternReplacedIdea = new Idea(PATTERN_REPLACED_IDEA,null,"Property",1);
-        Idea dgMemoyScenesIdea = new Idea(DG_MEMORY_SCENES_IDEA, null, "Property", 1);
-        Idea dgSizeIdea = new Idea(DG_SIZE_IDEA,null,"Property",1);
+        Idea dgMemoyScenesIdea = new Idea(DG_MEMORY_SCENES_IDEA, new ArrayList<String>(), "Property", 1);
+        Idea dgSizeIdea = new Idea(DG_SIZE_IDEA,0,"Property",1);
         Idea dgDataIdea = new Idea(DG_DATA_IDEA,null,"Property",1);
         dgDataIdea.add(dgMemoyScenesIdea);
         dgDataIdea.add(dgSizeIdea);
+        
+        
+        
         
         Idea rootIdea = new Idea(ROOT_IDEA, null, "Property", 1);
         rootIdea.add(dgDataIdea);
@@ -693,9 +700,17 @@ public final class App {
         newEncodedSceneSpikeMO = m.createMemoryObject(NEW_ENCODED_SCENE_SPIKE_MO);
         newEncodedSceneSpikeMO.setI(newEncodedSceneSpikeIdea);
         
+        MemoryObject pRCMidTermMemoryObjectRelationsMO;
+        pRCMidTermMemoryObjectRelationsMO = m.createMemoryObject(PRC_MID_TERM_OBJECT_RELATIONS_MO);
+        pRCMidTermMemoryObjectRelationsMO.setI(midTermMemoryObjectRelationsIdea);
+        
         MemoryObject patternReplacedMO;
         patternReplacedMO = m.createMemoryObject(PATTERN_REPLACED_MO);
         patternReplacedMO.setI(patternReplacedIdea);
+        
+        MemoryObject dgMidTermMemoryScenesMO;
+        dgMidTermMemoryScenesMO = m.createMemoryObject(DG_MID_TERM_MEMORY_SCENES_MO);
+        dgMidTermMemoryScenesMO.setI(dgMidTermMemoryScenesIdea);
         
         //Create Sensor Codelets
         ImageCodelet imageCodelet = new ImageCodelet();
@@ -704,11 +719,11 @@ public final class App {
         m.insertCodelet(imageCodelet, "VISION_Cs");
         
         //Gets the image and returns objects points and classes
-        VisionCodelet vision = new VisionCodelet();
-        vision.setName("VISION");
-        vision.addInput(imageReceivedPathMO);
-        vision.addOutput(centerPointsandClassesMO);
-        m.insertCodelet(vision, "VISION_Cs");
+        VisionCodelet visionCodelet = new VisionCodelet();
+        visionCodelet.setName("VISION");
+        visionCodelet.addInput(imageReceivedPathMO);
+        visionCodelet.addOutput(centerPointsandClassesMO);
+        m.insertCodelet(visionCodelet, "VISION_Cs");
         
         //Gets the image center points
         PPCCodelet ppcCodelet = new PPCCodelet();
@@ -718,11 +733,11 @@ public final class App {
         m.insertCodelet(ppcCodelet, "DORSAL_Cs");
         
         //Creates 2DString pattern
-        PHCProcess1 pHCProcess1 = new PHCProcess1();
-        pHCProcess1.setName("PHC_PROCESS_1");
-        pHCProcess1.addInput(centerPointsSpikeMO);
-        pHCProcess1.addOutput(unintegratedScenePatternMO);
-        m.insertCodelet(pHCProcess1, "DORSAL_Cs");
+        PHCProcess1 pHCProcess1Codelet = new PHCProcess1();
+        pHCProcess1Codelet.setName("PHC_PROCESS_1");
+        pHCProcess1Codelet.addInput(centerPointsSpikeMO);
+        pHCProcess1Codelet.addOutput(unintegratedScenePatternMO);
+        m.insertCodelet(pHCProcess1Codelet, "DORSAL_Cs");
         
         //Gets the image classes labels and ids
         ITCCodelet iTCCodelet = new ITCCodelet();
@@ -731,21 +746,39 @@ public final class App {
         iTCCodelet.addOutput(recognizedObjectsSpikeMO);
         m.insertCodelet(iTCCodelet, "VENTRAL_Cs");
         
-        DGProcessCodelet dGProcessCodelet = new DGProcessCodelet();
+        PRCProcess2Codelet pRCProcess2 = new PRCProcess2Codelet();
+        pRCProcess2.setName("PRC_PROCESS_2");
+        pRCProcess2.addInput(recognizedObjectsSpikeMO);
+        pRCProcess2.addOutput(pRCMidTermMemoryObjectRelationsMO);
+        m.insertCodelet(pRCProcess2, "VENTRAL_Cs");
+        
+        Codelet pRCStorageHandler=new PRCStorageHandlerCodelet();
+        pRCStorageHandler.setName("PRC_STORAGE_HANDLER");
+        m.insertCodelet(pRCStorageHandler, "VENTRAL_Cs");
+        
+        DGBridgeCodelet dGBridgeCodelet = new DGBridgeCodelet();
+        dGBridgeCodelet.setName("DG_BRIDGE");
+        dGBridgeCodelet.addInput(recognizedObjectsSpikeMO);
+        dGBridgeCodelet.addInput(unintegratedScenePatternMO);
+        dGBridgeCodelet.addOutput(patternReplacedMO);
+        m.insertCodelet(dGBridgeCodelet, "DG_Cs");
+        
+        DGProcessCodelet dGProcessCodelet = new DGProcessCodelet(false);
         dGProcessCodelet.setName("DG_PROCESS");
-        dGProcessCodelet.addInput(recognizedObjectsSpikeMO);
-        dGProcessCodelet.addInput(unintegratedScenePatternMO);
-        dGProcessCodelet.addOutput(patternReplacedMO);
+        dGProcessCodelet.addInput(rootMO);
+        dGProcessCodelet.addInput(patternReplacedMO);
+        dGProcessCodelet.addOutput(newEncodedSceneSpikeMO);
+        dGProcessCodelet.addOutput(dgMidTermMemoryScenesMO);
         m.insertCodelet(dGProcessCodelet, "DG_Cs");
         
-        DGStorageHandlerCodelet dGStorageHandlerCodelet = new DGStorageHandlerCodelet(false);
+        DGStorageHandler dGStorageHandlerCodelet = new DGStorageHandler();
         dGStorageHandlerCodelet.setName("DG_STORAGE");
         dGStorageHandlerCodelet.addInput(rootMO);
-        dGStorageHandlerCodelet.addInput(patternReplacedMO);
-        dGStorageHandlerCodelet.addOutput(newEncodedSceneSpikeMO);
+        dGStorageHandlerCodelet.addInput(dgMidTermMemoryScenesMO);
+        dGStorageHandlerCodelet.addOutput(rootMO);
         m.insertCodelet(dGStorageHandlerCodelet, "DG_Cs");
+ 
         
-    
         
         //Unused codelets
         
@@ -775,7 +808,7 @@ public final class App {
         iTCProcess1.setName("ITC_PROCESS_1");
         m.insertCodelet(iTCProcess1, "VENTRAL_Cs");
         
-        Codelet pHCBridge=new PHCBridge();
+        Codelet pHCBridge=new DGStorageHandler();
         pHCBridge.setName("PHC_BRIDGE");
         m.insertCodelet(pHCBridge, "DORSAL_Cs");
         
@@ -789,17 +822,12 @@ public final class App {
         pRCProcess1.setName("PRC_PROCESS_1");
         m.insertCodelet(pRCProcess1, "VENTRAL_Cs");
         
-        Codelet pRCProcess2=new PRCProcess2();
-        pRCProcess2.setName("PRC_PROCESS_2");
-        m.insertCodelet(pRCProcess2, "VENTRAL_Cs");
+        
         
         Codelet pRCProcess3=new PRCProcess3();
         pRCProcess3.setName("PRC_PROCESS_3");
         m.insertCodelet(pRCProcess3, "VENTRAL_Cs");
         
-        Codelet pRCStorageHandler=new PRCStorageHandler();
-        pRCStorageHandler.setName("PRC_STORAGE_HANDLER");
-        m.insertCodelet(pRCStorageHandler, "VENTRAL_Cs");
         
         Codelet eNC=new ENC();
         eNC.setName("ENC");

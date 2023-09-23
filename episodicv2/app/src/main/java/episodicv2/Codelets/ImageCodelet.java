@@ -57,7 +57,7 @@ public class ImageCodelet extends Codelet {
         }
         imageReceivedPathMO.setI(imageReceivedPathIdea);
         
-        imageReceivedPathIdea = new Idea("imageReceivedPathIdea","/yolo/files/imagemteste.jpeg", "Property", 3);
+//        imageReceivedPathIdea = new Idea("imageReceivedPathIdea","/yolo/files/imagemteste.jpeg", "Property", 3);
       
     }
     

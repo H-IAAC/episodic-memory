@@ -9,11 +9,12 @@ import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
 import episodicv2.configuration.Configuration;
 import static episodicv2.configuration.Configuration.*;
-import episodicv2.emotions.EmotionalDecay;
+import episodicv2.emotions.ActivationFunctions;
 import java.util.ArrayList;
 import java.util.HashMap;
-import spike.Synchronizer;
-import t2dstring.OccupancyGrid;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import t2dstring.T2DString;
 
 /**
@@ -22,88 +23,84 @@ import t2dstring.T2DString;
  */
 public class DGProcessCodelet extends Codelet {
     
-    MemoryObject recognizedObjectsSpikeMO;
-    Idea recognizedObjectsSpikeIdea;
-    
-    MemoryObject unintegratedScenePatternMO;
-    Idea unintegratedScenePatternIdea;
+    MemoryObject rootMO;
+    Idea rootIdea;
     
     MemoryObject patternReplacedMO;
     Idea patternReplacedIdea;
+
+    MemoryObject newEncodedSceneSpikeMO;
+    Idea newEncodedSceneSpikeIdea;
     
-    private EmotionalDecay emotionalDecay = null;
-    private double affectIntensity = 0.0;
+    MemoryObject dgMidTermMemoryScenesMO;
+    Idea dgMidTermMemoryScenesIdea;
     
-    private Synchronizer synchronizer = new Synchronizer(2);
-    private static final int OBJECTS_LIST_KEY = 10;
-    private static final int SCENE_PATTERN_KEY = 20;
-    private ArrayList<Idea> dgObjects;
-    private String dgPattern;
+    private static final double SIMILARITY_THRESHOLD = Configuration.SIMILARITY_THRESHOLD;
     
-    public DGProcessCodelet() {
+    //CARGA LAS ESCENAS EXISTENTES
+    private static int DG_SIZE = 0;
+    private static ArrayList<Idea> midTermMemoryScenes;
+    private static Map<Integer, Idea> midTermMemoryScenesByID;
+    
+    public DGProcessCodelet(Boolean load) {
         
         setIsMemoryObserver(true);
+        midTermMemoryScenes = new ArrayList<>();
+        midTermMemoryScenesByID = new HashMap<>();
+
+        if (load) {
+            load();
+            loadDGSize();
+        }
         
     }
+    
     @Override
     public void accessMemoryObjects() {
-        recognizedObjectsSpikeMO = (MemoryObject) getInput(RECOGNIZED_OBJECTS_SPIKE_MO);
-        recognizedObjectsSpikeIdea = (Idea) recognizedObjectsSpikeMO.getI();
-        unintegratedScenePatternMO = (MemoryObject) getInput(UNINTEGRATED_SCENE_PATTERN_MO);
-        unintegratedScenePatternIdea = (Idea) unintegratedScenePatternMO.getI();
+        //  TODO: revisar o que deve ser entrada ou saída para que modifique a root mas não notifique para ativar o codelet sempre que a root alterar
+        rootMO = (MemoryObject) getInput(ROOT_MO);
+        rootIdea = (Idea) rootMO.getI();
         
-        patternReplacedMO = (MemoryObject) getOutput(PATTERN_REPLACED_MO);
+        patternReplacedMO = (MemoryObject) getInput(PATTERN_REPLACED_MO);
         patternReplacedIdea = (Idea) patternReplacedMO.getI();
+        
+        newEncodedSceneSpikeMO = (MemoryObject) getOutput(NEW_ENCODED_SCENE_SPIKE_MO);
+        newEncodedSceneSpikeIdea = (Idea) newEncodedSceneSpikeMO.getI();
+        
+        dgMidTermMemoryScenesMO = (MemoryObject) getOutput(DG_MID_TERM_MEMORY_SCENES_MO);
+        dgMidTermMemoryScenesIdea = (Idea) dgMidTermMemoryScenesMO.getI();
         
     }
     
     @Override
     public void proc() {
-        //TODO: identify what MO changed
-        Integer currentFrameObjects = (Integer) recognizedObjectsSpikeIdea.get(CURRENT_FRAME_IDEA).getValue();
-        Integer currentFramePattern = (Integer) unintegratedScenePatternIdea.get(CURRENT_FRAME_IDEA).getValue();
-        String pattern = (String) unintegratedScenePatternIdea.get(PATTERN_IDEA).getValue();
-        ArrayList<Idea> objects = (ArrayList<Idea>) recognizedObjectsSpikeIdea.get(OBJECTS_IDEA).getValue();
-            
-        synchronizer.addElement(OBJECTS_LIST_KEY, objects, currentFrameObjects);
-        synchronizer.addElement(SCENE_PATTERN_KEY, pattern, currentFramePattern);
+            dgMidTermMemoryScenesIdea.setL(new ArrayList());
+            newEncodedSceneSpikeIdea.setL(new ArrayList());
         
-        if (synchronizer.isFull()) {
-            initComponents();
-
-            this.dgObjects = (ArrayList<Idea>) synchronizer.getElement(OBJECTS_LIST_KEY);
-            this.dgPattern = (String) synchronizer.getElement(SCENE_PATTERN_KEY);
-
-            //Decode the pattern
-            OccupancyGrid occupancyGrid = T2DString.decodeMatrixAndReplace(createHashMap(this.dgObjects),
-                    this.dgPattern,
-                    Configuration.GRID_COLUMNS_X,
-                    Configuration.GRID_ROWS_Y);
-
-            //Creates the 2D String pattern
-            String patternReplaced = T2DString.create2DStringPattern(occupancyGrid,
-                    Configuration.IMAGE_WIDTH,
-                    Configuration.IMAGE_HEIGHT,
-                    Configuration.GRID_COLUMNS_X,
-                    Configuration.GRID_ROWS_Y);
+            String patternReplaced = (String) patternReplacedIdea.get(PATTERN_IDEA).getValue();
+            Integer time = (Integer) patternReplacedIdea.get(TIME_IDEA).getValue();
+            Double positiveAffect = (double) patternReplacedIdea.get(POSITIVE_AFFECT_IDEA).getValue();
+            Double negativeAffect = (double) patternReplacedIdea.get(NEGATIVE_AFFECT_IDEA).getValue();
+            Double affectIntensity = (double) patternReplacedIdea.get(AFFECT_INTENSITY_IDEA).getValue();
             
-            affectIntensity = emotionalDecay.getActivation();
+            /**
+             * INTENTA CREAR UNA NUEVA ESCENA SINO EXISTE UN PATRON SIMILAR SI
+             * EL PATRON EXISTE LO RETORNA PARA ASOCIACION
+             */
+
+            Idea scene = createNewScene(patternReplaced, positiveAffect, negativeAffect, affectIntensity, time);
             
-            Idea patternReplacedAtributeIdea = new Idea(PATTERN_IDEA, patternReplaced, "Property", 1);
-            Idea sincTimeIdea = new Idea(TIME_IDEA, synchronizer.getTime(),"Property", 1);
-            Idea positiveActivationIdea = new Idea(POSITIVE_AFFECT_IDEA, emotionalDecay.getPositiveActivation(), "Property", 1);
-            Idea negativeActivationIdea = new Idea(NEGATIVE_AFFECT_IDEA, emotionalDecay.getNegativeActivation(), "Property", 1);
-            Idea affectIntensityIdea = new Idea(AFFECT_INTENSITY_IDEA, affectIntensity, "Property", 1);
-            patternReplacedIdea.add(patternReplacedAtributeIdea);
-            patternReplacedIdea.add(sincTimeIdea);
-            patternReplacedIdea.add(positiveActivationIdea);
-            patternReplacedIdea.add(negativeActivationIdea);
-            patternReplacedIdea.add(affectIntensityIdea);
-
-
-            patternReplacedMO.setI(patternReplacedIdea);
-
-        }
+            newEncodedSceneSpikeIdea.add(scene);
+            newEncodedSceneSpikeMO.setI(newEncodedSceneSpikeIdea);
+            Idea midTermMemoryScenesIdea = new Idea(MID_TERM_MEMORY_SCENES, midTermMemoryScenes, "Property", 1);
+            Idea midTermMemoryScenesIdeaById = new Idea(MID_TERM_MEMORY_SCENES_BY_ID, midTermMemoryScenesByID, "Property", 1);
+            Idea dgSizeIdea = new Idea(DG_SIZE_IDEA, DG_SIZE, "Property", 1);
+            dgMidTermMemoryScenesIdea.add(midTermMemoryScenesIdea);
+            dgMidTermMemoryScenesIdea.add(midTermMemoryScenesIdeaById);
+            dgMidTermMemoryScenesIdea.add(dgSizeIdea);
+            Integer dgSize = (Integer) dgMidTermMemoryScenesIdea.get(DG_SIZE_IDEA).getValue();
+            System.out.println("DG size saved"+ dgSize);
+            dgMidTermMemoryScenesMO.setI(dgMidTermMemoryScenesIdea);
     }
     
     @Override
@@ -111,34 +108,227 @@ public class DGProcessCodelet extends Codelet {
         
     }
     
-    /**
-     * ESTA SOLUCION ES PORQUE EL MIDDLEWARE LLAMA DOS VECES AL CONSTRUCTOR DE
-     * LA MISMA CLASE (CREANDO DOS INTANCIAS), PERO SOLO LLAMA UNA VEZ AL METODO
-     * INIT (DE LA PRIMERA INSTANCIA) PERO EN EJECUCION USA LA SEGUNDA
-     * (IGNORANDO LO QUE SE HAYA INICIALIZADO EN LA SEGUNDA) SI SE INICIALIZA
-     * ALGO EN EL CONSTRUCTOR (COMO UN TIMER O UNA VENTANA) CREA DOS INSTANCIAS
+     /**
+     * STORES A NEW 2D STRING PATTERN
+     *
+     * @param pattern
+     * @param positiveAffect
+     * @param negativeAffect
+     * @param affectIntensity
+     * @param time
+     * @return
      */
-    private void initComponents() {
-        if (emotionalDecay == null) {
-            emotionalDecay = new EmotionalDecay(this.getClass().getName());
-            emotionalDecay.start();
+    public Idea createNewScene(String pattern, double positiveAffect, double negativeAffect, double affectIntensity, int time) {
+
+        int assignedId = 0;
+        Idea scene = getSimilar(pattern, affectIntensity);
+
+        //SI NO HAY UNA ESCENA SIMILAR CREA UNA NUEVA
+        if (scene == null) {
+
+            DG_SIZE = DG_SIZE + 1;
+            scene = new Idea(SCENE_IDEA, null, "Property", 1);
+            assignedId = DG_SIZE;
+            Idea idIdea = new Idea(ID_IDEA,assignedId, "Property", 1);
+            Idea patternIdea = new Idea(PATTERN_IDEA,pattern, "Property", 1);
+            Idea timeIdea = new Idea(TIME_IDEA,time, "Property", 1);
+            Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,1, "Property", 1);
+            Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,0.0, "Property", 1);
+            Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,0.0, "Property", 1);
+            Idea activationIdea = new Idea(ACTIVATION_IDEA,0.5, "Property", 1);
+            Idea timestampIdea = new Idea(TIMESTAMP_IDEA,System.currentTimeMillis(), "Property", 1);
+            Idea relationsIdea = new Idea(RELATIONS_IDEA,null, "Property", 1);
+            Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, "Property", 1);
+            Idea recentIdea = new Idea(RECENT_IDEA,null, "Property", 1);
+            scene.add(idIdea);
+            scene.add(patternIdea);
+            scene.add(timeIdea);
+            scene.add(repetitionsIdea);
+            scene.add(positiveAffectIdea);
+            scene.add(negativeAffectIdea);
+            scene.add(activationIdea);
+            scene.add(timestampIdea);
+            scene.add(relationsIdea);
+            scene.add(activeSimilarityIdea);
+            scene.add(recentIdea);
+            
+            midTermMemoryScenes.add(scene);
+            midTermMemoryScenesByID.put(assignedId, scene);
+
+        }else{
+            scene = updateScenePositiveAffect(positiveAffect, scene);
+            scene = updateSceneNegativeAffect(negativeAffect, scene);
         }
+
+        //SimpleLogger.log(this, "Created scene: " + scene.toString());
+        return scene;
+    }
+    
+     /**
+     * CHECKS IF EXISTS A 2D STRING SIMILAR INTO THE STORED ONES
+     *
+     * @param pattern
+     * @param affect
+     * @return
+     */
+    public Idea getSimilar(String pattern, Double affect) {
+
+        Idea similar = null;
+        if (midTermMemoryScenes != null) {
+            for (int i = 0; i < midTermMemoryScenes.size(); i++) {
+                Idea scene = midTermMemoryScenes.get(i);
+                String patternToCompare = (String) scene.get(PATTERN_IDEA).getValue();
+
+                float similarity = T2DString.lcs2DString(pattern, patternToCompare, T2DString.SIMILARITY_TYPE_1);
+
+                if (similarity >= SIMILARITY_THRESHOLD) {
+                    similar = scene;
+                    scene = updateSceneActivationWithAffect(affect, scene);
+                    scene.get(TIMESTAMP_IDEA).setValue(System.currentTimeMillis());
+
+                    break;
+                }
+
+            }
+        }
+        
+
+        //SI NO HAY UN PATRON SIMILAR EN MID-TERM LO BUSCA EN LONG-TERM
+        if (similar == null) {
+            Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
+            if (dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue() != null) {
+                System.out.println(DG_MEMORY_SCENES_IDEA);
+                System.out.println(dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue());
+                ArrayList<String> sceneLines = (ArrayList<String>) dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue();
+                for (String line: sceneLines) {
+                    Idea sceneIdea = storedSceneToIdea(line);
+
+                    String patternToCompare = (String) sceneIdea.get(PATTERN_IDEA).getValue();
+
+                    float similarity = T2DString.lcs2DString(pattern, patternToCompare, T2DString.SIMILARITY_TYPE_1);
+
+                    if (similarity >= SIMILARITY_THRESHOLD) {
+
+                        similar = sceneIdea;
+
+                        sceneIdea = updateSceneActivationWithAffect(affect, sceneIdea);
+                        sceneIdea.get(TIMESTAMP_IDEA).setValue(System.currentTimeMillis());
+
+                        Integer idScene = (Integer) sceneIdea.get(ID_IDEA).getValue();
+                        midTermMemoryScenes.add(sceneIdea);
+                        midTermMemoryScenesByID.put(idScene, sceneIdea);
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        return similar;
+    }
+    
+    public Idea updateSceneActivationWithAffect(double affectIntensity, Idea scene) {
+
+        Integer repetitions = (Integer) scene.get(REPETITIONS_IDEA).getValue();
+        Double activation = (Double) scene.get(ACTIVATION_IDEA).getValue();
+        Integer id = (Integer) scene.get(ID_IDEA).getValue();
+        repetitions++;
+
+        double scale = Configuration.SIGMOID_SCALE;
+        double alpha = Configuration.ALPHA_MEMORY_INC_RELEVANCE;
+        double beta = Configuration.BETA_AFFECT_RELEVANCE;
+
+        double weight = ActivationFunctions.weight(repetitions, scale, affectIntensity, alpha, beta);
+
+        double currentActivation = ActivationFunctions.sigmoid(weight);
+        activation = (activation + currentActivation) / 2.0;
+        
+        System.out.println("Scene: "+id+" activation: "+ activation +" repetition: " + repetitions);
+        
+        scene.get(REPETITIONS_IDEA).setValue(repetitions);
+        scene.get(ACTIVATION_IDEA).setValue(activation);
+        
+        return scene;
+        
+    }
+    
+    public Idea updateScenePositiveAffect(double affect, Idea scene) {
+        Double positiveAffect = (double) scene.get(POSITIVE_AFFECT_IDEA).getValue();
+        positiveAffect = (positiveAffect + affect) / 2;
+        scene.get(POSITIVE_AFFECT_IDEA).setValue(positiveAffect);
+        return scene;
+    }
+
+    public Idea updateSceneNegativeAffect(double affect, Idea scene) {
+        Double negativeAffect = (double) scene.get(NEGATIVE_AFFECT_IDEA).getValue();
+        negativeAffect = (negativeAffect + affect) / 2;
+        scene.get(NEGATIVE_AFFECT_IDEA).setValue(negativeAffect);
+        return scene;
+    }
+    
+        // 1,<(59)<<(63)<(64)<<<(60),<(60)<(59)<(63)(64),(4)(1)(2)(3),(2)(4)(5)(8),(3)(4)(4)(2),0000000176,0.93745,0.14345,1.00000,00000000000000000002,1607465245977
+
+    
+    private Idea storedSceneToIdea(String storedString) {
+        Idea storedSceneIdea = new Idea(STORED_SCENE_IDEA, null, "Property", 1);
+        
+        String data[] = storedString.split(",");
+        
+        Idea idIdea = new Idea(ID_IDEA, Integer.parseInt(data[0]), "Property", 1);
+        Idea patternIdea = new Idea(PATTERN_IDEA,data[1] + "," + data[2] + "," + data[3] + "," + data[4] + "," + data[5], "Property", 1);
+        Idea timeIdea = new Idea(TIME_IDEA,Integer.parseInt(data[10]), "Property", 1);
+        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,Integer.parseInt(data[6]), "Property", 1);
+        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,Double.parseDouble(data[7]), "Property", 1);
+        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,Double.parseDouble(data[8]), "Property", 1);
+        Idea activationIdea = new Idea(ACTIVATION_IDEA, Double.parseDouble(data[9]), "Property", 1);
+        Idea timestampIdea = new Idea(TIMESTAMP_IDEA,Long.parseLong(data[11]), "Property", 1);
+        Idea relationsIdea = new Idea(RELATIONS_IDEA,null, "Property", 1);
+        Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, "Property", 1);
+        Idea recentIdea = new Idea(RECENT_IDEA,false, "Property", 1);
+        
+        storedSceneIdea.add(idIdea);
+        storedSceneIdea.add(patternIdea);
+        storedSceneIdea.add(timeIdea);
+        storedSceneIdea.add(repetitionsIdea);
+        storedSceneIdea.add(positiveAffectIdea);
+        storedSceneIdea.add(negativeAffectIdea);
+        storedSceneIdea.add(activationIdea);
+        storedSceneIdea.add(timestampIdea);
+        storedSceneIdea.add(relationsIdea);
+        storedSceneIdea.add(activeSimilarityIdea);
+        storedSceneIdea.add(recentIdea);
+            
+        
+        return storedSceneIdea;
     }
     
     /**
-     * OPERATIONS
+     * *
+     * LOAD THE PATTERNS ON ROOT MEMORY
      */
-    private HashMap<Integer, Integer> createHashMap(ArrayList<Idea> objects) {
-
-        HashMap<Integer, Integer> objectsMap = new HashMap<>();
-
-        for (Idea object : objects) {
-            Integer preId = (Integer) object.get("pid").getValue();
-            Integer classId = (Integer) object.get("id").getValue();
-            objectsMap.put(preId, classId);
+    private void load() {
+        //load from rootMO
+        //TODO: what if is repeated??
+        Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
+        ArrayList<String> sceneLines = (ArrayList<String>) dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue();
+        for (String line: sceneLines) {
+            midTermMemoryScenes.add(storedSceneToIdea(line));
         }
-
-        return objectsMap;
     }
+    
+     /**
+     * *
+     * CARGA EL ARCHIVO DG_SIZE PARA SABER EL INDICE DE LA ULTIMA ESCENA
+     * GUARDADA
+     */
+    private void loadDGSize() {
+        //load size of dg
+        Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
+        Integer dgSize = (Integer) dgDataIdea.get(DG_SIZE_IDEA).getValue();
+        DG_SIZE = dgSize;
+        
+    }
+    
+  
     
 }
