@@ -21,7 +21,7 @@ import java.util.TreeSet;
  *
  * @author karenlima
  */
-public class DGStorageHandler extends Codelet {
+public class DGStorageHandlerCodelet extends Codelet {
     
     MemoryObject rootMO;
     Idea rootIdea;
@@ -34,54 +34,47 @@ public class DGStorageHandler extends Codelet {
     
     Integer savedTimes = 0;
 
-    public DGStorageHandler() {
+    public DGStorageHandlerCodelet() {
         try {
             setThreshold(0.5);
             
         } catch(CodeletThresholdBoundsException  ex){
             System.out.println("Threshold Bounds exception");
         }
-        
     }
     
     @Override
     public void accessMemoryObjects() {
+        System.out.println("[DG] Executing accessMemoryObjects DGStorageHandler");
+        System.out.println("DGStorageHandlerCodelet inputs"); 
+        System.out.println(getInputs());
         rootMO = (MemoryObject) getInput(ROOT_MO);
         dgMidTermMemoryScenesMO = (MemoryObject) getInput(DG_MID_TERM_MEMORY_SCENES_MO);
         rootOutputMO = (MemoryObject) getOutput(ROOT_MO);
         try {
             rootIdea = (Idea) rootMO.getI();
-            dgMidTermMemoryScenesIdea = (Idea) dgMidTermMemoryScenesMO.getI();
-            rootOutputIdea = (Idea) rootMO.getI();
+            rootOutputIdea = (Idea) rootOutputMO.getI();
+            System.out.println("[DG] Could access root");
         } catch (NullPointerException ex) {
-            System.out.println("Root MO is null");
+            System.out.println("[DG] Root MO is null");
+        }
+        
+        try {
+            dgMidTermMemoryScenesIdea = (Idea) dgMidTermMemoryScenesMO.getI();
+            System.out.println("[DG] Could access dgMidTermMemoryScenesIdea");
+        } catch (NullPointerException ex) {
+            System.out.println("[DG] dgMidTermMemoryScenesIdea is null");
         }
     }
     
     @Override
     public void proc() {
+        System.out.println("[DG] Executing proc DGStorageHandler");
         persistScenes();
         savedTimes+=1;
-        System.out.println("Scenes from DG persisted on rootMO" + savedTimes);
+        System.out.println("[DG] Scenes from DG persisted on rootMO" + savedTimes);
         
         
-        //        consolidationTimer = new Timer("Consolidation." + this.getClass().getName());
-//
-//        startConsolidation()
-    
-//      public void startConsolidation() { 
-//        //each X seconds it persists the scenes
-//
-//        long delay = Configuration.CONSOLIDATION_INTERVAL;
-//
-//        consolidationTimer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                //SimpleLogger.log(this, "Storing...");
-//                persistScenes();
-//            }
-//        }, delay, delay);
-//    }
     }
     
     @Override
@@ -94,12 +87,8 @@ public class DGStorageHandler extends Codelet {
                 setTimeStep(CONSOLIDATION_INTERVAL);
             } 
         } catch (NullPointerException ex) {
-            System.out.println("dgMidTermMemoryScenesIdea is null");
-        }
-            
-        
-        
-            
+            System.out.println("[DG] dgMidTermMemoryScenesIdea is null");
+        } 
         
         try {
             setActivation(activationValue);
@@ -121,10 +110,11 @@ public class DGStorageHandler extends Codelet {
         //save DGSize
         
         Map<Integer, Idea> midTermMemoryScenesByID = (Map<Integer, Idea>) dgMidTermMemoryScenesIdea.get(MID_TERM_MEMORY_SCENES_BY_ID).getValue();
-        Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
+        
         HashMap<Integer, Idea> scenesToUpdate = new HashMap<>();
         scenesToUpdate.putAll(midTermMemoryScenesByID);
         ArrayList<String> ideasToBeStored = new ArrayList<String>();
+        Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
         if ( dgDataIdea.get(DG_MEMORY_SCENES_IDEA) != null){
             ArrayList<String> previousData = (ArrayList<String>) dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue();
             if (previousData != null) {
@@ -160,7 +150,9 @@ public class DGStorageHandler extends Codelet {
         rootOutputIdea.get(DG_DATA_IDEA).setL(ideaslist);
         rootOutputMO.setI(rootOutputIdea);
         
+        
     }
+    
     
     
     private String ideatoStoredScene(Idea idea){

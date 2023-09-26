@@ -8,11 +8,11 @@ import episodicv2.FutureCodelets.CA1Process3;
 import episodicv2.FutureCodelets.CA3Process3;
 import episodicv2.FutureCodelets.VLPFCProcess2;
 import episodicv2.FutureCodelets.PRCProcess3;
-import episodicv2.FutureCodelets.CA1Process1;
+import episodicv2.Codelets.CA1Process1Codelet;
 import episodicv2.FutureCodelets.ENC;
 import episodicv2.FutureCodelets.MPFCProcess1;
-import episodicv2.FutureCodelets.CA3Process1;
-import episodicv2.Codelets.DGStorageHandler;
+import episodicv2.Codelets.CA3Process1Codelet;
+import episodicv2.Codelets.DGStorageHandlerCodelet;
 import episodicv2.FutureCodelets.PCBridge;
 import episodicv2.FutureCodelets.ITCProcess1;
 import episodicv2.FutureCodelets.PRCBridge;
@@ -21,11 +21,11 @@ import episodicv2.FutureCodelets.DLPFCPlanning;
 import episodicv2.Codelets.DGBridgeCodelet;
 import episodicv2.Codelets.PRCStorageHandlerCodelet;
 import episodicv2.FutureCodelets.MPFC;
-import episodicv2.FutureCodelets.CA3StorageHandler;
+import episodicv2.Codelets.CA3StorageHandlerCodelet;
 import episodicv2.FutureCodelets.DLPFC;
 import episodicv2.FutureCodelets.VLPFCProcess1;
 import episodicv2.FutureCodelets.DLPFCBaseController;
-import episodicv2.FutureCodelets.CA1StorageHandler;
+import episodicv2.Codelets.CA1StorageHandlerCodelet;
 import episodicv2.FutureCodelets.CA3;
 import episodicv2.Codelets.DGProcessCodelet;
 import episodicv2.FutureCodelets.ITCFeatures;
@@ -502,25 +502,25 @@ public final class App {
         scene7.add(activeSimilarity7);
         scene7.add(recent9);
         
-        Idea sceneRelationIdea = new Idea("sceneRelationIdea");
-        
-        Idea scene1Id = new Idea("scene1Id",null, "Property", 1);
-        Idea scene2Id = new Idea("scene2Id",null, "Property", 1);
-        Idea activation12 = new Idea("activation",null, "Property", 1);
-        Idea repetitions12 = new Idea("repetitions",null, "Property", 1);
-        Idea time24 = new Idea("time",null, "Property", 1);
-        Idea timestamp12 = new Idea("timestamp",null, "Property", 1);
-        Idea recent10 = new Idea("recent",null, "Property", 1);
-        Idea updated3 = new Idea("recent",null, "Property", 1);
-        
-        sceneRelationIdea.add(scene1Id);
-        sceneRelationIdea.add(scene2Id);
-        sceneRelationIdea.add(activation12);
-        sceneRelationIdea.add(repetitions12);
-        sceneRelationIdea.add(time24);
-        sceneRelationIdea.add(timestamp12);
-        sceneRelationIdea.add(recent10);
-        sceneRelationIdea.add(updated3);
+//        Idea sceneRelationIdea = new Idea("sceneRelationIdea");
+//        
+//        Idea scene1Id = new Idea("scene1Id",null, "Property", 1);
+//        Idea scene2Id = new Idea("scene2Id",null, "Property", 1);
+//        Idea activation12 = new Idea("activation",null, "Property", 1);
+//        Idea repetitions12 = new Idea("repetitions",null, "Property", 1);
+//        Idea time24 = new Idea("time",null, "Property", 1);
+//        Idea timestamp12 = new Idea("timestamp",null, "Property", 1);
+//        Idea recent10 = new Idea("recent",null, "Property", 1);
+//        Idea updated3 = new Idea("recent",null, "Property", 1);
+//        
+//        sceneRelationIdea.add(scene1Id);
+//        sceneRelationIdea.add(scene2Id);
+//        sceneRelationIdea.add(activation12);
+//        sceneRelationIdea.add(repetitions12);
+//        sceneRelationIdea.add(time24);
+//        sceneRelationIdea.add(timestamp12);
+//        sceneRelationIdea.add(recent10);
+//        sceneRelationIdea.add(updated3);
         
         Map<Integer, ConcurrentHashMap<Integer, Idea>> midTermMemorySceneRelationsCA1IdeaMap = new ConcurrentHashMap<>();
         
@@ -660,17 +660,27 @@ public final class App {
         dgMidTermMemoryScenesIdea.add(dgSizeMidIdea);
         
         Idea patternReplacedIdea = new Idea(PATTERN_REPLACED_IDEA,null,"Property",1);
+        
+        Idea recentNewEncodedSceneSpikeIdea = new Idea(RECENT_NEW_ENCODED_SCENE_SPIKE_IDEA,null,"Property",1);
+        Idea newEncodedSceneToStoreIdea = new Idea(NEW_ENCODED_SCENE_TO_STORE_IDEA,null,"Property",1);
+        Idea sceneRelationVertexToStoreIdea = new Idea(SCENE_RELATION_VERTEX_TO_STORE_IDEA,null,"Property",1);
+        
+        
         Idea dgMemoyScenesIdea = new Idea(DG_MEMORY_SCENES_IDEA, new ArrayList<String>(), "Property", 1);
         Idea dgSizeIdea = new Idea(DG_SIZE_IDEA,0,"Property",1);
         Idea dgDataIdea = new Idea(DG_DATA_IDEA,null,"Property",1);
         dgDataIdea.add(dgMemoyScenesIdea);
         dgDataIdea.add(dgSizeIdea);
         
-        
-        
+        Idea prcDataRelationsIdea = new Idea(PRC_DATA_RELATIONS_IDEA,null,"Property",1);
+        Idea prcDataAffectIdea = new Idea(PRC_DATA_AFFECT_IDEA,null,"Property",1);
+        Idea prcDataIdea = new Idea(PRC_DATA_IDEA,null,"Property",1);
+        prcDataIdea.add(prcDataRelationsIdea);
+        prcDataIdea.add(prcDataAffectIdea);
         
         Idea rootIdea = new Idea(ROOT_IDEA, null, "Property", 1);
         rootIdea.add(dgDataIdea);
+        rootIdea.add(prcDataIdea);
         
         MemoryObject rootMO;
         rootMO = m.createMemoryObject(ROOT_MO);
@@ -712,6 +722,19 @@ public final class App {
         dgMidTermMemoryScenesMO = m.createMemoryObject(DG_MID_TERM_MEMORY_SCENES_MO);
         dgMidTermMemoryScenesMO.setI(dgMidTermMemoryScenesIdea);
         
+        MemoryObject recentNewEncodedSceneSpikeMO;
+        recentNewEncodedSceneSpikeMO = m.createMemoryObject(RECENT_NEW_ENCODED_SCENE_SPIKE_MO);
+        recentNewEncodedSceneSpikeMO.setI(recentNewEncodedSceneSpikeIdea);
+        
+        MemoryObject newEncodedSceneToStoreMO;
+        newEncodedSceneToStoreMO = m.createMemoryObject(NEW_ENCODED_SCENE_TO_STORE_MO);
+        newEncodedSceneToStoreMO.setI(newEncodedSceneToStoreIdea);
+        
+        MemoryObject sceneRelationVertexToStoreMO;
+        sceneRelationVertexToStoreMO = m.createMemoryObject(SCENE_RELATION_VERTEX_TO_STORE_MO);
+        sceneRelationVertexToStoreMO.setI(sceneRelationVertexToStoreIdea);
+        
+   
         //Create Sensor Codelets
         ImageCodelet imageCodelet = new ImageCodelet();
         imageCodelet.setName("IMAGE");
@@ -752,9 +775,12 @@ public final class App {
         pRCProcess2.addOutput(pRCMidTermMemoryObjectRelationsMO);
         m.insertCodelet(pRCProcess2, "VENTRAL_Cs");
         
-        Codelet pRCStorageHandler=new PRCStorageHandlerCodelet();
-        pRCStorageHandler.setName("PRC_STORAGE_HANDLER");
-        m.insertCodelet(pRCStorageHandler, "VENTRAL_Cs");
+        PRCStorageHandlerCodelet pRCStorageHandlerCodelet=new PRCStorageHandlerCodelet();
+        pRCStorageHandlerCodelet.setName("PRC_STORAGE_HANDLER");
+        pRCStorageHandlerCodelet.addInput(rootMO);
+        pRCStorageHandlerCodelet.addInput(pRCMidTermMemoryObjectRelationsMO);
+        pRCStorageHandlerCodelet.addOutput(rootMO);
+        m.insertCodelet(pRCStorageHandlerCodelet, "VENTRAL_Cs");
         
         DGBridgeCodelet dGBridgeCodelet = new DGBridgeCodelet();
         dGBridgeCodelet.setName("DG_BRIDGE");
@@ -771,14 +797,44 @@ public final class App {
         dGProcessCodelet.addOutput(dgMidTermMemoryScenesMO);
         m.insertCodelet(dGProcessCodelet, "DG_Cs");
         
-        DGStorageHandler dGStorageHandlerCodelet = new DGStorageHandler();
+        DGStorageHandlerCodelet dGStorageHandlerCodelet = new DGStorageHandlerCodelet();
         dGStorageHandlerCodelet.setName("DG_STORAGE");
         dGStorageHandlerCodelet.addInput(rootMO);
         dGStorageHandlerCodelet.addInput(dgMidTermMemoryScenesMO);
         dGStorageHandlerCodelet.addOutput(rootMO);
         m.insertCodelet(dGStorageHandlerCodelet, "DG_Cs");
- 
         
+        CA3Process1Codelet cA3Process1Codelet=new CA3Process1Codelet();
+        cA3Process1Codelet.setName("CA3_PROCESS_1");
+        cA3Process1Codelet.addInput(newEncodedSceneSpikeMO);
+        cA3Process1Codelet.addOutput(recentNewEncodedSceneSpikeMO);
+        cA3Process1Codelet.addOutput(newEncodedSceneToStoreMO);
+        m.insertCodelet(cA3Process1Codelet, "CA3_Cs");
+        
+        CA3StorageHandlerCodelet cA3StorageHandlerCodelet=new CA3StorageHandlerCodelet();
+        cA3StorageHandlerCodelet.setName("CA3_STORAGE_HANDLER");
+        cA3StorageHandlerCodelet.addInput(newEncodedSceneToStoreMO);
+        cA3StorageHandlerCodelet.addInput(rootMO);
+        cA3StorageHandlerCodelet.addOutput(rootMO);
+        m.insertCodelet(cA3StorageHandlerCodelet, "CA3_Cs");
+        
+        CA1Process1Codelet cA1Process1Codelet=new CA1Process1Codelet();
+        cA1Process1Codelet.setName("CA1_PROCESS_1");
+        cA1Process1Codelet.addInput(recentNewEncodedSceneSpikeMO);
+        cA1Process1Codelet.addOutput(sceneRelationVertexToStoreMO);
+        m.insertCodelet(cA1Process1Codelet, "CA1_Cs");
+        
+        Codelet cA1Process2=new CA1Process2();
+        cA1Process2.setName("CA1_PROCESS_2");
+        m.insertCodelet(cA1Process2, "CA1_Cs");
+        
+        CA1StorageHandlerCodelet cA1StorageHandlerCodelet=new CA1StorageHandlerCodelet();
+        cA1StorageHandlerCodelet.setName("CA1_STORAGE_HANDLER");
+        cA1StorageHandlerCodelet.addInput(sceneRelationVertexToStoreMO);
+        cA1StorageHandlerCodelet.addInput(rootMO);
+        cA1StorageHandlerCodelet.addOutput(rootMO);
+        m.insertCodelet(cA1StorageHandlerCodelet, "CA1_Cs");
+       
         
         //Unused codelets
         
@@ -808,7 +864,7 @@ public final class App {
         iTCProcess1.setName("ITC_PROCESS_1");
         m.insertCodelet(iTCProcess1, "VENTRAL_Cs");
         
-        Codelet pHCBridge=new DGStorageHandler();
+        Codelet pHCBridge=new DGStorageHandlerCodelet();
         pHCBridge.setName("PHC_BRIDGE");
         m.insertCodelet(pHCBridge, "DORSAL_Cs");
         
@@ -837,9 +893,7 @@ public final class App {
         cA3.setName("CA3");
         m.insertCodelet(cA3, "CA3_Cs");
         
-        Codelet cA3Process1=new CA3Process1();
-        cA3Process1.setName("CA3_PROCESS_1");
-        m.insertCodelet(cA3Process1, "CA3_Cs");
+        
         
         Codelet cA3Process2=new CA3Process2();
         cA3Process2.setName("CA3_PROCESS_2");
@@ -849,27 +903,15 @@ public final class App {
         cA3Process3.setName("CA3_PROCESS_3");
         m.insertCodelet(cA3Process3, "CA3_Cs");
         
-        Codelet cA3StorageHandler=new CA3StorageHandler();
-        cA3StorageHandler.setName("CA3_STORAGE_HANDLER");
-        m.insertCodelet(cA3StorageHandler, "CA3_Cs");
-        
         Codelet cA1=new CA1();
         cA1.setName("CA1");
         m.insertCodelet(cA1, "CA1_Cs");
-        
-        Codelet cA1Process1=new CA1Process1();
-        cA1Process1.setName("CA1_PROCESS_1");
-        m.insertCodelet(cA1Process1, "CA1_Cs");
-        
-        Codelet cA1Process2=new CA1Process2();
-        cA1Process2.setName("CA1_PROCESS_2");
-        m.insertCodelet(cA1Process2, "CA1_Cs");
         
         Codelet cA1Process3=new CA1Process3();
         cA1Process3.setName("CA1_PROCESS_3");
         m.insertCodelet(cA1Process3, "CA1_Cs");
         
-        Codelet cA1StorageHandler=new CA1StorageHandler();
+        Codelet cA1StorageHandler=new CA1StorageHandlerCodelet();
         cA1StorageHandler.setName("CA1_STORAGE_HANDLER");
         m.insertCodelet(cA1StorageHandler, "CA1_Cs");
         

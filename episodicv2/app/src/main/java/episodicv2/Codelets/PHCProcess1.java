@@ -33,7 +33,7 @@ public class PHCProcess1 extends Codelet {
     @Override
     public void accessMemoryObjects() {
         
-        System.out.println("Executing accessMemoryObjects PHCProcess1");
+        System.out.println("[PHC] Executing accessMemoryObjects PHCProcess1");
 
         centerPointsSpikeMO = (MemoryObject) getInput(CENTER_POINTS_SPIKE_MO);
         centerPointsSpikeIdea = (Idea) centerPointsSpikeMO.getI();
@@ -43,7 +43,7 @@ public class PHCProcess1 extends Codelet {
     
     @Override
     public void proc() {
-        System.out.println("Executing proc PHCProcess1");
+        System.out.println("[PHC] Executing proc PHCProcess1");
         if (centerPointsSpikeIdea.get(OBJECTS_IDEA) != null) {
             ArrayList<Idea> objects = (ArrayList<Idea>) centerPointsSpikeIdea.get(OBJECTS_IDEA).getValue();
             Idea imageWidth1 = new Idea(IMAGE_WIDTH_IDEA,640, "Property", 1);
@@ -66,7 +66,7 @@ public class PHCProcess1 extends Codelet {
                     (int) gridColumnsX1.getValue(),
                     (int) gridRowsY1.getValue());
             Idea patternIdea = new Idea(PATTERN_IDEA, pattern, "Property", 1);
-            System.out.println("2DStringPattern generated:");
+            System.out.println("[PHC] 2DStringPattern generated:");
             System.out.println(pattern);
             unintegratedScenePatternIdea.add(patternIdea);
             

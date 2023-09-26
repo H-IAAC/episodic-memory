@@ -30,8 +30,10 @@ public class ITCCodelet extends Codelet {
 
     @Override
     public void accessMemoryObjects() {
-        System.out.println("Executing accessMemoryObjects ITCCodelet");
         
+        System.out.println("[ITC] Executing accessMemoryObjects ITCCodelet");
+        System.out.println("[ITC] inputs"); 
+        System.out.println(getInputs());
         centerPointsandClassesMO = (MemoryObject) getInput(CENTER_POINTS_CLASSES_MO);
         centerPointsandClassesIdea = (Idea) centerPointsandClassesMO.getI();
         
@@ -41,7 +43,7 @@ public class ITCCodelet extends Codelet {
     
     @Override
     public void proc() {
-        System.out.println("Executing proc ITCCodelet");
+        System.out.println("[ITC] Executing proc ITCCodelet");
         saveObjectsClasses();
     }
     
@@ -60,7 +62,6 @@ public class ITCCodelet extends Codelet {
                 Idea idIdea = new Idea(ID_IDEA,objectsClasses.get(i).get(CLASS_ID_IDEA).getValue());
                 Idea pid = new Idea(PID_IDEA,i);
                 Idea features = new Idea(FEATURES_IDEA,"");
-
                 Idea object = new Idea(OBJECT_IDEA,null, "Property", 1);
                 object.add(classIdea);
                 object.add(idIdea);

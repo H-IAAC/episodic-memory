@@ -36,7 +36,7 @@ public class Configuration {
     public static final double WM_RETRIEVAL_SIMILARITY_THRESHOLD = 0.8;
     public static final double RETRIEVABILITY_DECREASING_SCALE = 1000 * 60 * 60 * 8; //1000 * 60 * 60 * 24; //IN DAYS
     public static final double RETRIEVABILITY_THRESHOLD = 0.0;
-    public static final long CONSOLIDATION_INTERVAL = 1000 * 60;//1000 * 60 * 60 * 24;
+    public static final long CONSOLIDATION_INTERVAL = 1000 * 60 * 60 * 24;//1000 * 60 * 60 * 24;
     public static final double CONSOLIDATION_THRESHOLD = 0.0;
     
     
@@ -85,6 +85,9 @@ public class Configuration {
     public static final String OBJECT_IDEA = "object";
     public static final String PATTERN_IDEA = "pattern";
     public static final String OBJECTS_IDEA = "objects";
+    public static final String SCENE_ID_1_IDEA = "scene1IdIdea";
+    public static final String SCENE_ID_2_IDEA = "scene2IdIdea";
+    
 //    public static final String PATTERN_REPLACED = "patternReplaced";
     public static final String TIME_IDEA = "time";
     public static final String POSITIVE_AFFECT_IDEA = "positiveAffect";
@@ -102,16 +105,17 @@ public class Configuration {
     public static final String RELATIONS_IDEA = "relations";
     public static final String ACTIVE_SIMILARITY_IDEA = "activeSimilarity";
     public static final String RECENT_IDEA = "recent";
-    public static final String DG_SIZE_IDEA = "dgSize";
-    public static final String DG_MEMORY_SCENES_IDEA = "dgMemoyScenes";
+    public static final String DG_SIZE_IDEA = "dGSize";
+    public static final String DG_MEMORY_SCENES_IDEA = "dGMemoyScenes";
     public static final String MID_TERM_MEMORY_SCENES = "midTermMemoryScenes";
     public static final String MID_TERM_MEMORY_SCENES_BY_ID = "midTermMemoryScenesByID";
-    public static final String MID_TERM_MEMORY_OBJECTS = "midTermMemoryObjects";
-    public static final String MID_TERM_MEMORY_OBJECTS_BY_ID = "midTermMemoryObjectsByID";
+    public static final String MID_TERM_MEMORY_OBJECT_RELATIONS = "midTermMemoryObjectRelations";
+    public static final String MID_TERM_MEMORY_OBJECT_RELATIONS_BY_ID = "midTermMemoryObjectRelationsByID";
     public static final String OBJECT_1_ID_IDEA = "object1IdIdea";
     public static final String OBJECT_2_ID_IDEA = "object2IdIdea2";
     public static final String UPDATED_IDEA = "updatedIdea";
-    
+    public static final String INDEX_FILE = "indexFile";
+    public static final String RELATION_FILES_PRC = "relationFilesPRC";
     
     // COMPLEX IDEAS
     public static final String IMAGE_RECEIVED_PATH_IDEA = "imageReceivedPathIdea";
@@ -126,8 +130,17 @@ public class Configuration {
     public static final String ROOT_IDEA = "rootIdea";
     public static final String SCENE_IDEA = "sceneIdea";
     public static final String STORED_SCENE_IDEA = "storedSceneIdea";
-    public static final String DG_MID_TERM_MEMORY_SCENES_IDEA = "dgMidTermMemoryScenesIdea";
+    public static final String DG_MID_TERM_MEMORY_SCENES_IDEA = "dGMidTermMemoryScenesIdea";
     public static final String OBJECT_RELATION_IDEA = "objectRelationIdea";
+    public static final String OBJECT_RELATIONS_IDEA = "objectRelationsIdea";
+    public static final String PRC_DATA_IDEA = "pRCDataIdea";
+    public static final String PRC_DATA_RELATIONS_IDEA = "pRCDataRelationsIdea";
+    public static final String PRC_DATA_AFFECT_IDEA = "pRCDataAffectIdea";
+    public static final String RECENT_NEW_ENCODED_SCENE_SPIKE_IDEA = "recentNewEncodedSceneSpikeIdea";
+    public static final String NEW_ENCODED_SCENE_TO_STORE_IDEA = "newEncodedSceneToStoreIdea";
+    public static final String SCENE_RELATION_VERTEX_TO_STORE_IDEA = "sceneRelationVertexToStoreIdea";
+    public static final String SCENE_RELATION_IDEA = "sceneRelationIdea";
+    
     
     
     
@@ -143,6 +156,9 @@ public class Configuration {
     public static final String PRC_MID_TERM_OBJECT_RELATIONS_MO = "pRCMidTermMemoryObjectRelationsMO";
     public static final String PATTERN_REPLACED_MO = "patternReplacedMO";
     public static final String DG_MID_TERM_MEMORY_SCENES_MO = "dgMidTermMemoryScenesMO";
+    public static final String RECENT_NEW_ENCODED_SCENE_SPIKE_MO = "recentNewEncodedSceneSpikeMO";
+    public static final String NEW_ENCODED_SCENE_TO_STORE_MO = "newEncodedSceneToStoreMO";
+    public static final String SCENE_RELATION_VERTEX_TO_STORE_MO = "sceneRelationVertexToStoreMO";
     
     
     

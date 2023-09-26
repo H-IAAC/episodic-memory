@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package episodicv2.FutureCodelets;
+package episodicv2.Codelets;
 
 import br.unicamp.cst.core.entities.Codelet;
 
@@ -10,7 +10,7 @@ import br.unicamp.cst.core.entities.Codelet;
  *
  * @author karenlima
  */
-public class CA1Process1 extends Codelet {
+public class CA3StorageHandlerCodelet extends Codelet {
 
     @Override
     public void accessMemoryObjects() {

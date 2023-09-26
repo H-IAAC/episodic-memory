@@ -30,7 +30,7 @@ public class PPCCodelet extends Codelet {
 
     @Override
     public void accessMemoryObjects() {
-        System.out.println("Executing accessMemoryObjects PPCCodelet");
+        System.out.println("[PPC] Executing accessMemoryObjects PPCCodelet");
         
         centerPointsandClassesMO = (MemoryObject) getInput(CENTER_POINTS_CLASSES_MO);
         centerPointsandClassesIdea = (Idea) centerPointsandClassesMO.getI();
@@ -41,7 +41,7 @@ public class PPCCodelet extends Codelet {
     
     @Override
     public void proc() {
-        System.out.println("Executing proc PPCCodelet");
+        System.out.println("[PPC] Executing proc PPCCodelet");
         saveObjectsPoints();
     }
     

@@ -57,6 +57,7 @@ public class DGProcessCodelet extends Codelet {
     
     @Override
     public void accessMemoryObjects() {
+        System.out.println("[DG] Executing accessMemoryObjects DGProcessCodelet");
         //  TODO: revisar o que deve ser entrada ou saída para que modifique a root mas não notifique para ativar o codelet sempre que a root alterar
         rootMO = (MemoryObject) getInput(ROOT_MO);
         rootIdea = (Idea) rootMO.getI();
@@ -74,33 +75,42 @@ public class DGProcessCodelet extends Codelet {
     
     @Override
     public void proc() {
-            dgMidTermMemoryScenesIdea.setL(new ArrayList());
-            newEncodedSceneSpikeIdea.setL(new ArrayList());
+        System.out.println("[DG] Executing proc DGProcessCodelet");
         
-            String patternReplaced = (String) patternReplacedIdea.get(PATTERN_IDEA).getValue();
-            Integer time = (Integer) patternReplacedIdea.get(TIME_IDEA).getValue();
-            Double positiveAffect = (double) patternReplacedIdea.get(POSITIVE_AFFECT_IDEA).getValue();
-            Double negativeAffect = (double) patternReplacedIdea.get(NEGATIVE_AFFECT_IDEA).getValue();
-            Double affectIntensity = (double) patternReplacedIdea.get(AFFECT_INTENSITY_IDEA).getValue();
-            
-            /**
-             * INTENTA CREAR UNA NUEVA ESCENA SINO EXISTE UN PATRON SIMILAR SI
-             * EL PATRON EXISTE LO RETORNA PARA ASOCIACION
-             */
 
-            Idea scene = createNewScene(patternReplaced, positiveAffect, negativeAffect, affectIntensity, time);
-            
-            newEncodedSceneSpikeIdea.add(scene);
-            newEncodedSceneSpikeMO.setI(newEncodedSceneSpikeIdea);
-            Idea midTermMemoryScenesIdea = new Idea(MID_TERM_MEMORY_SCENES, midTermMemoryScenes, "Property", 1);
-            Idea midTermMemoryScenesIdeaById = new Idea(MID_TERM_MEMORY_SCENES_BY_ID, midTermMemoryScenesByID, "Property", 1);
-            Idea dgSizeIdea = new Idea(DG_SIZE_IDEA, DG_SIZE, "Property", 1);
-            dgMidTermMemoryScenesIdea.add(midTermMemoryScenesIdea);
-            dgMidTermMemoryScenesIdea.add(midTermMemoryScenesIdeaById);
-            dgMidTermMemoryScenesIdea.add(dgSizeIdea);
-            Integer dgSize = (Integer) dgMidTermMemoryScenesIdea.get(DG_SIZE_IDEA).getValue();
-            System.out.println("DG size saved"+ dgSize);
-            dgMidTermMemoryScenesMO.setI(dgMidTermMemoryScenesIdea);
+        String patternReplaced = (String) patternReplacedIdea.get(PATTERN_IDEA).getValue();
+        Integer time = (Integer) patternReplacedIdea.get(TIME_IDEA).getValue();
+        Double positiveAffect = (Double) patternReplacedIdea.get(POSITIVE_AFFECT_IDEA).getValue();
+        Double negativeAffect = (Double) patternReplacedIdea.get(NEGATIVE_AFFECT_IDEA).getValue();
+        Double affectIntensity = (Double) patternReplacedIdea.get(AFFECT_INTENSITY_IDEA).getValue();
+
+        /**
+         * INTENTA CREAR UNA NUEVA ESCENA SINO EXISTE UN PATRON SIMILAR SI
+         * EL PATRdON EXISTE LO RETORNA PARA ASOCIACION
+         */
+
+        Idea scene = createNewScene(patternReplaced, positiveAffect, negativeAffect, affectIntensity, time);
+        newEncodedSceneSpikeIdea.setL(new ArrayList());
+        newEncodedSceneSpikeIdea.add(scene);
+        
+        newEncodedSceneSpikeIdea.add(new Idea(CURRENT_FRAME_IDEA, patternReplacedIdea.get(CURRENT_FRAME_IDEA).getValue(), "Property", 1));
+        newEncodedSceneSpikeMO.setI(newEncodedSceneSpikeIdea);
+        
+        Idea midTermMemoryScenesIdea = new Idea(MID_TERM_MEMORY_SCENES, midTermMemoryScenes, "Property", 1);
+        Idea midTermMemoryScenesIdeaById = new Idea(MID_TERM_MEMORY_SCENES_BY_ID, midTermMemoryScenesByID, "Property", 1);
+        Idea dgSizeIdea = new Idea(DG_SIZE_IDEA, DG_SIZE, "Property", 1);
+        
+        dgMidTermMemoryScenesIdea.setL(new ArrayList());
+        dgMidTermMemoryScenesIdea.add(midTermMemoryScenesIdea);
+        dgMidTermMemoryScenesIdea.add(midTermMemoryScenesIdeaById);
+        dgMidTermMemoryScenesIdea.add(dgSizeIdea);
+        Integer dgSize = (Integer) dgMidTermMemoryScenesIdea.get(DG_SIZE_IDEA).getValue();
+        System.out.println("[DG] DG size saved at dgMidTermMemoryScenesIdea(DGProcessCodelet): "+ dgSize);
+        dgMidTermMemoryScenesMO.setI(dgMidTermMemoryScenesIdea);
+        
+        Idea testeIdea = (Idea) dgMidTermMemoryScenesMO.getI();
+        System.out.println("[DG] dgMidTermMemoryScenesMO idea content");
+        System.out.println(testeIdea.getL());
     }
     
     @Override
@@ -139,7 +149,7 @@ public class DGProcessCodelet extends Codelet {
             Idea timestampIdea = new Idea(TIMESTAMP_IDEA,System.currentTimeMillis(), "Property", 1);
             Idea relationsIdea = new Idea(RELATIONS_IDEA,null, "Property", 1);
             Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, "Property", 1);
-            Idea recentIdea = new Idea(RECENT_IDEA,null, "Property", 1);
+            Idea recentIdea = new Idea(RECENT_IDEA,true, "Property", 1);
             scene.add(idIdea);
             scene.add(patternIdea);
             scene.add(timeIdea);

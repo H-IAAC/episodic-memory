@@ -47,6 +47,7 @@ public class DGBridgeCodelet extends Codelet {
     }
     @Override
     public void accessMemoryObjects() {
+        System.out.println("Executing accessMemoryObjects DGBridgeCodelet");
         recognizedObjectsSpikeMO = (MemoryObject) getInput(RECOGNIZED_OBJECTS_SPIKE_MO);
         recognizedObjectsSpikeIdea = (Idea) recognizedObjectsSpikeMO.getI();
         unintegratedScenePatternMO = (MemoryObject) getInput(UNINTEGRATED_SCENE_PATTERN_MO);
@@ -59,6 +60,7 @@ public class DGBridgeCodelet extends Codelet {
     
     @Override
     public void proc() {
+        System.out.println("[DG] Executing proc DGBridgeCodelet");
         //TODO: identify what MO changed
         Integer currentFrameObjects = (Integer) recognizedObjectsSpikeIdea.get(CURRENT_FRAME_IDEA).getValue();
         Integer currentFramePattern = (Integer) unintegratedScenePatternIdea.get(CURRENT_FRAME_IDEA).getValue();
@@ -100,7 +102,7 @@ public class DGBridgeCodelet extends Codelet {
             patternReplacedIdea.add(negativeActivationIdea);
             patternReplacedIdea.add(affectIntensityIdea);
 
-
+            patternReplacedIdea.add(new Idea(CURRENT_FRAME_IDEA, currentFrameObjects, "Property", 1));
             patternReplacedMO.setI(patternReplacedIdea);
 
         }

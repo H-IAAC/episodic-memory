@@ -32,17 +32,19 @@ public class PRCProcess2Codelet extends Codelet {
     private ObjectsAssociation objectsAssociation = ObjectsAssociation.getInstance();
     private double affectIntensity = 0.0;
     
-    private static Map<Integer, ConcurrentHashMap<Integer, Idea>> midTermMemoryObjectRelations;
+    private static Map<Integer, ConcurrentHashMap<Integer, Idea>> midTermMemoryObjectRelations = new ConcurrentHashMap<>();;
+    
+    //CARGA LAS ESCENAS EXISTENTES
+    private static Map<Integer, Idea> midTermMemoryObjectsByID = new ConcurrentHashMap<>();
 
     public PRCProcess2Codelet() {
-        midTermMemoryObjectRelations = new ConcurrentHashMap<>();
         setIsMemoryObserver(true);
         
     }
+    
     @Override
     public void accessMemoryObjects() {
-        //output midTermMemoryObjectRelations com as infos de PRCstoragehandler e Affective storage
-        //output 
+        System.out.println("[PRC2] Executing accessMemoryObjects PRCProcess2Codelet");
         recognizedObjectsSpikeMO = (MemoryObject) getInput(RECOGNIZED_OBJECTS_SPIKE_MO);
         recognizedObjectsSpikeIdea = (Idea) recognizedObjectsSpikeMO.getI();
         
@@ -52,22 +54,32 @@ public class PRCProcess2Codelet extends Codelet {
     
     @Override
     public void proc() {
+        System.out.println("[PRC2] Executing proc PRCProcess2Codelet");
         initComponents();
         affectIntensity = emotionalDecay.getActivation();
 
         ArrayList<Idea> objects = (ArrayList<Idea>) recognizedObjectsSpikeIdea.get(OBJECTS_IDEA).getValue();
-        
+        Integer currentFrame = (Integer) recognizedObjectsSpikeIdea.get(CURRENT_FRAME_IDEA).getValue();
         //CREATES THE RELATIONS BETWEEN THE OBJECTS
         ArrayList<Idea> relations = objectsAssociation.addObjects(objects);
         addVertexArray(relations, affectIntensity);
-        //storageHandler.addVertex(relations, affectIntensity);
         //ASSIGNS AN AFFECTIVE VALUE TO THE CURRENT OBJECTS
-//        for (CObject cObject : spike.getObject()) {
-//
-//            ObjectRelations object = new ObjectRelations(cObject.getClassId(), emotionalDecay.getPositiveActivation(), emotionalDecay.getNegativeActivation(), spike.getTime());
-//
-//            affectStorageHandler.storeObject(object);
-//        }
+        for (Idea cObject : objects) {
+            Integer objectId = (Integer) cObject.get(ID_IDEA).getValue();
+            Idea object = createObjectRelationsIdea(objectId, emotionalDecay.getPositiveActivation(), emotionalDecay.getNegativeActivation(), currentFrame);
+            storeObject(object);
+        }
+        Idea midTermMemoryObjectRelationsIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS, midTermMemoryObjectRelations,"Property", 1);
+        Idea midTermMemoryObjectRelationsByIdIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS_BY_ID, midTermMemoryObjectsByID,"Property", 1);
+        pRCMidTermMemoryObjectRelationsIdea.setL(new ArrayList<>());
+        pRCMidTermMemoryObjectRelationsIdea.add(midTermMemoryObjectRelationsIdea);
+        pRCMidTermMemoryObjectRelationsIdea.add(midTermMemoryObjectRelationsByIdIdea);
+        pRCMidTermMemoryObjectRelationsMO.setI(pRCMidTermMemoryObjectRelationsIdea);
+        
+        System.out.println("pRCMidTermMemoryObjectRelationsIdea content");
+        System.out.println(pRCMidTermMemoryObjectRelationsMO.getI());
+        Idea testeIdea = (Idea) pRCMidTermMemoryObjectRelationsMO.getI();
+        System.out.println(testeIdea.getL());
     }
     
     @Override
@@ -123,7 +135,6 @@ public class PRCProcess2Codelet extends Codelet {
 
         Idea sourceRelation = sourceRelations.get(destination);
         Idea destinationRelation = destinationRelations.get(source);
-
         if (sourceRelation == null) {
             sourceRelations.put(destination, createObjectRelationIdea(destination, source, edgeTime));
         } else {
@@ -148,25 +159,25 @@ public class PRCProcess2Codelet extends Codelet {
 
     }
     
-    
     public Idea incrementRepetitions(Idea idea, double affectIntensity) {
         Integer repetionsValue = (Integer) idea.get(REPETITIONS_IDEA).getValue();
         repetionsValue++;
         idea.get(REPETITIONS_IDEA).setValue(repetionsValue);
-     
+
         double scale = SIGMOID_SCALE;
         double affect = affectIntensity;
         double alpha = ALPHA_MEMORY_INC_RELEVANCE;
         double beta = BETA_AFFECT_RELEVANCE;       
-        
+
         double weight = ActivationFunctions.weight(repetionsValue, scale, affect, alpha, beta);
-  
+
         double currentActivation = ActivationFunctions.sigmoid(weight);
         Double activationValue = (Double) idea.get(ACTIVATION_IDEA).getValue();
         activationValue  = (activationValue + currentActivation) / 2.0;
         idea.get(ACTIVATION_IDEA).setValue(activationValue);
-        
+
         return idea;
+        
     }
     
     private void createIfNotExists(int key) {
@@ -195,6 +206,90 @@ public class PRCProcess2Codelet extends Codelet {
         objectRelationIdea.add(updatedIdea);
         objectRelationIdea.add(repetitionsIdea);
         return objectRelationIdea;
+    }
+    
+    private Idea createObjectRelationsIdea(Integer objectId, double positiveAffect, double negativeAffect, Integer time) {
+        Idea objectRelationsIdea = new Idea(OBJECT_RELATIONS_IDEA, null,"Property", 1);
+        Idea objectIdIdea = new Idea(ID_IDEA, objectId,"Property", 1);
+        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA, positiveAffect,"Property", 1);
+        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA, negativeAffect,"Property", 1);
+        Idea activationIdea = new Idea(ACTIVATION_IDEA, 0.5,"Property", 1);
+        Idea timeIdea = new Idea(TIME_IDEA, time,"Property", 1);
+        Idea timestampIdea = new Idea(TIMESTAMP_IDEA, System.currentTimeMillis(),"Property", 1);
+        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA, 0,"Property", 1);
+
+        objectRelationsIdea.add(objectIdIdea);
+        objectRelationsIdea.add(positiveAffectIdea);
+        objectRelationsIdea.add(negativeAffectIdea);
+        objectRelationsIdea.add(activationIdea);
+        objectRelationsIdea.add(timeIdea);
+        objectRelationsIdea.add(timestampIdea);
+        objectRelationsIdea.add(repetitionsIdea);
+        objectRelationsIdea = updateActivationWithAffect(objectRelationsIdea, ActivationFunctions.affect(positiveAffect, negativeAffect));
+        return objectRelationsIdea;
+    }
+    
+    /**
+     *
+     * @param object
+     */
+    public void storeObject(Idea object) {
+        Integer objectId = (Integer) object.get(ID_IDEA).getValue();
+        Double positiveAffect = (Double) object.get(POSITIVE_AFFECT_IDEA).getValue();
+        Double negativeAffect = (Double) object.get(NEGATIVE_AFFECT_IDEA).getValue();
+        Long timeStamp = (Long) object.get(TIMESTAMP_IDEA).getValue();
+        
+
+        if (!midTermMemoryObjectsByID.containsKey(objectId)) {
+
+            midTermMemoryObjectsByID.put(objectId, object);
+
+        } else {
+
+            Idea existingObject = midTermMemoryObjectsByID.get(objectId);
+
+            //existingObject.updateActivationWithAffect(object.getAffect());
+            existingObject = incrementRepetitions(existingObject, ActivationFunctions.affect(positiveAffect, negativeAffect));
+            existingObject = updatePositiveAffect(existingObject, positiveAffect);
+            existingObject = updateNegativeAffect(existingObject, negativeAffect);
+            //existingObject.updateAffect(object.getAffect());
+            existingObject.get(TIMESTAMP_IDEA).setValue(timeStamp);
+        }
+
+    }
+    
+    public Idea updatePositiveAffect(Idea idea, double affect) {
+        Double positiveAffect = (Double) idea.get(POSITIVE_AFFECT_IDEA).getValue();
+        positiveAffect = (positiveAffect + affect) / 2;
+        idea.get(POSITIVE_AFFECT_IDEA).setValue(positiveAffect);
+        
+        return idea;
+    }
+    
+    public Idea updateNegativeAffect(Idea idea, double affect) {
+        Double negativeAfffect = (Double) idea.get(NEGATIVE_AFFECT_IDEA).getValue();
+        negativeAfffect = (negativeAfffect + affect) / 2;
+        idea.get(NEGATIVE_AFFECT_IDEA).setValue(negativeAfffect);
+        
+        return idea;
+    }
+    
+    public Idea updateActivationWithAffect(Idea idea, double affectIntensity) {
+        Integer repetitions = (Integer) idea.get(REPETITIONS_IDEA).getValue();
+        repetitions++;
+
+        double scale = SIGMOID_SCALE;
+        double alpha = ALPHA_MEMORY_INC_RELEVANCE;
+        double beta = BETA_AFFECT_RELEVANCE;
+
+        double weight = ActivationFunctions.weight(repetitions, scale, affectIntensity, alpha, beta);
+
+        double currentActivation = ActivationFunctions.sigmoid(weight);
+        Double activation = (Double) idea.get(ACTIVATION_IDEA).getValue();
+        activation = (activation + currentActivation) / 2.0;
+        idea.get(ACTIVATION_IDEA).setValue(activation);
+        
+        return idea;
     }
     
 }
