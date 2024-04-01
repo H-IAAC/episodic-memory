@@ -42,9 +42,12 @@ dependencies {
     implementation 'com.google.guava:guava:31.0.1-jre'
 
     //implementation 'com.github.CST-Group:cst:1.2.0'
-    implementation 'com.github.CST-Group:cst-desktop:1.0.4'
+    implementation 'com.github.CST-Group:cst-desktop:1.0.5'
     //implementation 'com.github.CST-Group:cst-desktop:1.0.3'
     implementation fileTree(dir: 'libs', include: '*.jar')
+    
+    //implementation 'org.openpnp:opencv:4.7.0-0'
+
 }
 
 application {

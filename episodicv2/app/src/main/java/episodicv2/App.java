@@ -32,7 +32,7 @@ import episodicv2.FutureCodelets.ITCFeatures;
 import episodicv2.Codelets.PRCProcess2Codelet;
 import episodicv2.FutureCodelets.VLPFC;
 import episodicv2.FutureCodelets.CA3Process2;
-import episodicv2.FutureCodelets.ITCBridge;
+import episodicv2.Codelets.SimulatorCodelet;
 import episodicv2.Codelets.PPCCodelet;
 import episodicv2.FutureCodelets.SB;
 import episodicv2.FutureCodelets.CA1Process2;
@@ -753,41 +753,41 @@ public final class App {
         ppcCodelet.setName("PPC");
         ppcCodelet.addInput(centerPointsandClassesMO);
         ppcCodelet.addOutput(centerPointsSpikeMO);
-        m.insertCodelet(ppcCodelet, "DORSAL_Cs");
+//        m.insertCodelet(ppcCodelet, "DORSAL_Cs");
         
         //Creates 2DString pattern
         PHCProcess1 pHCProcess1Codelet = new PHCProcess1();
         pHCProcess1Codelet.setName("PHC_PROCESS_1");
         pHCProcess1Codelet.addInput(centerPointsSpikeMO);
         pHCProcess1Codelet.addOutput(unintegratedScenePatternMO);
-        m.insertCodelet(pHCProcess1Codelet, "DORSAL_Cs");
+//        m.insertCodelet(pHCProcess1Codelet, "DORSAL_Cs");
         
         //Gets the image classes labels and ids
         ITCCodelet iTCCodelet = new ITCCodelet();
         iTCCodelet.setName("ITC");
         iTCCodelet.addInput(centerPointsandClassesMO);
         iTCCodelet.addOutput(recognizedObjectsSpikeMO);
-        m.insertCodelet(iTCCodelet, "VENTRAL_Cs");
+//        m.insertCodelet(iTCCodelet, "VENTRAL_Cs");
         
         PRCProcess2Codelet pRCProcess2 = new PRCProcess2Codelet();
         pRCProcess2.setName("PRC_PROCESS_2");
         pRCProcess2.addInput(recognizedObjectsSpikeMO);
         pRCProcess2.addOutput(pRCMidTermMemoryObjectRelationsMO);
-        m.insertCodelet(pRCProcess2, "VENTRAL_Cs");
+//        m.insertCodelet(pRCProcess2, "VENTRAL_Cs");
         
         PRCStorageHandlerCodelet pRCStorageHandlerCodelet=new PRCStorageHandlerCodelet();
         pRCStorageHandlerCodelet.setName("PRC_STORAGE_HANDLER");
         pRCStorageHandlerCodelet.addInput(rootMO);
         pRCStorageHandlerCodelet.addInput(pRCMidTermMemoryObjectRelationsMO);
         pRCStorageHandlerCodelet.addOutput(rootMO);
-        m.insertCodelet(pRCStorageHandlerCodelet, "VENTRAL_Cs");
+//        m.insertCodelet(pRCStorageHandlerCodelet, "VENTRAL_Cs");
         
         DGBridgeCodelet dGBridgeCodelet = new DGBridgeCodelet();
         dGBridgeCodelet.setName("DG_BRIDGE");
         dGBridgeCodelet.addInput(recognizedObjectsSpikeMO);
         dGBridgeCodelet.addInput(unintegratedScenePatternMO);
         dGBridgeCodelet.addOutput(patternReplacedMO);
-        m.insertCodelet(dGBridgeCodelet, "DG_Cs");
+//        m.insertCodelet(dGBridgeCodelet, "DG_Cs");
         
         DGProcessCodelet dGProcessCodelet = new DGProcessCodelet(false);
         dGProcessCodelet.setName("DG_PROCESS");
@@ -795,45 +795,49 @@ public final class App {
         dGProcessCodelet.addInput(patternReplacedMO);
         dGProcessCodelet.addOutput(newEncodedSceneSpikeMO);
         dGProcessCodelet.addOutput(dgMidTermMemoryScenesMO);
-        m.insertCodelet(dGProcessCodelet, "DG_Cs");
+//        m.insertCodelet(dGProcessCodelet, "DG_Cs");
         
         DGStorageHandlerCodelet dGStorageHandlerCodelet = new DGStorageHandlerCodelet();
         dGStorageHandlerCodelet.setName("DG_STORAGE");
         dGStorageHandlerCodelet.addInput(rootMO);
         dGStorageHandlerCodelet.addInput(dgMidTermMemoryScenesMO);
         dGStorageHandlerCodelet.addOutput(rootMO);
-        m.insertCodelet(dGStorageHandlerCodelet, "DG_Cs");
+//        m.insertCodelet(dGStorageHandlerCodelet, "DG_Cs");
         
         CA3Process1Codelet cA3Process1Codelet=new CA3Process1Codelet();
         cA3Process1Codelet.setName("CA3_PROCESS_1");
         cA3Process1Codelet.addInput(newEncodedSceneSpikeMO);
         cA3Process1Codelet.addOutput(recentNewEncodedSceneSpikeMO);
         cA3Process1Codelet.addOutput(newEncodedSceneToStoreMO);
-        m.insertCodelet(cA3Process1Codelet, "CA3_Cs");
+//        m.insertCodelet(cA3Process1Codelet, "CA3_Cs");
         
         CA3StorageHandlerCodelet cA3StorageHandlerCodelet=new CA3StorageHandlerCodelet();
         cA3StorageHandlerCodelet.setName("CA3_STORAGE_HANDLER");
         cA3StorageHandlerCodelet.addInput(newEncodedSceneToStoreMO);
         cA3StorageHandlerCodelet.addInput(rootMO);
         cA3StorageHandlerCodelet.addOutput(rootMO);
-        m.insertCodelet(cA3StorageHandlerCodelet, "CA3_Cs");
+//        m.insertCodelet(cA3StorageHandlerCodelet, "CA3_Cs");
         
         CA1Process1Codelet cA1Process1Codelet=new CA1Process1Codelet();
         cA1Process1Codelet.setName("CA1_PROCESS_1");
         cA1Process1Codelet.addInput(recentNewEncodedSceneSpikeMO);
         cA1Process1Codelet.addOutput(sceneRelationVertexToStoreMO);
-        m.insertCodelet(cA1Process1Codelet, "CA1_Cs");
+//        m.insertCodelet(cA1Process1Codelet, "CA1_Cs");
         
         Codelet cA1Process2=new CA1Process2();
         cA1Process2.setName("CA1_PROCESS_2");
-        m.insertCodelet(cA1Process2, "CA1_Cs");
+//        m.insertCodelet(cA1Process2, "CA1_Cs");
         
         CA1StorageHandlerCodelet cA1StorageHandlerCodelet=new CA1StorageHandlerCodelet();
         cA1StorageHandlerCodelet.setName("CA1_STORAGE_HANDLER");
         cA1StorageHandlerCodelet.addInput(sceneRelationVertexToStoreMO);
         cA1StorageHandlerCodelet.addInput(rootMO);
         cA1StorageHandlerCodelet.addOutput(rootMO);
-        m.insertCodelet(cA1StorageHandlerCodelet, "CA1_Cs");
+//        m.insertCodelet(cA1StorageHandlerCodelet, "CA1_Cs");
+        
+        SimulatorCodelet simulatorCodelet=new SimulatorCodelet();
+        simulatorCodelet.setName("SIMULATOR_CODELET");
+        m.insertCodelet(simulatorCodelet, "VISION_Cs");
        
         
         //Unused codelets
@@ -842,10 +846,6 @@ public final class App {
         Codelet taskFrame=new TaskFrame();
         taskFrame.setName("TASK_NAME");
         m.insertCodelet(taskFrame, "VISION_Cs");
-        
-        Codelet pC=new PPCCodelet();
-        pC.setName("PC");
-        m.insertCodelet(pC, "DORSAL_Cs");
         
         Codelet pCBridge=new PCBridge();
         pCBridge.setName("PC_BRIDGE");
@@ -856,19 +856,12 @@ public final class App {
         iTCFeatures.setName("ITC_FEATURES");
         m.insertCodelet(iTCFeatures, "VENTRAL_Cs");
         
-        Codelet iTCBridge=new ITCBridge();
-        iTCBridge.setName("ITC_BRIDGE");
-        m.insertCodelet(iTCBridge, "VENTRAL_Cs");
+        
         
         Codelet iTCProcess1=new ITCProcess1();
         iTCProcess1.setName("ITC_PROCESS_1");
         m.insertCodelet(iTCProcess1, "VENTRAL_Cs");
-        
-        Codelet pHCBridge=new DGStorageHandlerCodelet();
-        pHCBridge.setName("PHC_BRIDGE");
-        m.insertCodelet(pHCBridge, "DORSAL_Cs");
-        
-    
+      
         
         Codelet pRCBridge=new PRCBridge();
         pRCBridge.setName("PRC_BRIDGE");
