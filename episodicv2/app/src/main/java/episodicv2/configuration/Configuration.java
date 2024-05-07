@@ -116,8 +116,11 @@ public class Configuration {
     public static final String UPDATED_IDEA = "updatedIdea";
     public static final String INDEX_FILE = "indexFile";
     public static final String RELATION_FILES_PRC = "relationFilesPRC";
+    public static final String SOCKET_CONNECTION_PORT_IDEA = "socketConnectionIdea";
+    public static final String IMAGE_RECEIVED_FROM_CONNECTION_IDEA = "imageReceivedFromConnectionIdea";
     
     // COMPLEX IDEAS
+    
     public static final String IMAGE_RECEIVED_PATH_IDEA = "imageReceivedPathIdea";
     public static final String CENTER_POINTS_CLASSES_IDEA = "centerPointsandClassesIdea";
     public static final String RECOGNIZED_OBJECTS_SPIKE_IDEA = "recognizedObjectsSpikeIdea";
@@ -148,6 +151,8 @@ public class Configuration {
     
     public static final String ROOT_MO = "rootMO";
     public static final String IMAGE_RECEIVED_PATH_MO = "imageReceivedPathMO";
+    public static final String SOCKET_CONNECTION_PORT_MO = "socketConnectionPortMO";
+    public static final String IMAGE_RECEIVED_FROM_CONNECTION_MO= "imageReceivedFromConnectionMO";    
     public static final String CENTER_POINTS_CLASSES_MO = "centerPointsandClassesMO";
     public static final String CENTER_POINTS_SPIKE_MO = "centerPointsSpikeMO";
     public static final String UNINTEGRATED_SCENE_PATTERN_MO = "unintegratedScenePatternMO";
@@ -159,6 +164,8 @@ public class Configuration {
     public static final String RECENT_NEW_ENCODED_SCENE_SPIKE_MO = "recentNewEncodedSceneSpikeMO";
     public static final String NEW_ENCODED_SCENE_TO_STORE_MO = "newEncodedSceneToStoreMO";
     public static final String SCENE_RELATION_VERTEX_TO_STORE_MO = "sceneRelationVertexToStoreMO";
+    
+    
     
     
     

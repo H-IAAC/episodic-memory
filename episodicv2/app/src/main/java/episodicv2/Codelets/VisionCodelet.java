@@ -123,7 +123,7 @@ public class VisionCodelet extends Codelet{
     private void loadOpenCVLibraryFromCurrentPath() throws FileNotFoundException  {
         Path currentRelativePath = Paths.get("");
         s = currentRelativePath.toAbsolutePath().toString();
-        System.load(s+"/libs/libopencv_java480.dylib");
+        System.load(s+"/libs/libopencv_java480.so");
         System.out.println("OpenCV lib loaded");
         
         //  load the COCO class labels our YOLO model was trained on

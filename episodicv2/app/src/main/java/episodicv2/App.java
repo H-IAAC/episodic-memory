@@ -47,6 +47,7 @@ import br.unicamp.cst.core.entities.Mind;
 import br.unicamp.cst.io.rest.RESTServer;
 import br.unicamp.cst.util.viewer.MindViewer;
 import br.unicamp.cst.representation.idea.Idea;
+import episodicv2.Connection.ConnectionCodelet;
 import static episodicv2.configuration.Configuration.*;
 import java.util.ArrayList; 
 import java.util.Map;
@@ -55,6 +56,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class App {
     
     Mind m;
+    Mind m1;
     
     private void createAndShowGUI(Mind m) {
         MindViewer mv = new MindViewer(m,"MindViewer",m.getCodeletGroupList("Motor"));
@@ -67,6 +69,7 @@ public final class App {
     
     public Mind prepareMind() {
         m = new Mind();
+        m1 = new Mind();
         
         //Unused ideas
         
@@ -141,26 +144,7 @@ public final class App {
         objectRelation.add(timestamp);
         objectRelation.add(recent);
         objectRelation.add(updated);
-        
-//        Idea objectRelation2 = new Idea("objectRelation");
-//        midTermMemoryObjectRelationsIdea.add(objectRelation);
-//        
-//        Idea objectId1_2 = new Idea("objectId1",null, "Property", 1);
-//        Idea objectId2_2 = new Idea("objectId2",null, "Property", 1);
-//        Idea activation2 = new Idea("activation",null, "Property", 1);
-//        Idea repetitions2 = new Idea("repetitions",null, "Property", 1);
-//        Idea time9 = new Idea("time",null, "Property", 1);
-//        Idea timestamp2 = new Idea("timestamp",null, "Property", 1);
-//        Idea recent2 = new Idea("recent",null, "Property", 1);
-//        Idea updated2 = new Idea("updated",null, "Property", 1);
-//        objectRelation2.add(objectId1_2);
-//        objectRelation2.add(objectId2_2);
-//        objectRelation2.add(activation2);
-//        objectRelation2.add(repetitions2);
-//        objectRelation2.add(time9);
-//        objectRelation2.add(timestamp2);
-//        objectRelation2.add(recent2);
-//        objectRelation2.add(updated2);
+
         
         Idea retrievedObjectRelationTopDownSpikeIdea = new Idea("retrievedObjectRelationTopDownSpikeIdea");
         Idea objectRelations = new Idea("objectRelations");
@@ -502,25 +486,6 @@ public final class App {
         scene7.add(activeSimilarity7);
         scene7.add(recent9);
         
-//        Idea sceneRelationIdea = new Idea("sceneRelationIdea");
-//        
-//        Idea scene1Id = new Idea("scene1Id",null, "Property", 1);
-//        Idea scene2Id = new Idea("scene2Id",null, "Property", 1);
-//        Idea activation12 = new Idea("activation",null, "Property", 1);
-//        Idea repetitions12 = new Idea("repetitions",null, "Property", 1);
-//        Idea time24 = new Idea("time",null, "Property", 1);
-//        Idea timestamp12 = new Idea("timestamp",null, "Property", 1);
-//        Idea recent10 = new Idea("recent",null, "Property", 1);
-//        Idea updated3 = new Idea("recent",null, "Property", 1);
-//        
-//        sceneRelationIdea.add(scene1Id);
-//        sceneRelationIdea.add(scene2Id);
-//        sceneRelationIdea.add(activation12);
-//        sceneRelationIdea.add(repetitions12);
-//        sceneRelationIdea.add(time24);
-//        sceneRelationIdea.add(timestamp12);
-//        sceneRelationIdea.add(recent10);
-//        sceneRelationIdea.add(updated3);
         
         Map<Integer, ConcurrentHashMap<Integer, Idea>> midTermMemorySceneRelationsCA1IdeaMap = new ConcurrentHashMap<>();
         
@@ -618,35 +583,8 @@ public final class App {
         taskSetSpikeIdea.add(allowedScenePattern);
         taskSetSpikeIdea.add(allowedObjectRelation);
         
-       
         
-        
-        
-        
-//        rootIdea.add(requestObjectSpikeIdea);
-//        rootIdea.add(retrievedObjectRelationTopDownSpikeIdea);
-//        rootIdea.add(iTCFeaturesSpikeIdea);
-//        rootIdea.add(relationsArrayIdea);
-//        rootIdea.add(midTermMemoryObjectRelationsIdea);
-//        rootIdea.add(retrievedObjectRelationTopDownSpikeIdea);
-//        rootIdea.add(objectRelationsSpikeIdea);
-//        rootIdea.add(midTermMemoryScenesByIDCA3Idea);
-//        rootIdea.add(midTermMemoryScenesByIDDGIdea);
-//        rootIdea.add(currentSceneSpikeIdea);
-//        rootIdea.add(similarScenesSpikeIdea);
-//        rootIdea.add(requestSceneByIDSpikeIdea);
-//        rootIdea.add(requestSimilarScenesSpikeIdea);
-//        rootIdea.add(retrievedSceneTopDownSpikeIdea);
-//        rootIdea.add(sceneRelationIdea);
-//        rootIdea.add(midTermMemorySceneRelationsCA1Idea);
-//        rootIdea.add(sceneRelationsSpikeIdea);
-//        rootIdea.add(retrievedSceneTopDownLTM);
-//        rootIdea.add(taskSetSpikeIdea);
-
-      
-
-        
-          //declare Ideas
+        //declare Ideas
         //TODO: review as categorias
         Idea imageReceivedPathIdea = new Idea(IMAGE_RECEIVED_PATH_IDEA,"/yolo/files/simu.jpeg", "Property", 3);
         Idea centerPointsandClassesIdea = new Idea(CENTER_POINTS_CLASSES_IDEA, null,"Property",1);
@@ -838,7 +776,6 @@ public final class App {
         
         //Unused codelets
         
-        
         Codelet taskFrame=new TaskFrame();
         taskFrame.setName("TASK_NAME");
         m.insertCodelet(taskFrame, "VISION_Cs");
@@ -868,8 +805,6 @@ public final class App {
         pHCBridge.setName("PHC_BRIDGE");
         m.insertCodelet(pHCBridge, "DORSAL_Cs");
         
-    
-        
         Codelet pRCBridge=new PRCBridge();
         pRCBridge.setName("PRC_BRIDGE");
         m.insertCodelet(pRCBridge, "VENTRAL_Cs");
@@ -878,13 +813,10 @@ public final class App {
         pRCProcess1.setName("PRC_PROCESS_1");
         m.insertCodelet(pRCProcess1, "VENTRAL_Cs");
         
-        
-        
         Codelet pRCProcess3=new PRCProcess3();
         pRCProcess3.setName("PRC_PROCESS_3");
         m.insertCodelet(pRCProcess3, "VENTRAL_Cs");
-        
-        
+       
         Codelet eNC=new ENC();
         eNC.setName("ENC");
         m.insertCodelet(eNC, "ENC_Cs");
@@ -892,8 +824,6 @@ public final class App {
         Codelet cA3=new CA3();
         cA3.setName("CA3");
         m.insertCodelet(cA3, "CA3_Cs");
-        
-        
         
         Codelet cA3Process2=new CA3Process2();
         cA3Process2.setName("CA3_PROCESS_2");
@@ -951,15 +881,34 @@ public final class App {
         sB.setName("SB");
         m.insertCodelet(sB, "SB_Cs");
        
-        m.start();
+//        m.start();
+//        
+//        return(m);
+//        
+        Idea socketConnectionPortIdea = new Idea(SOCKET_CONNECTION_PORT_IDEA, 10000, "Property", 1);
+        MemoryObject socketConnectionPortMO;
+        socketConnectionPortMO = m1.createMemoryObject(SOCKET_CONNECTION_PORT_MO);
+        socketConnectionPortMO.setI(socketConnectionPortIdea);
         
-        return(m);
+        Idea imageReceivedFromConnectionIdea = new Idea(IMAGE_RECEIVED_FROM_CONNECTION_IDEA, null, "Property", 1);
+        MemoryObject imageReceivedFromConnectionMO;
+        imageReceivedFromConnectionMO = m1.createMemoryObject(IMAGE_RECEIVED_FROM_CONNECTION_MO);
+        imageReceivedFromConnectionMO.setI(imageReceivedFromConnectionIdea);
+        
+        Codelet connectionCodelet = new ConnectionCodelet();
+        connectionCodelet.setName("CONNECTION");
+        connectionCodelet.addInput(socketConnectionPortMO);
+        connectionCodelet.addOutput(imageReceivedFromConnectionMO);
+        m1.insertCodelet(connectionCodelet);
+        m1.start();
+        
+        return(m1);
     }
     
     public App() {
         Mind m = prepareMind();
         // The next line can be commented if you don't want the Desktop MindViewer
-        createAndShowGUI(m);
+//        createAndShowGUI(m);
         // The next line can be commented if you don't use the MindViewer Web
         RESTServer rs = new RESTServer(m,5001,true);
         
