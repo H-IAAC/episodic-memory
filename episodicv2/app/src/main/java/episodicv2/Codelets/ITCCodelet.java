@@ -47,7 +47,7 @@ public class ITCCodelet extends Codelet {
         saveObjectsClasses();
     }
     
-        private void saveObjectsClasses(){
+    private void saveObjectsClasses(){
         if (!centerPointsandClassesIdea.getL().isEmpty()) {
                //TODO: ver de dar copy na Idea
             recognizedObjectsSpikeIdea.setL(new ArrayList());

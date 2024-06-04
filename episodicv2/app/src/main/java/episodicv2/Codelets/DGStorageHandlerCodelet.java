@@ -16,15 +16,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
  * @author karenlima
+ * Has the purpose of saving the dgMidTermMemoryScenesIdea in the RootMO
+ * DG_DATA_IDEA -> DG_MEMORY_SCENES_IDEA e DG_SIZE_IDEA
  */
+
 public class DGStorageHandlerCodelet extends Codelet {
     
-    MemoryObject rootMO;
-    Idea rootIdea;
+    MemoryObject rootInputMO;
+    Idea rootInputIdea;
 
     MemoryObject dgMidTermMemoryScenesMO;
     Idea dgMidTermMemoryScenesIdea;
@@ -33,6 +37,10 @@ public class DGStorageHandlerCodelet extends Codelet {
     Idea rootOutputIdea;
     
     Integer savedTimes = 0;
+    
+    Integer currentFrameSaved = 0;
+    
+    private long startTime;
 
     public DGStorageHandlerCodelet() {
         try {
@@ -41,64 +49,71 @@ public class DGStorageHandlerCodelet extends Codelet {
         } catch(CodeletThresholdBoundsException  ex){
             System.out.println("Threshold Bounds exception");
         }
+        
+        startTime = System.currentTimeMillis();
     }
     
     @Override
     public void accessMemoryObjects() {
-        System.out.println("[DG] Executing accessMemoryObjects DGStorageHandler");
-        System.out.println("DGStorageHandlerCodelet inputs"); 
-        System.out.println(getInputs());
-        rootMO = (MemoryObject) getInput(ROOT_MO);
+        rootInputMO = (MemoryObject) getInput(ROOT_MO);
         dgMidTermMemoryScenesMO = (MemoryObject) getInput(DG_MID_TERM_MEMORY_SCENES_MO);
         rootOutputMO = (MemoryObject) getOutput(ROOT_MO);
         try {
-            rootIdea = (Idea) rootMO.getI();
+            rootInputIdea = (Idea) rootInputMO.getI();
             rootOutputIdea = (Idea) rootOutputMO.getI();
-            System.out.println("[DG] Could access root");
         } catch (NullPointerException ex) {
-            System.out.println("[DG] Root MO is null");
         }
         
         try {
             dgMidTermMemoryScenesIdea = (Idea) dgMidTermMemoryScenesMO.getI();
-            System.out.println("[DG] Could access dgMidTermMemoryScenesIdea");
         } catch (NullPointerException ex) {
-            System.out.println("[DG] dgMidTermMemoryScenesIdea is null");
         }
     }
     
     @Override
     public void proc() {
-        System.out.println("[DG] Executing proc DGStorageHandler");
         persistScenes();
-        savedTimes+=1;
-        System.out.println("[DG] Scenes from DG persisted on rootMO" + savedTimes);
-        
-        
+        savedTimes+=1;     
     }
     
     @Override
     public void calculateActivation(){
-        Double activationValue = 0.0;
-        try {
-            Integer dgSize = (Integer) dgMidTermMemoryScenesIdea.get(DG_SIZE_IDEA).getValue();
-            if (dgSize > 0) {
-                activationValue = 1.0;
-                setTimeStep(CONSOLIDATION_INTERVAL);
-            } 
-        } catch (NullPointerException ex) {
-            System.out.println("[DG] dgMidTermMemoryScenesIdea is null");
-        } 
         
+        Double activationValue = 0.0;
+        
+        if(hasTimerExpired()) {
+            activationValue = 1.0;
+            startTime = System.currentTimeMillis();
+            System.out.println("Timer expired! Executing DG Storage");
+        } 
         try {
             setActivation(activationValue);
-            
+
         } catch(CodeletActivationBoundsException  ex){
             System.out.println("Activation Bounds exception");
         }
     }
-    
-        /**
+//        if (dgMidTermMemoryScenesIdea != null) {
+//            if (dgMidTermMemoryScenesIdea.get(DG_TOTAL_FRAME) != null) {
+//                Integer dgScenesFrame = (Integer) dgMidTermMemoryScenesIdea.get(DG_TOTAL_FRAME).getValue();
+//                if (currentFrameSaved < dgScenesFrame) {
+//                    currentFrameSaved = dgScenesFrame;
+//                    activationValue = 1.0;
+//                } 
+//                try {
+//                    setActivation(activationValue);
+//                } catch(CodeletActivationBoundsException  ex){
+//                    System.out.println("Activation Bounds exception");
+//                }
+//            }
+//        }
+
+    private Boolean hasTimerExpired() {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - startTime;
+        return elapsedTime >= CONSOLIDATION_INTERVAL;
+    }
+    /**
      * STORES ALL THE TEMPORAL PATTERNS
      */
     private void persistScenes() {
@@ -108,14 +123,16 @@ public class DGStorageHandlerCodelet extends Codelet {
         //from each previous data verify if has to update, if yes, replace with new data, else, just save again
         //if still have scenes to update, save them
         //save DGSize
-        
+        if (dgMidTermMemoryScenesIdea.get(MID_TERM_MEMORY_SCENES_BY_ID) == null) {
+            return ;
+        }
         Map<Integer, Idea> midTermMemoryScenesByID = (Map<Integer, Idea>) dgMidTermMemoryScenesIdea.get(MID_TERM_MEMORY_SCENES_BY_ID).getValue();
         
         HashMap<Integer, Idea> scenesToUpdate = new HashMap<>();
         scenesToUpdate.putAll(midTermMemoryScenesByID);
         ArrayList<String> ideasToBeStored = new ArrayList<String>();
-        Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
-        if ( dgDataIdea.get(DG_MEMORY_SCENES_IDEA) != null){
+        Idea dgDataIdea = rootInputIdea.get(DG_DATA_IDEA);
+        if (dgDataIdea.get(DG_MEMORY_SCENES_IDEA) != null){
             ArrayList<String> previousData = (ArrayList<String>) dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue();
             if (previousData != null) {
                 for (String line: previousData) {
@@ -131,7 +148,6 @@ public class DGStorageHandlerCodelet extends Codelet {
             } 
         }
         
-        
         SortedSet<Integer> sceneIDs = new TreeSet<>(scenesToUpdate.keySet());
 
         for (Integer sceneID : sceneIDs) {
@@ -145,15 +161,25 @@ public class DGStorageHandlerCodelet extends Codelet {
         Idea dgMemoryScenesDGSizeIdea = new Idea(DG_SIZE_IDEA, ideasToBeStored.size(), "Property", 1);
         dgDataIdea.add(dgMemoryScenesIdea);
         dgDataIdea.add(dgMemoryScenesDGSizeIdea);
-        List<Idea> ideaslist = new ArrayList<>();
-        ideaslist.add(dgDataIdea);
-        rootOutputIdea.get(DG_DATA_IDEA).setL(ideaslist);
+
+        List<Idea> newL = createNewL(rootOutputIdea, dgDataIdea);
+        rootOutputIdea.setL(newL);
         rootOutputMO.setI(rootOutputIdea);
-        
-        
     }
     
-    
+    private List<Idea> createNewL(Idea currentRootIdea, Idea ideaToAdd) {
+        List<Idea> newL = new CopyOnWriteArrayList<>();
+        List<Idea> currentL = currentRootIdea.getL();
+        String ideaToAddName = ideaToAdd.getName();
+        
+        for( Idea i : currentL) {
+            if (i.getName() != ideaToAddName) {
+                newL.add(i);
+            }
+        }
+        newL.add(ideaToAdd);
+        return newL;
+    }
     
     private String ideatoStoredScene(Idea idea){
         Integer id = (Integer) idea.get(ID_IDEA).getValue();
@@ -170,7 +196,6 @@ public class DGStorageHandlerCodelet extends Codelet {
     
      private Idea storedSceneToIdea(String storedString) {
         Idea storedSceneIdea = new Idea(STORED_SCENE_IDEA, null, "Property", 1);
-        
         String data[] = storedString.split(",");
         
         Idea idIdea = new Idea(ID_IDEA, Integer.parseInt(data[0]), "Property", 1);
@@ -197,7 +222,6 @@ public class DGStorageHandlerCodelet extends Codelet {
         storedSceneIdea.add(activeSimilarityIdea);
         storedSceneIdea.add(recentIdea);
             
-        
         return storedSceneIdea;
     }
     

@@ -44,7 +44,6 @@ public class PRCProcess2Codelet extends Codelet {
     
     @Override
     public void accessMemoryObjects() {
-        System.out.println("[PRC2] Executing accessMemoryObjects PRCProcess2Codelet");
         recognizedObjectsSpikeMO = (MemoryObject) getInput(RECOGNIZED_OBJECTS_SPIKE_MO);
         recognizedObjectsSpikeIdea = (Idea) recognizedObjectsSpikeMO.getI();
         
@@ -54,7 +53,6 @@ public class PRCProcess2Codelet extends Codelet {
     
     @Override
     public void proc() {
-        System.out.println("[PRC2] Executing proc PRCProcess2Codelet");
         initComponents();
         affectIntensity = emotionalDecay.getActivation();
 
@@ -67,19 +65,20 @@ public class PRCProcess2Codelet extends Codelet {
         for (Idea cObject : objects) {
             Integer objectId = (Integer) cObject.get(ID_IDEA).getValue();
             Idea object = createObjectRelationsIdea(objectId, emotionalDecay.getPositiveActivation(), emotionalDecay.getNegativeActivation(), currentFrame);
-            storeObject(object);
+            storeObjectOnPRC(object);
         }
         Idea midTermMemoryObjectRelationsIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS, midTermMemoryObjectRelations,"Property", 1);
         Idea midTermMemoryObjectRelationsByIdIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS_BY_ID, midTermMemoryObjectsByID,"Property", 1);
+        Idea midTermMemoryObjectRelationsTotalFrameIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS_TOTAL_FRAME, currentFrame, "Property", 1);
         pRCMidTermMemoryObjectRelationsIdea.setL(new ArrayList<>());
         pRCMidTermMemoryObjectRelationsIdea.add(midTermMemoryObjectRelationsIdea);
         pRCMidTermMemoryObjectRelationsIdea.add(midTermMemoryObjectRelationsByIdIdea);
+        pRCMidTermMemoryObjectRelationsIdea.add(midTermMemoryObjectRelationsTotalFrameIdea);
         pRCMidTermMemoryObjectRelationsMO.setI(pRCMidTermMemoryObjectRelationsIdea);
         
-        System.out.println("pRCMidTermMemoryObjectRelationsIdea content");
-        System.out.println(pRCMidTermMemoryObjectRelationsMO.getI());
+        
         Idea testeIdea = (Idea) pRCMidTermMemoryObjectRelationsMO.getI();
-        System.out.println(testeIdea.getL());
+        System.out.println("pRCMidTermMemoryObjectRelationsIdea content: " + testeIdea.getL());
     }
     
     @Override
@@ -177,7 +176,6 @@ public class PRCProcess2Codelet extends Codelet {
         idea.get(ACTIVATION_IDEA).setValue(activationValue);
 
         return idea;
-        
     }
     
     private void createIfNotExists(int key) {
@@ -233,7 +231,7 @@ public class PRCProcess2Codelet extends Codelet {
      *
      * @param object
      */
-    public void storeObject(Idea object) {
+    public void storeObjectOnPRC(Idea object) {
         Integer objectId = (Integer) object.get(ID_IDEA).getValue();
         Double positiveAffect = (Double) object.get(POSITIVE_AFFECT_IDEA).getValue();
         Double negativeAffect = (Double) object.get(NEGATIVE_AFFECT_IDEA).getValue();

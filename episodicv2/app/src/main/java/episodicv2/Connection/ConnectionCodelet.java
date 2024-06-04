@@ -8,7 +8,6 @@ import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
 import episodicv2.configuration.Configuration;
-import static episodicv2.configuration.Configuration.IMAGE_RECEIVED_PATH_MO;
 import static episodicv2.configuration.Configuration.SOCKET_CONNECTION_PORT_MO;
 
 import javax.swing.*;
@@ -28,9 +27,6 @@ import javax.imageio.ImageIO;
  * @author karenlima
  */
 public class ConnectionCodelet extends Codelet {
-    int port = 10000;
-    Socket socket;
-    
     
     MemoryObject socketConnectionPortMO;
     Idea socketConnectionPortIdea;
@@ -41,7 +37,6 @@ public class ConnectionCodelet extends Codelet {
 
     @Override
     public void accessMemoryObjects() {
-        System.out.println("Executing accessMemoryObjects Vision Codelet");
         socketConnectionPortMO = (MemoryObject) getInput(SOCKET_CONNECTION_PORT_MO);
         socketConnectionPortIdea = (Idea) socketConnectionPortMO.getI();
         
@@ -66,14 +61,14 @@ public class ConnectionCodelet extends Codelet {
                     byte[] sizeBytes = new byte[4];
                     inputStream.read(sizeBytes);
                     int imageSize = ByteBuffer.wrap(sizeBytes).getInt();
-                    System.out.println("Image size: " + imageSize);
+//                    System.out.println("Image size: " + imageSize);
                     if (imageSize <= 0) {
-                        System.err.println("Received invalid image size: " + imageSize);
+//                        System.err.println("Received invalid image size: " + imageSize);
                         continue; // Continue para a próxima iteração do loop
                     }
                     
-                    if (imageSize > 1697382400) {
-                        System.err.println("Received invalid image size: " + imageSize);
+                    if (imageSize > 1612251136) {
+//                        System.err.println("Received invalid image size: " + imageSize);
                         continue; // Continue para a próxima iteração do loop
                     }
 

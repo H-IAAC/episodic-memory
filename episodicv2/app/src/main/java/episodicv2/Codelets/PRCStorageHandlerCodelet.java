@@ -36,8 +36,15 @@ public class PRCStorageHandlerCodelet extends Codelet {
     
     Map<Integer, Idea> midTermMemoryObjectRelationsById;
     
+    Map<Integer, ConcurrentHashMap<Integer, Idea>> fileContent = null;
+    
     Integer savedTimes = 0;
+    
+    Integer currentFrameSaved = 0;
+
     private static final String FILENAME = "prc_";
+    
+    private long startTime;
     
     public PRCStorageHandlerCodelet() {
         try {
@@ -47,27 +54,30 @@ public class PRCStorageHandlerCodelet extends Codelet {
             System.out.println("Threshold Bounds exception");
         }
         
+        startTime = System.currentTimeMillis();
+        
     }
 
     @Override
     public void accessMemoryObjects() {
-        System.out.println("[PRC] Executing accessMemoryObjects PRCStorageHandler");
         
         rootMO = (MemoryObject) getInput(ROOT_MO);
         pRCMidTermMemoryObjectRelationsMO = (MemoryObject) getInput(PRC_MID_TERM_OBJECT_RELATIONS_MO);
         rootOutputMO = (MemoryObject) getOutput(ROOT_MO);
+        pRCMidTermMemoryObjectRelationsIdea = (Idea) pRCMidTermMemoryObjectRelationsMO.getI();
         try {
             rootIdea = (Idea) rootMO.getI();
-            pRCMidTermMemoryObjectRelationsIdea = (Idea) pRCMidTermMemoryObjectRelationsMO.getI();
             rootOutputIdea = (Idea) rootOutputMO.getI();
+            
+            fileContent = (Map<Integer, ConcurrentHashMap<Integer, Idea>>) pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS).getValue();
         } catch (NullPointerException ex) {
-            System.out.println("[PRC] Root MO is null");
+//            System.out.println("[PRC] Root MO is null");
         }
     }
     
     @Override
     public void proc() {
-        System.out.println("0");
+        if (pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS) == null ) return;
         persistRelations();
         savedTimes+=1;
         System.out.println("[PRC] Object relations from PRC persisted on rootMO" + savedTimes);
@@ -76,36 +86,73 @@ public class PRCStorageHandlerCodelet extends Codelet {
     @Override
     public void calculateActivation(){
         Double activationValue = 0.0;
-        try {
-//            String fileContent = (String) pRCMidTermMemoryObjectRelationsIdea.get(INDEX_FILE).getValue();
-
-            Map<Integer, ConcurrentHashMap<Integer, Idea>> fileContent = (Map<Integer, ConcurrentHashMap<Integer, Idea>>) pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS).getValue();
-            if (fileContent != null) {
-                activationValue = 1.0;
-                setTimeStep(CONSOLIDATION_INTERVAL);
-            } 
-        } catch (NullPointerException ex) {
-            System.out.println("[PRC] pRCMidTermMemoryObjectRelationsIdea is null");
-        } 
         
+        if(hasTimerExpired()) {
+            activationValue = 1.0;
+            startTime = System.currentTimeMillis();
+            System.out.println("Timer expired! Executing PRC Storage");
+        } 
         try {
             setActivation(activationValue);
-            
+
         } catch(CodeletActivationBoundsException  ex){
             System.out.println("Activation Bounds exception");
         }
+    }
+//        if (pRCMidTermMemoryObjectRelationsIdea != null) {
+//            if (pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS_TOTAL_FRAME) != null) {
+//                Integer objectRelationsFrame = (Integer) pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS_TOTAL_FRAME).getValue();
+//                if (currentFrameSaved < objectRelationsFrame) {
+//                    currentFrameSaved = objectRelationsFrame;
+//                    activationValue = 1.0;
+//                } 
+//                try {
+//                    setActivation(activationValue);
+//
+//                } catch(CodeletActivationBoundsException  ex){
+//                    System.out.println("Activation Bounds exception");
+//                }
+//            }
+//        }
+
+       
+//        Double activationValue = 0.0;
+//        try {
+////            String fileContent = (String) pRCMidTermMemoryObjectRelationsIdea.get(INDEX_FILE).getValue();
+//
+//            Map<Integer, ConcurrentHashMap<Integer, Idea>> fileContent = (Map<Integer, ConcurrentHashMap<Integer, Idea>>) pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS).getValue();
+//            if (fileContent != null) {
+//                activationValue = 1.0;
+//                setTimeStep(CONSOLIDATION_INTERVAL);
+//            } 
+//        } catch (NullPointerException ex) {
+////            System.out.println("[PRC] pRCMidTermMemoryObjectRelationsIdea is null");
+//        } 
+//        
+//        try {
+//            setActivation(activationValue);
+//            
+//        } catch(CodeletActivationBoundsException  ex){
+////            System.out.println("Activation Bounds exception");
+//        }
+    
+    private Boolean hasTimerExpired() {
+        
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - startTime;
+        return elapsedTime >= CONSOLIDATION_INTERVAL;
     }
     
     
     public void persistRelations() {
         
-        //fazer o objectrelations e o objectrelationsbyid
-        
+        //fazer o objectrelations e o objectrelationsbyid        
+
         midTermMemoryObjectRelations = (Map<Integer, ConcurrentHashMap<Integer, Idea>>) pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS).getValue();
         SortedSet<Integer> relationsIDs = new TreeSet<>(midTermMemoryObjectRelations.keySet());
+        Idea prcDataIdea = rootIdea.get(PRC_DATA_IDEA);
         try {
-            Idea dgDataIdea = rootIdea.get(PRC_DATA_IDEA);
-            ArrayList<String> indexFileData = (ArrayList<String>) dgDataIdea.get(INDEX_FILE).getValue();
+            ArrayList<String> indexFileData = (ArrayList<String>) prcDataIdea.get(INDEX_FILE).getValue();
             ArrayList<String> newIndexFileData = new ArrayList<String>();
             
             //TRASPASA LOS INDICES YA EXISTENTES A UN NUEVO ARCHIVO 
@@ -125,12 +172,12 @@ public class PRCStorageHandlerCodelet extends Codelet {
             //LOS NUEVOS INDICES QUE SON LOS QUE NO SE ELIMINARON DE relationsIDs SE AGREGAN AL FINAL Y SE CREA SU ARCHIVO DE RELACIONES VACIO
             for (Integer relationID : relationsIDs) {
                 Idea newRelationFileIdea = new Idea(FILENAME + relationID, null, "Property", 1);
-                dgDataIdea.add(newRelationFileIdea);
+                prcDataIdea.add(newRelationFileIdea);
                 newIndexFileData.add(relationID + "," + FILENAME + relationID);
             }
             
             //REEMPLAZA EL ARCHIVO DE INDICES
-            dgDataIdea.get(INDEX_FILE).setValue(newIndexFileData);
+            prcDataIdea.get(INDEX_FILE).setValue(newIndexFileData);
 
         } catch (NullPointerException ex){
             System.err.println("[PRC] PRC Data or Index Idea does not exist on root");
@@ -142,15 +189,13 @@ public class PRCStorageHandlerCodelet extends Codelet {
         relationsIDs = new TreeSet<>(relationsToUpdate.keySet());
         
         
-        Idea dgDataIdea;
         try {
-            dgDataIdea = rootIdea.get(PRC_DATA_IDEA);
             //SE PROCEDE A ACTUALIZAR TODAS LAS RELACIONES QUE FUERON MODIFICADAS
             for (Integer relationID : relationsIDs) {
 
                 //LEEMOS EL CONTENIDO DEL ARCHIVO ORIGINAL
                 //get the prc_id strings
-                ArrayList<String> fileStringRelationsValue = (ArrayList<String>) dgDataIdea.get(FILENAME + relationID).getValue();
+                ArrayList<String> fileStringRelationsValue = (ArrayList<String>) prcDataIdea.get(FILENAME + relationID).getValue();
 
                 //SE CARGAN TODAS LAS ESCENAS QUE NO ESTEN EN MID-TERM PARA QUE SE GENERE UN NUEVO ARCHIVO
                 //ES UN PROCESO PESADO DE LECTURA DE ARCHIVOS PERO NO SE PUEDE HACER DE OTRA FORMA SIN UNA BASE DE DATOS COMO SQLITE
@@ -171,7 +216,7 @@ public class PRCStorageHandlerCodelet extends Codelet {
                 }
 
                 //SE SUSTITUYE EL ARCHIVO DE RELACIONES CON LAS NUEVAS
-                Idea newRelationFileIdea = dgDataIdea.get(FILENAME + relationID);
+                Idea newRelationFileIdea = prcDataIdea.get(FILENAME + relationID);
                 ArrayList<String> relationsArray = (ArrayList<String>) newRelationFileIdea.getValue();
                 SortedSet<Integer> destinationIDs = new TreeSet<>(relationsToUpdate.get(relationID).keySet());
 
@@ -187,21 +232,27 @@ public class PRCStorageHandlerCodelet extends Codelet {
                 }
 
                 newRelationFileIdea.setValue(relationsArray);
-                dgDataIdea.get(FILENAME + relationID).setValue(relationsArray);
-                
-                
+                prcDataIdea.get(FILENAME + relationID).setValue(relationsArray);
+
 
             }
-            //remove dgDataIdea
-            rootIdea.add(dgDataIdea);
-            rootOutputMO.setI(rootIdea);
         } catch ( NullPointerException ex) {
-            dgDataIdea = new Idea(DG_DATA_IDEA, null, "Property", 1); 
+            prcDataIdea = new Idea(DG_DATA_IDEA, null, "Property", 1); 
         }
+        
+        
+        //remove dgDataIdea
+
+//        rootOutputIdea.get(PRC_DATA_IDEA).setValue(prcDataIdea.getValue());
+        rootOutputIdea.add(prcDataIdea);
+        rootOutputMO.setI(rootOutputIdea);
+
+        Idea dgDataIdeaOutput = rootOutputIdea.get(DG_DATA_IDEA);
+        System.out.println("Root Idea on PRCStorage output ideas: " + dgDataIdeaOutput.getL());
+        System.out.println("Root Idea on PRCStorage output DGSize Idea: " + dgDataIdeaOutput.get(DG_SIZE_IDEA).getValue());
         countMtm();
         
 //        persistAffect();
-        
     }
     
 //    

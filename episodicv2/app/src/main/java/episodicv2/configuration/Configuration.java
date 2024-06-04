@@ -36,7 +36,7 @@ public class Configuration {
     public static final double WM_RETRIEVAL_SIMILARITY_THRESHOLD = 0.8;
     public static final double RETRIEVABILITY_DECREASING_SCALE = 1000 * 60 * 60 * 8; //1000 * 60 * 60 * 24; //IN DAYS
     public static final double RETRIEVABILITY_THRESHOLD = 0.0;
-    public static final long CONSOLIDATION_INTERVAL = 1000 * 60 * 60 * 24;//1000 * 60 * 60 * 24;
+    public static final long CONSOLIDATION_INTERVAL = 60 ;//1000 * 60 * 60 * 24;
     public static final double CONSOLIDATION_THRESHOLD = 0.0;
     
     
@@ -106,11 +106,15 @@ public class Configuration {
     public static final String ACTIVE_SIMILARITY_IDEA = "activeSimilarity";
     public static final String RECENT_IDEA = "recent";
     public static final String DG_SIZE_IDEA = "dGSize";
-    public static final String DG_MEMORY_SCENES_IDEA = "dGMemoyScenes";
+    public static final String CA3_MEMORY_SCENES_IDEA = "ca3MemoryScenesIdea";
+    public static final String DG_MEMORY_SCENES_IDEA = "dGMemoryScenes";
     public static final String MID_TERM_MEMORY_SCENES = "midTermMemoryScenes";
     public static final String MID_TERM_MEMORY_SCENES_BY_ID = "midTermMemoryScenesByID";
     public static final String MID_TERM_MEMORY_OBJECT_RELATIONS = "midTermMemoryObjectRelations";
+    public static final String MID_TERM_MEMORY_OBJECT_RELATIONS_FRAME = "midTermMemoryObjectRelationsFrame";
     public static final String MID_TERM_MEMORY_OBJECT_RELATIONS_BY_ID = "midTermMemoryObjectRelationsByID";
+    public static final String MID_TERM_MEMORY_OBJECT_RELATIONS_TOTAL_FRAME = "midTermMemoryObjectRelationsTotalFrame";
+    public static final String DG_TOTAL_FRAME = "dgFrame";
     public static final String OBJECT_1_ID_IDEA = "object1IdIdea";
     public static final String OBJECT_2_ID_IDEA = "object2IdIdea2";
     public static final String UPDATED_IDEA = "updatedIdea";
@@ -143,7 +147,8 @@ public class Configuration {
     public static final String NEW_ENCODED_SCENE_TO_STORE_IDEA = "newEncodedSceneToStoreIdea";
     public static final String SCENE_RELATION_VERTEX_TO_STORE_IDEA = "sceneRelationVertexToStoreIdea";
     public static final String SCENE_RELATION_IDEA = "sceneRelationIdea";
-    
+    public static final String RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_IDEA = "recognizedObjectsSpikeAndUnintegratedScenePatternIdea"; 
+
     
     
     
@@ -164,6 +169,8 @@ public class Configuration {
     public static final String RECENT_NEW_ENCODED_SCENE_SPIKE_MO = "recentNewEncodedSceneSpikeMO";
     public static final String NEW_ENCODED_SCENE_TO_STORE_MO = "newEncodedSceneToStoreMO";
     public static final String SCENE_RELATION_VERTEX_TO_STORE_MO = "sceneRelationVertexToStoreMO";
+    public static final String RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_MO = "recognizedObjectsSpikeAndUnintegratedScenePatternMO"; 
+
     
     
     

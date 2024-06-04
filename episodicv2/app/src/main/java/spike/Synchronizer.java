@@ -32,12 +32,16 @@ public class Synchronizer {
     }
     public void addElement(int key, Object element, int elementTime){
         
-        if(elementTime > time){
-            elements.clear();
-            time = elementTime;
+        if(elementTime >= time){
+            if (elementTime > time) {
+                elements.clear();
+                time = elementTime;
+            }
+            
+            elements.put(key, element);     
         }
         
-        elements.put(key, element);       
+          
     }
     
     public Object getElement(int key){
@@ -56,5 +60,4 @@ public class Synchronizer {
     public int getTime(){
         return time;
     }
-    
 }

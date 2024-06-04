@@ -7,6 +7,8 @@ package episodicv2.Codelets;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
+import static episodicv2.Connection.ConnectionCodelet.displayImage;
+import episodicv2.configuration.Configuration;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -29,8 +31,15 @@ import org.opencv.dnn.Net;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.utils.Converters;
 import org.opencv.core.Size;
+import org.opencv.core.CvType;
 
 import static episodicv2.configuration.Configuration.*;
+import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 
 
@@ -40,13 +49,17 @@ import static episodicv2.configuration.Configuration.*;
  */
 public class VisionCodelet extends Codelet{
     
-    MemoryObject imageReceivedMO;
-    Idea imageReceivedPathIdea;
+//    MemoryObject imageReceivedMO;
+//    Idea imageReceivedPathIdea;
+    
+    MemoryObject imageReceivedFromConnectionMO;
+    Idea imageReceivedFromConnectionIdea;
     
     MemoryObject centerPointsandClassesMO;
     Idea centerPointsandClassesIdea;
     
     Integer currentFrame = 0;
+    Boolean hasAnyObject = false;
         
     
     ArrayList<Idea> objectsClasses = new ArrayList<Idea>();
@@ -70,53 +83,70 @@ public class VisionCodelet extends Codelet{
     
     @Override
     public void accessMemoryObjects() {
-        System.out.println("Executing accessMemoryObjects Vision Codelet");
-        imageReceivedMO = (MemoryObject) getInput(IMAGE_RECEIVED_PATH_MO);
-        imageReceivedPathIdea = (Idea) imageReceivedMO.getI();
+//        imageReceivedMO = (MemoryObject) getInput(IMAGE_RECEIVED_PATH_MO);
+//        imageReceivedPathIdea = (Idea) imageReceivedMO.getI();
+
+        imageReceivedFromConnectionMO = (MemoryObject) getInput(Configuration.IMAGE_RECEIVED_FROM_CONNECTION_MO);
+        imageReceivedFromConnectionIdea = (Idea) imageReceivedFromConnectionMO.getI();
         
         centerPointsandClassesMO = (MemoryObject) getOutput(CENTER_POINTS_CLASSES_MO);
         centerPointsandClassesIdea = (Idea) centerPointsandClassesMO.getI();
- 
+        
+        BufferedImage image = (BufferedImage) imageReceivedFromConnectionIdea.getValue();
+
+        
+        if (image != null) {
+//            System.out.println("showing image on Vision");
+            displayImage(image);
+        }
+    }
+    
+    public static void displayImage(BufferedImage image) {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        ImageIcon icon = new ImageIcon(image);
+        JLabel label = new JLabel(icon);
+        
+        frame.getContentPane().add(label, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
     }
     
     @Override
     public void proc() {
-        System.out.println("Executing proc Vision Codelet");
         try {
             detectObjectOnImage();
         } catch (FileNotFoundException ex){
             System.out.printf("erro");
         }
-        System.out.printf("objects: ");
-        System.out.printf(objectsClasses.toString());
-        System.out.printf("objects center: ");
-        System.out.printf(objectsPoints.toString());
-        System.out.println("\n");
-        
-        saveObjectsIdea();
-        
+        if(hasAnyObject) {
+            saveObjectsIdea();
+        }
     }
     
      private void saveObjectsIdea() {//TODO: ver se precisa criar essas novas ideas msms
         centerPointsandClassesIdea.setL(new ArrayList());
-        
         Idea objectsClassesIdea = new Idea(OBJECTS_CLASSES_IDEA, objectsClasses);
         Idea objectsPointsIdea = new Idea(OBJECTS_POINTS_IDEA, objectsPoints);
         centerPointsandClassesIdea.add(objectsClassesIdea);
         centerPointsandClassesIdea.add(objectsPointsIdea);
-         
-         
         currentFrame+=1;
         Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame);
-        
         centerPointsandClassesIdea.add(currentFrameIdea);
-        
         centerPointsandClassesMO.setI(centerPointsandClassesIdea);
     }
     
     @Override
     public void calculateActivation(){
         
+    }
+    
+    private Mat bufferedImageToMat(BufferedImage bi) {
+        Mat mat = new Mat(bi.getHeight(), bi.getWidth(), CvType.CV_8UC3);
+        byte[] data = ((DataBufferByte) bi.getRaster().getDataBuffer()).getData();
+        mat.put(0,0, data);
+        return mat;
     }
     
         
@@ -142,9 +172,11 @@ public class VisionCodelet extends Codelet{
     
     private void detectObjectOnImage() throws FileNotFoundException {
 
-      String imageReceivedPath = (String) imageReceivedPathIdea.getValue();
+//      String imageReceivedPath = (String) imageReceivedPathIdea.getValue();
+      BufferedImage imageReceivedFromConnection = (BufferedImage) imageReceivedFromConnectionIdea.getValue();
       // load our input image
-      Mat img = Imgcodecs.imread(s+imageReceivedPath, Imgcodecs.IMREAD_COLOR); // dining_table.jpg soccer.jpg baggage_claim.jpg
+      Mat img = bufferedImageToMat(imageReceivedFromConnection);
+//      Mat img = Imgcodecs.imread(s+imageReceivedPath, Imgcodecs.IMREAD_COLOR); // dining_table.jpg soccer.jpg baggage_claim.jpg
       if (img.empty() == false){
         //  -- determine  the output layer names that we need from YOLO
         // The forward() function in OpenCV’s Net class needs the ending layer till which it should run in the network.
@@ -164,10 +196,16 @@ public class VisionCodelet extends Codelet{
         // -- Now , do so-called “non-maxima suppression”
         //Non-maximum suppression is performed on the boxes whose confidence is equal to or greater than the threshold.
         // This will reduce the number of overlapping boxes:
-        MatOfInt indices =  getBBoxIndicesFromNonMaximumSuppression(boxes,
+        if (boxes.isEmpty()) {
+            System.out.println("Could not identify any object in this image");
+            hasAnyObject = false;
+        } else {
+//            System.out.println("Image has objects");
+            MatOfInt indices =  getBBoxIndicesFromNonMaximumSuppression(boxes,
                 confidences);
 
-        getObjectsCenterAndClasses(indices, boxes, class_ids);
+            hasAnyObject = getObjectsCenterAndClasses(indices, boxes, class_ids);
+        }
       }
       
 
@@ -246,6 +284,12 @@ public class VisionCodelet extends Codelet{
     }
 
     private MatOfInt getBBoxIndicesFromNonMaximumSuppression(ArrayList<Rect2d> boxes, ArrayList<Float> confidences ) {
+        if (boxes.isEmpty()) {
+            System.out.println("Empty boxes");
+        }
+        if (confidences.isEmpty()) {
+            System.out.println("Empty confidences");
+        }
         MatOfRect2d mOfRect = new MatOfRect2d();
         mOfRect.fromList(boxes);
         MatOfFloat mfConfs = new MatOfFloat(Converters.vector_float_to_Mat(confidences));
@@ -254,38 +298,44 @@ public class VisionCodelet extends Codelet{
         return result;
     }
     
-    private void getObjectsCenterAndClasses(MatOfInt indices,
+    private Boolean getObjectsCenterAndClasses(MatOfInt indices,
                                     ArrayList<Rect2d> boxes,
                                     ArrayList<Integer> class_ids) {
         objectsClasses.clear();
         objectsPoints.clear();
-        List indices_list = indices.toList();
-        for (int i = 0; i < boxes.size(); i++) {
-            if (indices_list.contains(i)) {
-                Rect2d box = boxes.get(i);
-                String label = cocoLabels.get(class_ids.get(i));
-                
-                Double xpoint =  box.x + (box.width/2);
-                Double ypoint = box.y + (box.height/2);
-                
-                Idea xpointIdea = new Idea(X_IDEA, xpoint.intValue());
-                Idea ypointIdea = new Idea(Y_IDEA, ypoint.intValue());
-                
-                Idea point = new Idea(POINT_IDEA);
-                point.add(xpointIdea);
-                point.add(ypointIdea);
-                
-                Idea classIdea = new Idea(CLASS_IDEA);
-                Idea labelIdea = new Idea(LABEL_IDEA, label);
-                Idea classIdIdea = new Idea(CLASS_ID_IDEA, i);
-                classIdea.add(labelIdea);
-                classIdea.add(classIdIdea);
-                
-                objectsClasses.add(classIdea);
-                objectsPoints.add(point);
+        if(indices.empty()) {
+            System.out.println("Has no indices");
+            return false;
+        } else {
+            List indices_list = indices.toList();
+            for (int i = 0; i < boxes.size(); i++) {
+                if (indices_list.contains(i)) {
+                    Rect2d box = boxes.get(i);
+                    String label = cocoLabels.get(class_ids.get(i));
+                    System.out.println("label: " + label);
+
+                    Double xpoint =  box.x + (box.width/2);
+                    Double ypoint = box.y + (box.height/2);
+
+                    Idea xpointIdea = new Idea(X_IDEA, xpoint.intValue());
+                    Idea ypointIdea = new Idea(Y_IDEA, ypoint.intValue());
+
+                    Idea point = new Idea(POINT_IDEA);
+                    point.add(xpointIdea);
+                    point.add(ypointIdea);
+
+                    Idea classIdea = new Idea(CLASS_IDEA);
+                    Idea labelIdea = new Idea(LABEL_IDEA, label);
+                    Idea classIdIdea = new Idea(CLASS_ID_IDEA, i);
+                    classIdea.add(labelIdea);
+                    classIdea.add(classIdIdea);
+
+                    objectsClasses.add(classIdea);
+                    objectsPoints.add(point);
+                }
             }
+            return true;
         }
-    
     }
     
 }

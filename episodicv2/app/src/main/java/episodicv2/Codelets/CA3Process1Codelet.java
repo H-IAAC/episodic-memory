@@ -29,9 +29,12 @@ public class CA3Process1Codelet extends Codelet {
     private double affectIntensity = 0.0;
     private EmotionalDecay emotionalDecay = null;
     
+    public CA3Process1Codelet() {
+        setIsMemoryObserver(true);
+    }
+    
     @Override
     public void accessMemoryObjects() {
-        System.out.println("[CA3P1] Executing accessMemoryObjects CA3Process1Codelet");
         newEncodedSceneSpikeMO = (MemoryObject) getInput(NEW_ENCODED_SCENE_SPIKE_MO);
         newEncodedSceneSpikeIdea = (Idea) newEncodedSceneSpikeMO.getI();
         
@@ -44,7 +47,6 @@ public class CA3Process1Codelet extends Codelet {
     
     @Override
     public void proc() {
-        System.out.println("[CA3P1] Executing proc CA3Process1Codelet");
         initComponents();
         Idea sceneIdea = (Idea) newEncodedSceneSpikeIdea.get(SCENE_IDEA);
         System.out.println("Scene Idea CA3 childs");

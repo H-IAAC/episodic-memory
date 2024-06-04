@@ -20,12 +20,13 @@ import t2dstring.T2DString;
  *
  * @author karenlima
  */
-public class DGBridgeCodelet extends Codelet {
+public class DGBridgeComposedCodelet extends Codelet {
     
-    MemoryObject recognizedObjectsSpikeMO;
+    MemoryObject recognizedObjectsSpikeAndunintegratedScenePatternMO;
+    Idea recognizedObjectsSpikeAndunintegratedScenePatternIdea;
+    
     Idea recognizedObjectsSpikeIdea;
     
-    MemoryObject unintegratedScenePatternMO;
     Idea unintegratedScenePatternIdea;
     
     MemoryObject patternReplacedMO;
@@ -40,56 +41,50 @@ public class DGBridgeCodelet extends Codelet {
     private ArrayList<Idea> dgObjects;
     private String dgPattern;
     
-    public DGBridgeCodelet() {
+    public DGBridgeComposedCodelet() {
         
         setIsMemoryObserver(true);
         
     }
     @Override
     public void accessMemoryObjects() {
-        System.out.println("Executing accessMemoryObjects DGBridgeCodelet");
-        recognizedObjectsSpikeMO = (MemoryObject) getInput(RECOGNIZED_OBJECTS_SPIKE_MO);
-        recognizedObjectsSpikeIdea = (Idea) recognizedObjectsSpikeMO.getI();
-        unintegratedScenePatternMO = (MemoryObject) getInput(UNINTEGRATED_SCENE_PATTERN_MO);
-        unintegratedScenePatternIdea = (Idea) unintegratedScenePatternMO.getI();
+        recognizedObjectsSpikeAndunintegratedScenePatternMO = (MemoryObject) getInput(RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_MO);
+        recognizedObjectsSpikeAndunintegratedScenePatternIdea = (Idea) recognizedObjectsSpikeAndunintegratedScenePatternMO.getI();
+        
+        recognizedObjectsSpikeIdea = recognizedObjectsSpikeAndunintegratedScenePatternIdea.get(RECOGNIZED_OBJECTS_SPIKE_IDEA);
+        unintegratedScenePatternIdea = recognizedObjectsSpikeAndunintegratedScenePatternIdea.get(UNINTEGRATED_SCENE_PATTERN_IDEA);
         
         patternReplacedMO = (MemoryObject) getOutput(PATTERN_REPLACED_MO);
         patternReplacedIdea = (Idea) patternReplacedMO.getI();
-        
     }
     
     @Override
     public void proc() {
-        System.out.println("[DG] Executing proc DGBridgeCodelet");
         //TODO: identify what MO changed
         //verify if has data in the MO AND has no data with that key in the syncronizer
         if (unintegratedScenePatternIdea.get(CURRENT_FRAME_IDEA) != null) {
             Integer currentFramePattern = (Integer) unintegratedScenePatternIdea.get(CURRENT_FRAME_IDEA).getValue();
-//            System.out.println("Current frame pattern" + currentFramePattern);
             String pattern = (String) unintegratedScenePatternIdea.get(PATTERN_IDEA).getValue();
-//            System.out.println("unintegratedScenePatternIdea" + pattern);
             
             Object element = synchronizer.getElement(SCENE_PATTERN_KEY);
-            if( element == null || synchronizer.getTime() < currentFramePattern ) {
+            if( element == null || synchronizer.getTime() <= currentFramePattern ) {
                 System.out.println("Adicionou no sync SCENE_PATTERN_KEY, unintegratedScenePatternIdea" + pattern + "time" + synchronizer.getTime() + "Current frame pattern" + currentFramePattern);
                 synchronizer.addElement(SCENE_PATTERN_KEY, pattern, currentFramePattern);
             } 
         }
         if (recognizedObjectsSpikeIdea.get(CURRENT_FRAME_IDEA) != null) {
             Integer currentFrameObjects = (Integer) recognizedObjectsSpikeIdea.get(CURRENT_FRAME_IDEA).getValue();
-            System.out.println("Current frame objects" + currentFrameObjects);
 
             ArrayList<Idea> objects = (ArrayList<Idea>) recognizedObjectsSpikeIdea.get(OBJECTS_IDEA).getValue();
             System.out.println("recognizedObjectsSpikeIdea" + objects);
             Object element = synchronizer.getElement(OBJECTS_LIST_KEY);
-            if( element == null || synchronizer.getTime() < currentFrameObjects ) {
+            if( element == null || synchronizer.getTime() <= currentFrameObjects ) {
                 synchronizer.addElement(OBJECTS_LIST_KEY, objects, currentFrameObjects);
-                System.out.println("adicionou no sync OBJECTS_LIST_KEY");
+                System.out.println("adicionou no sync OBJECTS_LIST_KEY, recognizedObjectsSpikeIdea" + objects + "current frame objects" + currentFrameObjects);
             } 
         }
         
         if (synchronizer.isFull()) {
-            System.out.println("Sincronizador cheio");
             initComponents();
 
             this.dgObjects = (ArrayList<Idea>) synchronizer.getElement(OBJECTS_LIST_KEY);
@@ -110,20 +105,21 @@ public class DGBridgeCodelet extends Codelet {
             
             affectIntensity = emotionalDecay.getActivation();
             
+            System.out.println("Pattern replaced in DGBridgeComposed:" + patternReplaced);
+            
             Idea patternReplacedAtributeIdea = new Idea(PATTERN_IDEA, patternReplaced, "Property", 1);
             Idea sincTimeIdea = new Idea(TIME_IDEA, synchronizer.getTime(),"Property", 1);
             Idea positiveActivationIdea = new Idea(POSITIVE_AFFECT_IDEA, emotionalDecay.getPositiveActivation(), "Property", 1);
             Idea negativeActivationIdea = new Idea(NEGATIVE_AFFECT_IDEA, emotionalDecay.getNegativeActivation(), "Property", 1);
             Idea affectIntensityIdea = new Idea(AFFECT_INTENSITY_IDEA, affectIntensity, "Property", 1);
+            patternReplacedIdea.setL(new ArrayList());
             patternReplacedIdea.add(patternReplacedAtributeIdea);
             patternReplacedIdea.add(sincTimeIdea);
             patternReplacedIdea.add(positiveActivationIdea);
             patternReplacedIdea.add(negativeActivationIdea);
             patternReplacedIdea.add(affectIntensityIdea);
-
             patternReplacedIdea.add(new Idea(CURRENT_FRAME_IDEA, synchronizer.getTime(), "Property", 1));
             patternReplacedMO.setI(patternReplacedIdea);
-
         }
     }
     
@@ -152,13 +148,11 @@ public class DGBridgeCodelet extends Codelet {
     private HashMap<Integer, Integer> createHashMap(ArrayList<Idea> objects) {
 
         HashMap<Integer, Integer> objectsMap = new HashMap<>();
-
         for (Idea object : objects) {
             Integer preId = (Integer) object.get(PID_IDEA).getValue();
             Integer classId = (Integer) object.get(ID_IDEA).getValue();
             objectsMap.put(preId, classId);
         }
-
         return objectsMap;
     }
     

@@ -37,14 +37,20 @@ public class PHCProcess1 extends Codelet {
 
         centerPointsSpikeMO = (MemoryObject) getInput(CENTER_POINTS_SPIKE_MO);
         centerPointsSpikeIdea = (Idea) centerPointsSpikeMO.getI();
+        
         unintegratedScenePatternMO = (MemoryObject) getOutput(UNINTEGRATED_SCENE_PATTERN_MO);
         unintegratedScenePatternIdea = (Idea) unintegratedScenePatternMO.getI();
     }
     
     @Override
     public void proc() {
+        createnintegratedScenePattern();     
+    }
+    
+    private void createnintegratedScenePattern() {
         System.out.println("[PHC] Executing proc PHCProcess1");
         if (centerPointsSpikeIdea.get(OBJECTS_IDEA) != null) {
+            unintegratedScenePatternIdea.setL(new ArrayList());
             ArrayList<Idea> objects = (ArrayList<Idea>) centerPointsSpikeIdea.get(OBJECTS_IDEA).getValue();
             Idea imageWidth1 = new Idea(IMAGE_WIDTH_IDEA,640, "Property", 1);
             Idea imageHeight1 = new Idea(IMAGE_HEIGHT_IDEA,480, "Property", 1);
@@ -66,16 +72,15 @@ public class PHCProcess1 extends Codelet {
                     (int) gridColumnsX1.getValue(),
                     (int) gridRowsY1.getValue());
             Idea patternIdea = new Idea(PATTERN_IDEA, pattern, "Property", 1);
-            System.out.println("[PHC] 2DStringPattern generated:");
-            System.out.println(pattern);
+            
             unintegratedScenePatternIdea.add(patternIdea);
             
             Integer currentFrame = (Integer) centerPointsSpikeIdea.get(CURRENT_FRAME_IDEA).getValue();
-            Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame, "Property", 1);
+            Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA, currentFrame, "Property", 1);
+            System.out.println("[PHC] 2DStringPattern generated: " + pattern + "on frame:" + currentFrame);
             unintegratedScenePatternIdea.add(currentFrameIdea);
             unintegratedScenePatternMO.setI(unintegratedScenePatternIdea);
         }
-       
     }
     
     @Override

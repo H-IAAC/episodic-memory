@@ -57,7 +57,6 @@ public class DGProcessCodelet extends Codelet {
     
     @Override
     public void accessMemoryObjects() {
-        System.out.println("[DG] Executing accessMemoryObjects DGProcessCodelet");
         //  TODO: revisar o que deve ser entrada ou saída para que modifique a root mas não notifique para ativar o codelet sempre que a root alterar
         rootMO = (MemoryObject) getInput(ROOT_MO);
         rootIdea = (Idea) rootMO.getI();
@@ -75,10 +74,8 @@ public class DGProcessCodelet extends Codelet {
     
     @Override
     public void proc() {
-        System.out.println("[DG] Executing proc DGProcessCodelet");
-        
-
         String patternReplaced = (String) patternReplacedIdea.get(PATTERN_IDEA).getValue();
+        System.out.println("[DG] Executing proc DGProcessCodelet. Pattern Replaced: " + patternReplaced);
         Integer time = (Integer) patternReplacedIdea.get(TIME_IDEA).getValue();
         Double positiveAffect = (Double) patternReplacedIdea.get(POSITIVE_AFFECT_IDEA).getValue();
         Double negativeAffect = (Double) patternReplacedIdea.get(NEGATIVE_AFFECT_IDEA).getValue();
@@ -93,24 +90,23 @@ public class DGProcessCodelet extends Codelet {
         newEncodedSceneSpikeIdea.setL(new ArrayList());
         newEncodedSceneSpikeIdea.add(scene);
         
-        newEncodedSceneSpikeIdea.add(new Idea(CURRENT_FRAME_IDEA, patternReplacedIdea.get(CURRENT_FRAME_IDEA).getValue(), "Property", 1));
+        Integer currentFrame = (Integer) patternReplacedIdea.get(CURRENT_FRAME_IDEA).getValue();
+        
+        newEncodedSceneSpikeIdea.add(new Idea(CURRENT_FRAME_IDEA, currentFrame, "Property", 1));
         newEncodedSceneSpikeMO.setI(newEncodedSceneSpikeIdea);
         
         Idea midTermMemoryScenesIdea = new Idea(MID_TERM_MEMORY_SCENES, midTermMemoryScenes, "Property", 1);
         Idea midTermMemoryScenesIdeaById = new Idea(MID_TERM_MEMORY_SCENES_BY_ID, midTermMemoryScenesByID, "Property", 1);
         Idea dgSizeIdea = new Idea(DG_SIZE_IDEA, DG_SIZE, "Property", 1);
-        
+        Idea currentFrameIdea = new Idea(DG_TOTAL_FRAME, currentFrame, "Property", 1);
         dgMidTermMemoryScenesIdea.setL(new ArrayList());
         dgMidTermMemoryScenesIdea.add(midTermMemoryScenesIdea);
         dgMidTermMemoryScenesIdea.add(midTermMemoryScenesIdeaById);
         dgMidTermMemoryScenesIdea.add(dgSizeIdea);
+        dgMidTermMemoryScenesIdea.add(currentFrameIdea);
         Integer dgSize = (Integer) dgMidTermMemoryScenesIdea.get(DG_SIZE_IDEA).getValue();
         System.out.println("[DG] DG size saved at dgMidTermMemoryScenesIdea(DGProcessCodelet): "+ dgSize);
         dgMidTermMemoryScenesMO.setI(dgMidTermMemoryScenesIdea);
-        
-        Idea testeIdea = (Idea) dgMidTermMemoryScenesMO.getI();
-        System.out.println("[DG] dgMidTermMemoryScenesMO idea content");
-        System.out.println(testeIdea.getL());
     }
     
     @Override
@@ -188,10 +184,12 @@ public class DGProcessCodelet extends Codelet {
             for (int i = 0; i < midTermMemoryScenes.size(); i++) {
                 Idea scene = midTermMemoryScenes.get(i);
                 String patternToCompare = (String) scene.get(PATTERN_IDEA).getValue();
-
+                System.out.println("Executing get similar");
                 float similarity = T2DString.lcs2DString(pattern, patternToCompare, T2DString.SIMILARITY_TYPE_1);
 
                 if (similarity >= SIMILARITY_THRESHOLD) {
+                    
+                    System.out.println("Similarity: " + similarity + " Pattern stored: " + patternToCompare + " New pattern: " + pattern);
                     similar = scene;
                     scene = updateSceneActivationWithAffect(affect, scene);
                     scene.get(TIMESTAMP_IDEA).setValue(System.currentTimeMillis());
@@ -207,8 +205,6 @@ public class DGProcessCodelet extends Codelet {
         if (similar == null) {
             Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
             if (dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue() != null) {
-                System.out.println(DG_MEMORY_SCENES_IDEA);
-                System.out.println(dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue());
                 ArrayList<String> sceneLines = (ArrayList<String>) dgDataIdea.get(DG_MEMORY_SCENES_IDEA).getValue();
                 for (String line: sceneLines) {
                     Idea sceneIdea = storedSceneToIdea(line);
@@ -220,7 +216,9 @@ public class DGProcessCodelet extends Codelet {
                     if (similarity >= SIMILARITY_THRESHOLD) {
 
                         similar = sceneIdea;
-
+                        
+                        System.out.println("Similarity in long-term: " + similarity + "Pattern stored: " + patternToCompare + "New pattern: " + pattern);
+                        
                         sceneIdea = updateSceneActivationWithAffect(affect, sceneIdea);
                         sceneIdea.get(TIMESTAMP_IDEA).setValue(System.currentTimeMillis());
 
@@ -275,9 +273,6 @@ public class DGProcessCodelet extends Codelet {
         scene.get(NEGATIVE_AFFECT_IDEA).setValue(negativeAffect);
         return scene;
     }
-    
-        // 1,<(59)<<(63)<(64)<<<(60),<(60)<(59)<(63)(64),(4)(1)(2)(3),(2)(4)(5)(8),(3)(4)(4)(2),0000000176,0.93745,0.14345,1.00000,00000000000000000002,1607465245977
-
     
     private Idea storedSceneToIdea(String storedString) {
         Idea storedSceneIdea = new Idea(STORED_SCENE_IDEA, null, "Property", 1);
