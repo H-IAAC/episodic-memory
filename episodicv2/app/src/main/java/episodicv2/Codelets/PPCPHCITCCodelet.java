@@ -27,8 +27,8 @@ public class PPCPHCITCCodelet extends Codelet {
     MemoryObject recognizedObjectsSpikeMO;
     Idea recognizedObjectsSpikeIdea;
     
-    Idea centerPointsSpikeIdea = new Idea(CENTER_POINTS_SPIKE_IDEA, null,"Property",1);;
-    Idea unintegratedScenePatternIdea = new Idea(UNINTEGRATED_SCENE_PATTERN_IDEA, null,"Property",1);;
+    Idea centerPointsSpikeIdea = new Idea(CENTER_POINTS_SPIKE_IDEA, null,CATEGORY_PROPERTY,1);;
+    Idea unintegratedScenePatternIdea = new Idea(UNINTEGRATED_SCENE_PATTERN_IDEA, null,CATEGORY_PROPERTY,1);;
     
     public PPCPHCITCCodelet() {
         setIsMemoryObserver(true);
@@ -69,17 +69,17 @@ public class PPCPHCITCCodelet extends Codelet {
                 Idea y = new Idea(Y_IDEA,objectsPoints.get(i).get(Y_IDEA).getValue());
                 Idea pid = new Idea(PID_IDEA,i);
 
-                Idea object = new Idea(OBJECT_IDEA, null, "Property", 1);
+                Idea object = new Idea(OBJECT_IDEA, null, CATEGORY_PROPERTY, 1);
                 object.add(x);
                 object.add(y);
                 object.add(pid);  
                 objects.add(object);
 
             }
-            Idea objectsArray = new Idea(OBJECTS_IDEA, objects, "Property", 1);
+            Idea objectsArray = new Idea(OBJECTS_IDEA, objects, CATEGORY_PROPERTY, 1);
             centerPointsSpikeIdea.add(objectsArray);
 
-            Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame, "Property", 1);
+            Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame, CATEGORY_PROPERTY, 1);
             centerPointsSpikeIdea.add(currentFrameIdea);
         }
     }
@@ -88,10 +88,10 @@ public class PPCPHCITCCodelet extends Codelet {
         if (centerPointsSpikeIdea.get(OBJECTS_IDEA) != null) {
             unintegratedScenePatternIdea.setL(new ArrayList());
             ArrayList<Idea> objects = (ArrayList<Idea>) centerPointsSpikeIdea.get(OBJECTS_IDEA).getValue();
-            Idea imageWidth1 = new Idea(IMAGE_WIDTH_IDEA,640, "Property", 1);
-            Idea imageHeight1 = new Idea(IMAGE_HEIGHT_IDEA,480, "Property", 1);
-            Idea gridColumnsX1 = new Idea(GRID_COLUMNS_IDEA,10, "Property", 1);
-            Idea gridRowsY1 = new Idea(GRID_ROWS_IDEA,7, "Property", 1);
+            Idea imageWidth1 = new Idea(IMAGE_WIDTH_IDEA,640, CATEGORY_PROPERTY, 1);
+            Idea imageHeight1 = new Idea(IMAGE_HEIGHT_IDEA,480, CATEGORY_PROPERTY, 1);
+            Idea gridColumnsX1 = new Idea(GRID_COLUMNS_IDEA,10, CATEGORY_PROPERTY, 1);
+            Idea gridRowsY1 = new Idea(GRID_ROWS_IDEA,7, CATEGORY_PROPERTY, 1);
             
             //Creates the Occupancy Grid
             OccupancyGrid occupancyGrid = T2DString.createOccupancyGrid(
@@ -107,12 +107,12 @@ public class PPCPHCITCCodelet extends Codelet {
                     (int) imageHeight1.getValue(),
                     (int) gridColumnsX1.getValue(),
                     (int) gridRowsY1.getValue());
-            Idea patternIdea = new Idea(PATTERN_IDEA, pattern, "Property", 1);
+            Idea patternIdea = new Idea(PATTERN_IDEA, pattern, CATEGORY_PROPERTY, 1);
             
             unintegratedScenePatternIdea.add(patternIdea);
             
             Integer currentFrame = (Integer) centerPointsSpikeIdea.get(CURRENT_FRAME_IDEA).getValue();
-            Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA, currentFrame, "Property", 1);
+            Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA, currentFrame, CATEGORY_PROPERTY, 1);
             System.out.println("[PHC] 2DStringPattern generated: " + pattern + " on frame: " + currentFrame);
             unintegratedScenePatternIdea.add(currentFrameIdea);
         }
@@ -133,7 +133,7 @@ public class PPCPHCITCCodelet extends Codelet {
                 Idea idIdea = new Idea(ID_IDEA,objectsClasses.get(i).get(CLASS_ID_IDEA).getValue());
                 Idea pid = new Idea(PID_IDEA,i);
                 Idea features = new Idea(FEATURES_IDEA,"");
-                Idea object = new Idea(OBJECT_IDEA, null, "Property", 1);
+                Idea object = new Idea(OBJECT_IDEA, null, CATEGORY_PROPERTY, 1);
                 object.add(classIdea);
                 object.add(idIdea);
                 object.add(pid);  
@@ -141,10 +141,10 @@ public class PPCPHCITCCodelet extends Codelet {
                 objects.add(object);
 
             }
-            Idea objectsArray = new Idea(OBJECTS_IDEA, objects, "Property", 1);
+            Idea objectsArray = new Idea(OBJECTS_IDEA, objects, CATEGORY_PROPERTY, 1);
             recognizedObjectsSpikeIdea.add(objectsArray);
 
-            Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame, "Property", 1);
+            Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame, CATEGORY_PROPERTY, 1);
 
             recognizedObjectsSpikeIdea.add(currentFrameIdea);
 

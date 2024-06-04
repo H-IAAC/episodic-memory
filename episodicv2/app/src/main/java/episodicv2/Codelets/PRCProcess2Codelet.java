@@ -29,13 +29,12 @@ public class PRCProcess2Codelet extends Codelet {
     
     private EmotionalDecay emotionalDecay = null;
     
-    private ObjectsAssociation objectsAssociation = ObjectsAssociation.getInstance();
-    private double affectIntensity = 0.0;
+    private final ObjectsAssociation objectsAssociation = ObjectsAssociation.getInstance();
     
-    private static Map<Integer, ConcurrentHashMap<Integer, Idea>> midTermMemoryObjectRelations = new ConcurrentHashMap<>();;
+    private static final Map<Integer, ConcurrentHashMap<Integer, Idea>> midTermMemoryObjectRelations = new ConcurrentHashMap<>();;
     
     //CARGA LAS ESCENAS EXISTENTES
-    private static Map<Integer, Idea> midTermMemoryObjectsByID = new ConcurrentHashMap<>();
+    private static final Map<Integer, Idea> midTermMemoryObjectsByID = new ConcurrentHashMap<>();
 
     public PRCProcess2Codelet() {
         setIsMemoryObserver(true);
@@ -54,7 +53,7 @@ public class PRCProcess2Codelet extends Codelet {
     @Override
     public void proc() {
         initComponents();
-        affectIntensity = emotionalDecay.getActivation();
+        double affectIntensity = emotionalDecay.getActivation();
 
         ArrayList<Idea> objects = (ArrayList<Idea>) recognizedObjectsSpikeIdea.get(OBJECTS_IDEA).getValue();
         Integer currentFrame = (Integer) recognizedObjectsSpikeIdea.get(CURRENT_FRAME_IDEA).getValue();
@@ -67,18 +66,14 @@ public class PRCProcess2Codelet extends Codelet {
             Idea object = createObjectRelationsIdea(objectId, emotionalDecay.getPositiveActivation(), emotionalDecay.getNegativeActivation(), currentFrame);
             storeObjectOnPRC(object);
         }
-        Idea midTermMemoryObjectRelationsIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS, midTermMemoryObjectRelations,"Property", 1);
-        Idea midTermMemoryObjectRelationsByIdIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS_BY_ID, midTermMemoryObjectsByID,"Property", 1);
-        Idea midTermMemoryObjectRelationsTotalFrameIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS_TOTAL_FRAME, currentFrame, "Property", 1);
+        Idea midTermMemoryObjectRelationsIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS, midTermMemoryObjectRelations,CATEGORY_PROPERTY, 1);
+        Idea midTermMemoryObjectRelationsByIdIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS_BY_ID, midTermMemoryObjectsByID,CATEGORY_PROPERTY, 1);
+        Idea midTermMemoryObjectRelationsTotalFrameIdea = new Idea(MID_TERM_MEMORY_OBJECT_RELATIONS_TOTAL_FRAME, currentFrame, CATEGORY_PROPERTY, 1);
         pRCMidTermMemoryObjectRelationsIdea.setL(new ArrayList<>());
         pRCMidTermMemoryObjectRelationsIdea.add(midTermMemoryObjectRelationsIdea);
         pRCMidTermMemoryObjectRelationsIdea.add(midTermMemoryObjectRelationsByIdIdea);
         pRCMidTermMemoryObjectRelationsIdea.add(midTermMemoryObjectRelationsTotalFrameIdea);
         pRCMidTermMemoryObjectRelationsMO.setI(pRCMidTermMemoryObjectRelationsIdea);
-        
-        
-        Idea testeIdea = (Idea) pRCMidTermMemoryObjectRelationsMO.getI();
-        System.out.println("pRCMidTermMemoryObjectRelationsIdea content: " + testeIdea.getL());
     }
     
     @Override
@@ -185,15 +180,15 @@ public class PRCProcess2Codelet extends Codelet {
     }
     
     private Idea createObjectRelationIdea(Integer cObject1classIdea, Integer cObject2classIdea, Integer time) {
-        Idea objectRelationIdea = new Idea(OBJECT_RELATION_IDEA, null,"Property", 1);
-        Idea object1IdIdea = new Idea(OBJECT_1_ID_IDEA, cObject1classIdea,"Property", 1);
-        Idea object2IdIdea = new Idea(OBJECT_2_ID_IDEA, cObject2classIdea,"Property", 1);
-        Idea timeIdea = new Idea(TIME_IDEA, time,"Property", 1);
-        Idea activationIdea = new Idea(ACTIVATION_IDEA, 0.5,"Property", 1);
-        Idea timestampIdea = new Idea(TIMESTAMP_IDEA, System.currentTimeMillis(),"Property", 1);
-        Idea recentIdea = new Idea(RECENT_IDEA, true,"Property", 1);
-        Idea updatedIdea = new Idea(UPDATED_IDEA, false,"Property", 1);
-        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA, 0,"Property", 1);
+        Idea objectRelationIdea = new Idea(OBJECT_RELATION_IDEA, null,CATEGORY_PROPERTY, 1);
+        Idea object1IdIdea = new Idea(OBJECT_1_ID_IDEA, cObject1classIdea,CATEGORY_PROPERTY, 1);
+        Idea object2IdIdea = new Idea(OBJECT_2_ID_IDEA, cObject2classIdea,CATEGORY_PROPERTY, 1);
+        Idea timeIdea = new Idea(TIME_IDEA, time,CATEGORY_PROPERTY, 1);
+        Idea activationIdea = new Idea(ACTIVATION_IDEA, 0.5,CATEGORY_PROPERTY, 1);
+        Idea timestampIdea = new Idea(TIMESTAMP_IDEA, System.currentTimeMillis(),CATEGORY_PROPERTY, 1);
+        Idea recentIdea = new Idea(RECENT_IDEA, true,CATEGORY_PROPERTY, 1);
+        Idea updatedIdea = new Idea(UPDATED_IDEA, false,CATEGORY_PROPERTY, 1);
+        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA, 0,CATEGORY_PROPERTY, 1);
 
         objectRelationIdea.add(object1IdIdea);
         objectRelationIdea.add(object2IdIdea);
@@ -207,14 +202,14 @@ public class PRCProcess2Codelet extends Codelet {
     }
     
     private Idea createObjectRelationsIdea(Integer objectId, double positiveAffect, double negativeAffect, Integer time) {
-        Idea objectRelationsIdea = new Idea(OBJECT_RELATIONS_IDEA, null,"Property", 1);
-        Idea objectIdIdea = new Idea(ID_IDEA, objectId,"Property", 1);
-        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA, positiveAffect,"Property", 1);
-        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA, negativeAffect,"Property", 1);
-        Idea activationIdea = new Idea(ACTIVATION_IDEA, 0.5,"Property", 1);
-        Idea timeIdea = new Idea(TIME_IDEA, time,"Property", 1);
-        Idea timestampIdea = new Idea(TIMESTAMP_IDEA, System.currentTimeMillis(),"Property", 1);
-        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA, 0,"Property", 1);
+        Idea objectRelationsIdea = new Idea(OBJECT_RELATIONS_IDEA, null,CATEGORY_PROPERTY, 1);
+        Idea objectIdIdea = new Idea(ID_IDEA, objectId,CATEGORY_PROPERTY, 1);
+        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA, positiveAffect,CATEGORY_PROPERTY, 1);
+        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA, negativeAffect,CATEGORY_PROPERTY, 1);
+        Idea activationIdea = new Idea(ACTIVATION_IDEA, 0.5,CATEGORY_PROPERTY, 1);
+        Idea timeIdea = new Idea(TIME_IDEA, time,CATEGORY_PROPERTY, 1);
+        Idea timestampIdea = new Idea(TIMESTAMP_IDEA, System.currentTimeMillis(),CATEGORY_PROPERTY, 1);
+        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA, 0,CATEGORY_PROPERTY, 1);
 
         objectRelationsIdea.add(objectIdIdea);
         objectRelationsIdea.add(positiveAffectIdea);

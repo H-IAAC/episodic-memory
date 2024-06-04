@@ -71,7 +71,6 @@ public class PRCStorageHandlerCodelet extends Codelet {
             
             fileContent = (Map<Integer, ConcurrentHashMap<Integer, Idea>>) pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS).getValue();
         } catch (NullPointerException ex) {
-//            System.out.println("[PRC] Root MO is null");
         }
     }
     
@@ -87,7 +86,7 @@ public class PRCStorageHandlerCodelet extends Codelet {
     public void calculateActivation(){
         Double activationValue = 0.0;
         
-        if(hasTimerExpired()) {
+        if(Boolean.TRUE.equals(hasTimerExpired())) {
             activationValue = 1.0;
             startTime = System.currentTimeMillis();
             System.out.println("Timer expired! Executing PRC Storage");
@@ -99,42 +98,6 @@ public class PRCStorageHandlerCodelet extends Codelet {
             System.out.println("Activation Bounds exception");
         }
     }
-//        if (pRCMidTermMemoryObjectRelationsIdea != null) {
-//            if (pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS_TOTAL_FRAME) != null) {
-//                Integer objectRelationsFrame = (Integer) pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS_TOTAL_FRAME).getValue();
-//                if (currentFrameSaved < objectRelationsFrame) {
-//                    currentFrameSaved = objectRelationsFrame;
-//                    activationValue = 1.0;
-//                } 
-//                try {
-//                    setActivation(activationValue);
-//
-//                } catch(CodeletActivationBoundsException  ex){
-//                    System.out.println("Activation Bounds exception");
-//                }
-//            }
-//        }
-
-       
-//        Double activationValue = 0.0;
-//        try {
-////            String fileContent = (String) pRCMidTermMemoryObjectRelationsIdea.get(INDEX_FILE).getValue();
-//
-//            Map<Integer, ConcurrentHashMap<Integer, Idea>> fileContent = (Map<Integer, ConcurrentHashMap<Integer, Idea>>) pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS).getValue();
-//            if (fileContent != null) {
-//                activationValue = 1.0;
-//                setTimeStep(CONSOLIDATION_INTERVAL);
-//            } 
-//        } catch (NullPointerException ex) {
-////            System.out.println("[PRC] pRCMidTermMemoryObjectRelationsIdea is null");
-//        } 
-//        
-//        try {
-//            setActivation(activationValue);
-//            
-//        } catch(CodeletActivationBoundsException  ex){
-////            System.out.println("Activation Bounds exception");
-//        }
     
     private Boolean hasTimerExpired() {
         
@@ -145,7 +108,6 @@ public class PRCStorageHandlerCodelet extends Codelet {
     
     
     public void persistRelations() {
-        
         //fazer o objectrelations e o objectrelationsbyid        
 
         midTermMemoryObjectRelations = (Map<Integer, ConcurrentHashMap<Integer, Idea>>) pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS).getValue();
@@ -171,7 +133,7 @@ public class PRCStorageHandlerCodelet extends Codelet {
             
             //LOS NUEVOS INDICES QUE SON LOS QUE NO SE ELIMINARON DE relationsIDs SE AGREGAN AL FINAL Y SE CREA SU ARCHIVO DE RELACIONES VACIO
             for (Integer relationID : relationsIDs) {
-                Idea newRelationFileIdea = new Idea(FILENAME + relationID, null, "Property", 1);
+                Idea newRelationFileIdea = new Idea(FILENAME + relationID, null, CATEGORY_PROPERTY, 1);
                 prcDataIdea.add(newRelationFileIdea);
                 newIndexFileData.add(relationID + "," + FILENAME + relationID);
             }
@@ -237,13 +199,8 @@ public class PRCStorageHandlerCodelet extends Codelet {
 
             }
         } catch ( NullPointerException ex) {
-            prcDataIdea = new Idea(DG_DATA_IDEA, null, "Property", 1); 
+            prcDataIdea = new Idea(DG_DATA_IDEA, null, CATEGORY_PROPERTY, 1); 
         }
-        
-        
-        //remove dgDataIdea
-
-//        rootOutputIdea.get(PRC_DATA_IDEA).setValue(prcDataIdea.getValue());
         rootOutputIdea.add(prcDataIdea);
         rootOutputMO.setI(rootOutputIdea);
 
@@ -251,134 +208,19 @@ public class PRCStorageHandlerCodelet extends Codelet {
         System.out.println("Root Idea on PRCStorage output ideas: " + dgDataIdeaOutput.getL());
         System.out.println("Root Idea on PRCStorage output DGSize Idea: " + dgDataIdeaOutput.get(DG_SIZE_IDEA).getValue());
         countMtm();
-        
-//        persistAffect();
     }
-    
-//    
-//    /**
-//     * STORES ALL THE TEMPORAL PATTERNS
-//     */
-//    public void persistAffect() {
-//        try {
-//            midTermMemoryObjectRelationsById = (Map<Integer, ConcurrentHashMap<Integer, Idea>>) pRCMidTermMemoryObjectRelationsIdea.get(MID_TERM_MEMORY_OBJECT_RELATIONS_BY_ID).getValue();
-//            File path = new File(STORAGE_PATH);
-//
-//            //VERIFICA QUE EXISTA LA CARPETA DE ALMACENAMIENTO, SINO LA CREA
-//            if (!path.exists()) {
-//                path.mkdirs();
-//            }
-//
-//            File previousKnowledge = new File(STORAGE_PATH + FILENAME);
-//
-//            if (!previousKnowledge.exists()) {
-//                previousKnowledge.createNewFile();
-//            }
-//
-//            BufferedReader previousKnowledgeReader = new BufferedReader(new FileReader(previousKnowledge));
-//
-//            File updatedKnowledge = new File(STORAGE_PATH + "prc_objects_temp.txt");
-//            PrintWriter updatedKnowledgeWriter = new PrintWriter(new FileWriter(updatedKnowledge));
-//
-//            HashMap<Integer, ObjectRelations> objectsToUpdate = new HashMap<>();
-//            objectsToUpdate.putAll(midTermMemoryObjectsByID);
-//
-//            //OBJECTS SORTED BY AFFECTIVE VALUE
-//            HashMap<Integer, ObjectRelations> objectsSortedByAffect = new HashMap<>();
-//
-//            //
-//            String objectLineString = null;
-//
-//            while ((objectLineString = previousKnowledgeReader.readLine()) != null) {
-//
-//                ObjectRelations object = new ObjectRelations(objectLineString);
-//
-//                if (objectsToUpdate.containsKey(object.getObjectId())) {
-//
-//                    //FALTA EVALUAR SI TIENE LA ACTIVACION SUFICIENTE PARA SER ACTUALIZADO ANTES DE GUARDAR
-//                    object = objectsToUpdate.get(object.getObjectId());
-//
-//                    objectsToUpdate.remove(object.getObjectId());
-//                }
-//
-//                updatedKnowledgeWriter.println(object.toString());
-//                updatedKnowledgeWriter.flush();
-//
-//                //OBJECTS SORTED BY AFFECTIVE VALUE
-//                objectsSortedByAffect.put(object.getObjectId(), object);
-//            }
-//
-//            SortedSet<Integer> objectIDs = new TreeSet<>(objectsToUpdate.keySet());
-//
-//            for (Integer objectID : objectIDs) {
-//
-//                ObjectRelations object = objectsToUpdate.get(objectID);
-//
-//                //FALTA EVALUAR SI TIENE LA ACTIVACION SUFICIENTE PARA SER GUARDADO
-//                updatedKnowledgeWriter.println(object.toString());
-//                updatedKnowledgeWriter.flush();
-//
-//                //OBJECTS SORTED BY AFFECTIVE VALUE
-//                objectsSortedByAffect.put(object.getObjectId(), object);
-//            }
-//
-//            updatedKnowledgeWriter.close();
-//            previousKnowledgeReader.close();
-//
-//            if (previousKnowledge.delete()) {
-//
-//                if (!updatedKnowledge.renameTo(previousKnowledge)) {
-//                    SimpleLogger.log(this, "Error on updating file");
-//                }
-//
-//            } else {
-//                SimpleLogger.log(this, "Error on updating file");
-//            }
-//
-//            //WRITE THE OBJECTS SORTED BY POSITIVE AFFECT
-//            File affectIndexedObjects = new File(STORAGE_PATH + "prc_objects_positive_affect.txt");
-//            PrintWriter affectIndexedObjectsWriter = new PrintWriter(new FileWriter(affectIndexedObjects));
-//
-//            HashMap<Integer, ObjectRelations> sortedAHM = sortByPositiveAffect(objectsSortedByAffect, true);
-//
-//            for (Map.Entry<Integer, ObjectRelations> aSO : sortedAHM.entrySet()) {
-//                affectIndexedObjectsWriter.println(aSO.getValue().toString());
-//                affectIndexedObjectsWriter.flush();
-//            }
-//
-//            affectIndexedObjectsWriter.close();
-//
-//            //WRITE THE OBJECTS SORTED BY POSITIVE AFFECT
-//            File nAffectIndexedObjects = new File(STORAGE_PATH + "prc_objects_negative_affect.txt");
-//            PrintWriter nAffectIndexedObjectsWriter = new PrintWriter(new FileWriter(nAffectIndexedObjects));
-//
-//            HashMap<Integer, ObjectRelations> sortedNAHM = sortByNegativeAffect(objectsSortedByAffect, true);
-//
-//            for (Map.Entry<Integer, ObjectRelations> aSO : sortedNAHM.entrySet()) {
-//                nAffectIndexedObjectsWriter.println(aSO.getValue().toString());
-//                nAffectIndexedObjectsWriter.flush();
-//            }
-//
-//            nAffectIndexedObjectsWriter.close();
-//
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
-    
     
     private Idea createObjectRelationIdeaFromString(String str) {
         String data[] = str.split(",");
-        Idea objectRelationIdea = new Idea(OBJECT_RELATION_IDEA, null,"Property", 1);
-        Idea object1IdIdea = new Idea(OBJECT_1_ID_IDEA, Integer.parseInt(data[0]),"Property", 1);
-        Idea object2IdIdea = new Idea(OBJECT_2_ID_IDEA, Integer.parseInt(data[1]),"Property", 1);
-        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA, Integer.parseInt(data[2]),"Property", 1);
-        Idea activationIdea = new Idea(ACTIVATION_IDEA, Double.parseDouble(data[3]),"Property", 1);
-        Idea timeIdea = new Idea(TIME_IDEA, Integer.parseInt(data[4]),"Property", 1);
-        Idea timestampIdea = new Idea(TIMESTAMP_IDEA, Long.parseLong(data[5]),"Property", 1);
-        Idea recentIdea = new Idea(RECENT_IDEA, false,"Property", 1);
-        Idea updatedIdea = new Idea(UPDATED_IDEA, false,"Property", 1);
-        
+        Idea objectRelationIdea = new Idea(OBJECT_RELATION_IDEA, null,CATEGORY_PROPERTY, 1);
+        Idea object1IdIdea = new Idea(OBJECT_1_ID_IDEA, Integer.valueOf(data[0]),CATEGORY_PROPERTY, 1);
+        Idea object2IdIdea = new Idea(OBJECT_2_ID_IDEA, Integer.valueOf(data[1]),CATEGORY_PROPERTY, 1);
+        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA, Integer.valueOf(data[2]),CATEGORY_PROPERTY, 1);
+        Idea activationIdea = new Idea(ACTIVATION_IDEA, Double.valueOf(data[3]),CATEGORY_PROPERTY, 1);
+        Idea timeIdea = new Idea(TIME_IDEA, Integer.valueOf(data[4]),CATEGORY_PROPERTY, 1);
+        Idea timestampIdea = new Idea(TIMESTAMP_IDEA, Long.valueOf(data[5]),CATEGORY_PROPERTY, 1);
+        Idea recentIdea = new Idea(RECENT_IDEA, false,CATEGORY_PROPERTY, 1);
+        Idea updatedIdea = new Idea(UPDATED_IDEA, false,CATEGORY_PROPERTY, 1);
 
         objectRelationIdea.add(object1IdIdea);
         objectRelationIdea.add(object2IdIdea);
@@ -407,13 +249,10 @@ public class PRCStorageHandlerCodelet extends Codelet {
 
             ConcurrentHashMap<Integer, Idea> relations = midTermMemoryObjectRelations.get(vertex);
 
-
             for (Idea sr : relations.values()) {
                 total++;
             }
-
         }
-        
         System.out.println("[PRC] total OBJ relations: "+total);
     }
 }

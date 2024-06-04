@@ -26,7 +26,6 @@ public class CA3Process1Codelet extends Codelet {
     MemoryObject newEncodedSceneToStoreMO;
     Idea newEncodedSceneToStoreIdea;
     
-    private double affectIntensity = 0.0;
     private EmotionalDecay emotionalDecay = null;
     
     public CA3Process1Codelet() {
@@ -49,27 +48,25 @@ public class CA3Process1Codelet extends Codelet {
     public void proc() {
         initComponents();
         Idea sceneIdea = (Idea) newEncodedSceneSpikeIdea.get(SCENE_IDEA);
-        System.out.println("Scene Idea CA3 childs");
-        System.out.println(sceneIdea.getL());
+        System.out.println("Scene Idea CA3 childs: " + sceneIdea.getL());
         sceneIdea.get(RECENT_IDEA).setValue(true);
         recentNewEncodedSceneSpikeIdea.add(sceneIdea);
-        recentNewEncodedSceneSpikeIdea.add(new Idea(CURRENT_FRAME_IDEA, newEncodedSceneSpikeIdea.get(CURRENT_FRAME_IDEA).getValue(), "Property", 1));
+        recentNewEncodedSceneSpikeIdea.add(new Idea(CURRENT_FRAME_IDEA, newEncodedSceneSpikeIdea.get(CURRENT_FRAME_IDEA).getValue(), CATEGORY_PROPERTY, 1));
 
         recentNewEncodedSceneSpikeMO.setI(recentNewEncodedSceneSpikeIdea);
         
-        affectIntensity = emotionalDecay.getActivation();
+        double affectIntensity = emotionalDecay.getActivation();
         
         newEncodedSceneToStoreIdea.setL(new ArrayList<>());
         newEncodedSceneToStoreIdea.add(sceneIdea);
-        newEncodedSceneToStoreIdea.add(new Idea(AFFECT_INTENSITY_IDEA, affectIntensity, "Property", 1));
-        newEncodedSceneToStoreIdea.add(new Idea(POSITIVE_AFFECT_IDEA, sceneIdea.get(POSITIVE_AFFECT_IDEA).getValue(), "Property", 1));
-        newEncodedSceneToStoreIdea.add(new Idea(NEGATIVE_AFFECT_IDEA, sceneIdea.get(NEGATIVE_AFFECT_IDEA).getValue(), "Property", 1));
+        newEncodedSceneToStoreIdea.add(new Idea(AFFECT_INTENSITY_IDEA, affectIntensity, CATEGORY_PROPERTY, 1));
+        newEncodedSceneToStoreIdea.add(new Idea(POSITIVE_AFFECT_IDEA, sceneIdea.get(POSITIVE_AFFECT_IDEA).getValue(), CATEGORY_PROPERTY, 1));
+        newEncodedSceneToStoreIdea.add(new Idea(NEGATIVE_AFFECT_IDEA, sceneIdea.get(NEGATIVE_AFFECT_IDEA).getValue(), CATEGORY_PROPERTY, 1));
         newEncodedSceneToStoreMO.setI(newEncodedSceneToStoreIdea);
     }
     
     @Override
     public void calculateActivation(){
-        
     }
     
     private void initComponents() {

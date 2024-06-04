@@ -37,9 +37,7 @@ public class DGStorageHandlerCodelet extends Codelet {
     Idea rootOutputIdea;
     
     Integer savedTimes = 0;
-    
-    Integer currentFrameSaved = 0;
-    
+        
     private long startTime;
 
     public DGStorageHandlerCodelet() {
@@ -72,8 +70,12 @@ public class DGStorageHandlerCodelet extends Codelet {
     
     @Override
     public void proc() {
+        if (dgMidTermMemoryScenesIdea.get(MID_TERM_MEMORY_SCENES_BY_ID) == null) {
+            return ;
+        }
         persistScenes();
         savedTimes+=1;     
+        System.out.println("Timer expired! Executed DG Storage. Saved times: " + savedTimes);
     }
     
     @Override
@@ -81,10 +83,9 @@ public class DGStorageHandlerCodelet extends Codelet {
         
         Double activationValue = 0.0;
         
-        if(hasTimerExpired()) {
+        if(Boolean.TRUE.equals(hasTimerExpired())) {
             activationValue = 1.0;
             startTime = System.currentTimeMillis();
-            System.out.println("Timer expired! Executing DG Storage");
         } 
         try {
             setActivation(activationValue);
@@ -93,39 +94,23 @@ public class DGStorageHandlerCodelet extends Codelet {
             System.out.println("Activation Bounds exception");
         }
     }
-//        if (dgMidTermMemoryScenesIdea != null) {
-//            if (dgMidTermMemoryScenesIdea.get(DG_TOTAL_FRAME) != null) {
-//                Integer dgScenesFrame = (Integer) dgMidTermMemoryScenesIdea.get(DG_TOTAL_FRAME).getValue();
-//                if (currentFrameSaved < dgScenesFrame) {
-//                    currentFrameSaved = dgScenesFrame;
-//                    activationValue = 1.0;
-//                } 
-//                try {
-//                    setActivation(activationValue);
-//                } catch(CodeletActivationBoundsException  ex){
-//                    System.out.println("Activation Bounds exception");
-//                }
-//            }
-//        }
 
     private Boolean hasTimerExpired() {
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - startTime;
         return elapsedTime >= CONSOLIDATION_INTERVAL;
     }
+    
     /**
      * STORES ALL THE TEMPORAL PATTERNS
-     */
-    private void persistScenes() {
-        //store at rootMO
+     *  //store at rootMO
         //verify if there is data
         //scenes to update is the midTermScenesByID
         //from each previous data verify if has to update, if yes, replace with new data, else, just save again
         //if still have scenes to update, save them
         //save DGSize
-        if (dgMidTermMemoryScenesIdea.get(MID_TERM_MEMORY_SCENES_BY_ID) == null) {
-            return ;
-        }
+     */
+    private void persistScenes() {
         Map<Integer, Idea> midTermMemoryScenesByID = (Map<Integer, Idea>) dgMidTermMemoryScenesIdea.get(MID_TERM_MEMORY_SCENES_BY_ID).getValue();
         
         HashMap<Integer, Idea> scenesToUpdate = new HashMap<>();
@@ -157,8 +142,8 @@ public class DGStorageHandlerCodelet extends Codelet {
             //FALTA EVALUAR SI TIENE LA ACTIVACION SUFICIENTE PARA SER GUARDADO
         }
         dgDataIdea.setL(new ArrayList<>());
-        Idea dgMemoryScenesIdea = new Idea(DG_MEMORY_SCENES_IDEA, ideasToBeStored, "Property", 1);
-        Idea dgMemoryScenesDGSizeIdea = new Idea(DG_SIZE_IDEA, ideasToBeStored.size(), "Property", 1);
+        Idea dgMemoryScenesIdea = new Idea(DG_MEMORY_SCENES_IDEA, ideasToBeStored, CATEGORY_PROPERTY, 1);
+        Idea dgMemoryScenesDGSizeIdea = new Idea(DG_SIZE_IDEA, ideasToBeStored.size(), CATEGORY_PROPERTY, 1);
         dgDataIdea.add(dgMemoryScenesIdea);
         dgDataIdea.add(dgMemoryScenesDGSizeIdea);
 
@@ -173,7 +158,7 @@ public class DGStorageHandlerCodelet extends Codelet {
         String ideaToAddName = ideaToAdd.getName();
         
         for( Idea i : currentL) {
-            if (i.getName() != ideaToAddName) {
+            if (!i.getName().equals(ideaToAddName)) {
                 newL.add(i);
             }
         }
@@ -195,20 +180,20 @@ public class DGStorageHandlerCodelet extends Codelet {
     }
     
      private Idea storedSceneToIdea(String storedString) {
-        Idea storedSceneIdea = new Idea(STORED_SCENE_IDEA, null, "Property", 1);
+        Idea storedSceneIdea = new Idea(STORED_SCENE_IDEA, null, CATEGORY_PROPERTY, 1);
         String data[] = storedString.split(",");
         
-        Idea idIdea = new Idea(ID_IDEA, Integer.parseInt(data[0]), "Property", 1);
-        Idea patternIdea = new Idea(PATTERN_IDEA,data[1] + "," + data[2] + "," + data[3] + "," + data[4] + "," + data[5], "Property", 1);
-        Idea timeIdea = new Idea(TIME_IDEA,Integer.parseInt(data[10]), "Property", 1);
-        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,Integer.parseInt(data[6]), "Property", 1);
-        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,Double.parseDouble(data[7]), "Property", 1);
-        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,Double.parseDouble(data[8]), "Property", 1);
-        Idea activationIdea = new Idea(ACTIVATION_IDEA, Double.parseDouble(data[9]), "Property", 1);
-        Idea timestampIdea = new Idea(TIMESTAMP_IDEA,Long.parseLong(data[11]), "Property", 1);
-        Idea relationsIdea = new Idea(RELATIONS_IDEA,null, "Property", 1);
-        Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, "Property", 1);
-        Idea recentIdea = new Idea(RECENT_IDEA,false, "Property", 1);
+        Idea idIdea = new Idea(ID_IDEA, Integer.valueOf(data[0]), CATEGORY_PROPERTY, 1);
+        Idea patternIdea = new Idea(PATTERN_IDEA,data[1] + "," + data[2] + "," + data[3] + "," + data[4] + "," + data[5], CATEGORY_PROPERTY, 1);
+        Idea timeIdea = new Idea(TIME_IDEA,Integer.valueOf(data[10]), CATEGORY_PROPERTY, 1);
+        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,Integer.valueOf(data[6]), CATEGORY_PROPERTY, 1);
+        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,Double.valueOf(data[7]), CATEGORY_PROPERTY, 1);
+        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,Double.valueOf(data[8]), CATEGORY_PROPERTY, 1);
+        Idea activationIdea = new Idea(ACTIVATION_IDEA, Double.valueOf(data[9]), CATEGORY_PROPERTY, 1);
+        Idea timestampIdea = new Idea(TIMESTAMP_IDEA,Long.valueOf(data[11]), CATEGORY_PROPERTY, 1);
+        Idea relationsIdea = new Idea(RELATIONS_IDEA,null, CATEGORY_PROPERTY, 1);
+        Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, CATEGORY_PROPERTY, 1);
+        Idea recentIdea = new Idea(RECENT_IDEA,false, CATEGORY_PROPERTY, 1);
         
         storedSceneIdea.add(idIdea);
         storedSceneIdea.add(patternIdea);
@@ -224,6 +209,4 @@ public class DGStorageHandlerCodelet extends Codelet {
             
         return storedSceneIdea;
     }
-    
-    
 }

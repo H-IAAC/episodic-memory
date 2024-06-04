@@ -56,9 +56,7 @@ public class ImageCodelet extends Codelet {
                 throw new AssertionError();
         }
         imageReceivedPathMO.setI(imageReceivedPathIdea);
-        
-//        imageReceivedPathIdea = new Idea("imageReceivedPathIdea","/yolo/files/imagemteste.jpeg", "Property", 3);
-      
+              
     }
     
     @Override

@@ -103,8 +103,6 @@ public class EmotionalDecay extends TimerTask {
         t++;
         t1++;
         t2++;
-
-        //System.out.println("Value ["+this.tag+"]: " + this.negativeActivation);
     }
 
 }

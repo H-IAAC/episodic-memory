@@ -9,29 +9,7 @@ import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.cst.core.exceptions.CodeletThresholdBoundsException;
 import br.unicamp.cst.representation.idea.Idea;
-import static episodicv2.configuration.Configuration.ACTIVATION_IDEA;
-import static episodicv2.configuration.Configuration.ACTIVE_SIMILARITY_IDEA;
-import static episodicv2.configuration.Configuration.AFFECT_INTENSITY_IDEA;
-import static episodicv2.configuration.Configuration.CA3_MEMORY_SCENES_IDEA;
-import static episodicv2.configuration.Configuration.CONSOLIDATION_INTERVAL;
-import static episodicv2.configuration.Configuration.DG_DATA_IDEA;
-import static episodicv2.configuration.Configuration.DG_MEMORY_SCENES_IDEA;
-import static episodicv2.configuration.Configuration.DG_SIZE_IDEA;
-import static episodicv2.configuration.Configuration.ID_IDEA;
-import static episodicv2.configuration.Configuration.MID_TERM_MEMORY_OBJECT_RELATIONS_TOTAL_FRAME;
-import static episodicv2.configuration.Configuration.MID_TERM_MEMORY_SCENES_BY_ID;
-import static episodicv2.configuration.Configuration.NEGATIVE_AFFECT_IDEA;
-import static episodicv2.configuration.Configuration.NEW_ENCODED_SCENE_TO_STORE_MO;
-import static episodicv2.configuration.Configuration.PATTERN_IDEA;
-import static episodicv2.configuration.Configuration.POSITIVE_AFFECT_IDEA;
-import static episodicv2.configuration.Configuration.RECENT_IDEA;
-import static episodicv2.configuration.Configuration.RELATIONS_IDEA;
-import static episodicv2.configuration.Configuration.REPETITIONS_IDEA;
-import static episodicv2.configuration.Configuration.ROOT_MO;
-import static episodicv2.configuration.Configuration.SCENE_IDEA;
-import static episodicv2.configuration.Configuration.STORED_SCENE_IDEA;
-import static episodicv2.configuration.Configuration.TIMESTAMP_IDEA;
-import static episodicv2.configuration.Configuration.TIME_IDEA;
+import static episodicv2.configuration.Configuration.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,8 +37,7 @@ public class CA3StorageHandlerCodelet extends Codelet {
     
     //CARGA LAS ESCENAS EXISTENTES
     private static Map<Integer, Idea> midTermMemoryScenesByID  = new HashMap<>();;
-    
-    
+
     private long startTime;
     
     public CA3StorageHandlerCodelet() {
@@ -71,7 +48,6 @@ public class CA3StorageHandlerCodelet extends Codelet {
             System.out.println("Threshold Bounds exception");
         }
         startTime = System.currentTimeMillis();
-//        setIsMemoryObserver(true);
     }
 
     @Override
@@ -103,7 +79,6 @@ public class CA3StorageHandlerCodelet extends Codelet {
                 persistScenes();
             }
         }
-        
     }
     
     @Override
@@ -140,31 +115,18 @@ public class CA3StorageHandlerCodelet extends Codelet {
         }
         midTermMemoryScenesByID.put(sceneId, scene);
     }
-
-//        else {
-//
-//            Idea existingScene = midTermMemoryScenesByID.get(scene.getId());
-//
-//            //existingScene.updateAffect(affect);
-//            //existingScene.updateActivationWithAffect(scene.getAffect());
-//            existingScene.updatePositiveAffect(positiveAffect);
-//            existingScene.updateNegativeAffect(negativeAffect);
-//            existingScene.updateActivationWithAffect(affectIntensity);
-//            existingScene.setTimeStamp(scene.getTimeStamp());
-//
-//            //SimpleLogger.log(this, "Updating "+scene.getPattern()+" , oldpa "+positiveAffect+" oldna "+negativeAffect+" -- new "+existingScene.getPositiveAffect()+" , "+existingScene.getNegativeAffect());
-//        }
     
+    
+    /**
+     * method persistScenes:
+    store at rootMO
+    verify if there is data
+    scenes to update is the midTermScenesByID
+    from each previous data verify if has to update, if yes, replace with new data, else, just save again
+    if still have scenes to update, save them
+    save DGSize     
+    **/
     private void persistScenes() {
-        //store at rootMO
-        //verify if there is data
-        //scenes to update is the midTermScenesByID
-        //from each previous data verify if has to update, if yes, replace with new data, else, just save again
-        //if still have scenes to update, save them
-        //save DGSize
-        
-//        Map<Integer, Idea> midTermMemoryScenesByID = (Map<Integer, Idea>) dgMidTermMemoryScenesIdea.get(MID_TERM_MEMORY_SCENES_BY_ID).getValue();
-        
         HashMap<Integer, Idea> scenesToUpdate = new HashMap<>();
         scenesToUpdate.putAll(midTermMemoryScenesByID);
         ArrayList<String> ideasToBeStored = new ArrayList<String>();
@@ -194,7 +156,7 @@ public class CA3StorageHandlerCodelet extends Codelet {
             //FALTA EVALUAR SI TIENE LA ACTIVACION SUFICIENTE PARA SER GUARDADO
         }
         ca3MemoryScenesIdea.setL(new ArrayList<>());
-        Idea ideasToBeStoredIdea = new Idea(CA3_MEMORY_SCENES_IDEA, ideasToBeStored, "Property", 1);
+        Idea ideasToBeStoredIdea = new Idea(CA3_MEMORY_SCENES_IDEA, ideasToBeStored, CATEGORY_PROPERTY, 1);
         ca3MemoryScenesIdea.add(ideasToBeStoredIdea);
 
         List<Idea> newL = createNewL(rootOutputIdea, ca3MemoryScenesIdea);
@@ -203,20 +165,20 @@ public class CA3StorageHandlerCodelet extends Codelet {
     }
     
     private Idea storedSceneToIdea(String storedString) {
-        Idea storedSceneIdea = new Idea(STORED_SCENE_IDEA, null, "Property", 1);
+        Idea storedSceneIdea = new Idea(STORED_SCENE_IDEA, null, CATEGORY_PROPERTY, 1);
         String data[] = storedString.split(",");
         
-        Idea idIdea = new Idea(ID_IDEA, Integer.parseInt(data[0]), "Property", 1);
-        Idea patternIdea = new Idea(PATTERN_IDEA,data[1] + "," + data[2] + "," + data[3] + "," + data[4] + "," + data[5], "Property", 1);
-        Idea timeIdea = new Idea(TIME_IDEA,Integer.parseInt(data[10]), "Property", 1);
-        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,Integer.parseInt(data[6]), "Property", 1);
-        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,Double.parseDouble(data[7]), "Property", 1);
-        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,Double.parseDouble(data[8]), "Property", 1);
-        Idea activationIdea = new Idea(ACTIVATION_IDEA, Double.parseDouble(data[9]), "Property", 1);
-        Idea timestampIdea = new Idea(TIMESTAMP_IDEA,Long.parseLong(data[11]), "Property", 1);
-        Idea relationsIdea = new Idea(RELATIONS_IDEA,null, "Property", 1);
-        Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, "Property", 1);
-        Idea recentIdea = new Idea(RECENT_IDEA,false, "Property", 1);
+        Idea idIdea = new Idea(ID_IDEA, Integer.valueOf(data[0]), CATEGORY_PROPERTY, 1);
+        Idea patternIdea = new Idea(PATTERN_IDEA,data[1] + "," + data[2] + "," + data[3] + "," + data[4] + "," + data[5], CATEGORY_PROPERTY, 1);
+        Idea timeIdea = new Idea(TIME_IDEA,Integer.valueOf(data[10]), CATEGORY_PROPERTY, 1);
+        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,Integer.valueOf(data[6]), CATEGORY_PROPERTY, 1);
+        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,Double.valueOf(data[7]), CATEGORY_PROPERTY, 1);
+        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,Double.valueOf(data[8]), CATEGORY_PROPERTY, 1);
+        var activationIdea = new Idea(ACTIVATION_IDEA, Double.valueOf(data[9]), CATEGORY_PROPERTY, 1);
+        Idea timestampIdea = new Idea(TIMESTAMP_IDEA,Long.valueOf(data[11]), CATEGORY_PROPERTY, 1);
+        Idea relationsIdea = new Idea(RELATIONS_IDEA,null, CATEGORY_PROPERTY, 1);
+        Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, CATEGORY_PROPERTY, 1);
+        Idea recentIdea = new Idea(RECENT_IDEA,false, CATEGORY_PROPERTY, 1);
         
         storedSceneIdea.add(idIdea);
         storedSceneIdea.add(patternIdea);
@@ -252,7 +214,7 @@ public class CA3StorageHandlerCodelet extends Codelet {
         String ideaToAddName = ideaToAdd.getName();
         
         for( Idea i : currentL) {
-            if (i.getName() != ideaToAddName) {
+            if (!i.getName().equals(ideaToAddName)) {
                 newL.add(i);
             }
         }

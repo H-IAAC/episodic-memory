@@ -26,7 +26,6 @@ public class CA1Process1Codelet extends Codelet {
     
     private AssociationQueue queue = AssociationQueue.getInstance();
     private EmotionalDecay emotionalDecay = null;
-    private double affectIntensity = 0.0;
     
     public CA1Process1Codelet (){
         setIsMemoryObserver(true);
@@ -47,8 +46,6 @@ public class CA1Process1Codelet extends Codelet {
         System.out.println("[CA1P1] Executing proc CA1Process1Codelet");
 
         Idea scene = null;
-//        switch (spikeId) {
-//            case SpikeType.NEW_ENCODED_SCENE:
         scene = recentNewEncodedSceneSpikeIdea.get(SCENE_IDEA);      
         if (scene != null) {
             if (scene.getId() != 0) {
@@ -56,17 +53,13 @@ public class CA1Process1Codelet extends Codelet {
                 int tuple[] = queue.addSceneId((Integer) scene.get(ID_IDEA).getValue());
 
                 if (tuple != null) {
-
-                    affectIntensity = emotionalDecay.getActivation();
+                    double affectIntensity = emotionalDecay.getActivation();
                     Integer time = (Integer) recentNewEncodedSceneSpikeIdea.get(CURRENT_FRAME_IDEA).getValue();      
                     Idea sr = createSceneRelationIdea(tuple[0], tuple[1], time);
                     sceneRelationVertexToStoreIdea.setL(new ArrayList<>());
-                    sceneRelationVertexToStoreIdea.add(new Idea(AFFECT_INTENSITY_IDEA, affectIntensity, "Property", 1));
+                    sceneRelationVertexToStoreIdea.add(new Idea(AFFECT_INTENSITY_IDEA, affectIntensity, CATEGORY_PROPERTY, 1));
                     sceneRelationVertexToStoreIdea.add(sr);
                     sceneRelationVertexToStoreMO.setI(sceneRelationVertexToStoreIdea);
-//                    graph.addVertex(sr, affectIntensity);
-
-                    //graph.printGraph();
                 } else {
                     System.out.println("Empty queue");
                 }
@@ -88,16 +81,16 @@ public class CA1Process1Codelet extends Codelet {
     
     private Idea createSceneRelationIdea(int scene1Id, int scene2Id, int time) {
         
-        Idea sceneRelationIdea = new Idea(SCENE_RELATION_IDEA, null, "Property", 1);
-        Idea scene1IdIdea = new Idea(SCENE_ID_1_IDEA,scene1Id, "Property", 1);
-        Idea scene2IdIdea = new Idea(SCENE_ID_2_IDEA,scene2Id, "Property", 1);
+        Idea sceneRelationIdea = new Idea(SCENE_RELATION_IDEA, null, CATEGORY_PROPERTY, 1);
+        Idea scene1IdIdea = new Idea(SCENE_ID_1_IDEA,scene1Id, CATEGORY_PROPERTY, 1);
+        Idea scene2IdIdea = new Idea(SCENE_ID_2_IDEA,scene2Id, CATEGORY_PROPERTY, 1);
         Integer repetitions = 0;
-        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,repetitions, "Property", 1);
-        Idea activationIdea = new Idea(ACTIVATION_IDEA,ActivationFunctions.sigmoid(repetitions * SIGMOID_SCALE), "Property", 1);
-        Idea timeIdea = new Idea(TIME_IDEA,time, "Property", 1);
-        Idea timestampIdea = new Idea(TIMESTAMP_IDEA,System.currentTimeMillis(), "Property", 1);
-        Idea recent = new Idea(RECENT_IDEA,true, "Property", 1);
-        Idea updated = new Idea(UPDATED_IDEA,false, "Property", 1);
+        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,repetitions, CATEGORY_PROPERTY, 1);
+        Idea activationIdea = new Idea(ACTIVATION_IDEA,ActivationFunctions.sigmoid(repetitions * SIGMOID_SCALE), CATEGORY_PROPERTY, 1);
+        Idea timeIdea = new Idea(TIME_IDEA,time, CATEGORY_PROPERTY, 1);
+        Idea timestampIdea = new Idea(TIMESTAMP_IDEA,System.currentTimeMillis(), CATEGORY_PROPERTY, 1);
+        Idea recent = new Idea(RECENT_IDEA,true, CATEGORY_PROPERTY, 1);
+        Idea updated = new Idea(UPDATED_IDEA,false, CATEGORY_PROPERTY, 1);
 
         sceneRelationIdea.add(scene1IdIdea);
         sceneRelationIdea.add(scene2IdIdea);
@@ -110,5 +103,4 @@ public class CA1Process1Codelet extends Codelet {
         
         return sceneRelationIdea;
     }
-    
 }

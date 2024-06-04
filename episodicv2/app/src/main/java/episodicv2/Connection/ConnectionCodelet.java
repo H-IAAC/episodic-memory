@@ -56,20 +56,16 @@ public class ConnectionCodelet extends Codelet {
                 System.out.println("Client connected: " + socket.getInetAddress().getHostAddress());
                 Integer i = 0;
                 while (i<300) {
-                    // Receive image size
                     InputStream inputStream = socket.getInputStream();
                     byte[] sizeBytes = new byte[4];
                     inputStream.read(sizeBytes);
                     int imageSize = ByteBuffer.wrap(sizeBytes).getInt();
-//                    System.out.println("Image size: " + imageSize);
                     if (imageSize <= 0) {
-//                        System.err.println("Received invalid image size: " + imageSize);
-                        continue; // Continue para a próxima iteração do loop
+                        continue; 
                     }
                     
                     if (imageSize > 1612251136) {
-//                        System.err.println("Received invalid image size: " + imageSize);
-                        continue; // Continue para a próxima iteração do loop
+                        continue; 
                     }
 
                     // Receive image data

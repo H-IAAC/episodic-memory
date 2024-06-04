@@ -57,15 +57,15 @@ public class ObjectsAssociation {
                 Integer cObject1classIdea = (Integer) cObject1.get(ID_IDEA).getValue();
                 Integer cObject2classIdea = (Integer) cObject2.get(ID_IDEA).getValue();
                 
-                Idea objectRelationIdea = new Idea(OBJECT_RELATION_IDEA, null,"Property", 1);
-                Idea object1IdIdea = new Idea(OBJECT_1_ID_IDEA, cObject1classIdea,"Property", 1);
-                Idea object2IdIdea = new Idea(OBJECT_2_ID_IDEA, cObject2classIdea,"Property", 1);
-                Idea timeIdea = new Idea(TIME_IDEA, 0,"Property", 1);
-                Idea activationIdea = new Idea(ACTIVATION_IDEA, 0.5,"Property", 1);
-                Idea timestampIdea = new Idea(TIMESTAMP_IDEA, System.currentTimeMillis(),"Property", 1);
-                Idea recentIdea = new Idea(RECENT_IDEA, true,"Property", 1);
-                Idea updatedIdea = new Idea(UPDATED_IDEA, false,"Property", 1);
-                Idea repetitionsIdea = new Idea(REPETITIONS_IDEA, 0,"Property", 1);
+                Idea objectRelationIdea = new Idea(OBJECT_RELATION_IDEA, null,CATEGORY_PROPERTY, 1);
+                Idea object1IdIdea = new Idea(OBJECT_1_ID_IDEA, cObject1classIdea,CATEGORY_PROPERTY, 1);
+                Idea object2IdIdea = new Idea(OBJECT_2_ID_IDEA, cObject2classIdea,CATEGORY_PROPERTY, 1);
+                Idea timeIdea = new Idea(TIME_IDEA, 0,CATEGORY_PROPERTY, 1);
+                Idea activationIdea = new Idea(ACTIVATION_IDEA, 0.5,CATEGORY_PROPERTY, 1);
+                Idea timestampIdea = new Idea(TIMESTAMP_IDEA, System.currentTimeMillis(),CATEGORY_PROPERTY, 1);
+                Idea recentIdea = new Idea(RECENT_IDEA, true,CATEGORY_PROPERTY, 1);
+                Idea updatedIdea = new Idea(UPDATED_IDEA, false,CATEGORY_PROPERTY, 1);
+                Idea repetitionsIdea = new Idea(REPETITIONS_IDEA, 0,CATEGORY_PROPERTY, 1);
                 
                 objectRelationIdea.add(object1IdIdea);
                 objectRelationIdea.add(object2IdIdea);

@@ -13,8 +13,6 @@ import episodicv2.emotions.ActivationFunctions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import t2dstring.T2DString;
 
 /**
@@ -38,26 +36,20 @@ public class DGProcessCodelet extends Codelet {
     private static final double SIMILARITY_THRESHOLD = Configuration.SIMILARITY_THRESHOLD;
     
     //CARGA LAS ESCENAS EXISTENTES
-    private static int DG_SIZE = 0;
-    private static ArrayList<Idea> midTermMemoryScenes;
-    private static Map<Integer, Idea> midTermMemoryScenesByID;
+    private int dgSize = 0;
+    private static ArrayList<Idea> midTermMemoryScenes = new ArrayList<>();
+    private static Map<Integer, Idea> midTermMemoryScenesByID = new HashMap<>();
     
     public DGProcessCodelet(Boolean load) {
-        
         setIsMemoryObserver(true);
-        midTermMemoryScenes = new ArrayList<>();
-        midTermMemoryScenesByID = new HashMap<>();
-
-        if (load) {
+        if (Boolean.TRUE.equals(load)) {
             load();
             loadDGSize();
         }
-        
     }
     
     @Override
     public void accessMemoryObjects() {
-        //  TODO: revisar o que deve ser entrada ou saída para que modifique a root mas não notifique para ativar o codelet sempre que a root alterar
         rootMO = (MemoryObject) getInput(ROOT_MO);
         rootIdea = (Idea) rootMO.getI();
         
@@ -92,13 +84,13 @@ public class DGProcessCodelet extends Codelet {
         
         Integer currentFrame = (Integer) patternReplacedIdea.get(CURRENT_FRAME_IDEA).getValue();
         
-        newEncodedSceneSpikeIdea.add(new Idea(CURRENT_FRAME_IDEA, currentFrame, "Property", 1));
+        newEncodedSceneSpikeIdea.add(new Idea(CURRENT_FRAME_IDEA, currentFrame, CATEGORY_PROPERTY, 1));
         newEncodedSceneSpikeMO.setI(newEncodedSceneSpikeIdea);
         
-        Idea midTermMemoryScenesIdea = new Idea(MID_TERM_MEMORY_SCENES, midTermMemoryScenes, "Property", 1);
-        Idea midTermMemoryScenesIdeaById = new Idea(MID_TERM_MEMORY_SCENES_BY_ID, midTermMemoryScenesByID, "Property", 1);
-        Idea dgSizeIdea = new Idea(DG_SIZE_IDEA, DG_SIZE, "Property", 1);
-        Idea currentFrameIdea = new Idea(DG_TOTAL_FRAME, currentFrame, "Property", 1);
+        Idea midTermMemoryScenesIdea = new Idea(MID_TERM_MEMORY_SCENES, midTermMemoryScenes, CATEGORY_PROPERTY, 1);
+        Idea midTermMemoryScenesIdeaById = new Idea(MID_TERM_MEMORY_SCENES_BY_ID, midTermMemoryScenesByID, CATEGORY_PROPERTY, 1);
+        Idea dgSizeIdea = new Idea(DG_SIZE_IDEA, dgSize, CATEGORY_PROPERTY, 1);
+        Idea currentFrameIdea = new Idea(DG_TOTAL_FRAME, currentFrame, CATEGORY_PROPERTY, 1);
         dgMidTermMemoryScenesIdea.setL(new ArrayList());
         dgMidTermMemoryScenesIdea.add(midTermMemoryScenesIdea);
         dgMidTermMemoryScenesIdea.add(midTermMemoryScenesIdeaById);
@@ -132,20 +124,20 @@ public class DGProcessCodelet extends Codelet {
         //SI NO HAY UNA ESCENA SIMILAR CREA UNA NUEVA
         if (scene == null) {
 
-            DG_SIZE = DG_SIZE + 1;
-            scene = new Idea(SCENE_IDEA, null, "Property", 1);
-            assignedId = DG_SIZE;
-            Idea idIdea = new Idea(ID_IDEA,assignedId, "Property", 1);
-            Idea patternIdea = new Idea(PATTERN_IDEA,pattern, "Property", 1);
-            Idea timeIdea = new Idea(TIME_IDEA,time, "Property", 1);
-            Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,1, "Property", 1);
-            Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,0.0, "Property", 1);
-            Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,0.0, "Property", 1);
-            Idea activationIdea = new Idea(ACTIVATION_IDEA,0.5, "Property", 1);
-            Idea timestampIdea = new Idea(TIMESTAMP_IDEA,System.currentTimeMillis(), "Property", 1);
-            Idea relationsIdea = new Idea(RELATIONS_IDEA,null, "Property", 1);
-            Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, "Property", 1);
-            Idea recentIdea = new Idea(RECENT_IDEA,true, "Property", 1);
+            dgSize = dgSize + 1;
+            scene = new Idea(SCENE_IDEA, null, CATEGORY_PROPERTY, 1);
+            assignedId = dgSize;
+            Idea idIdea = new Idea(ID_IDEA,assignedId, CATEGORY_PROPERTY, 1);
+            Idea patternIdea = new Idea(PATTERN_IDEA,pattern, CATEGORY_PROPERTY, 1);
+            Idea timeIdea = new Idea(TIME_IDEA,time, CATEGORY_PROPERTY, 1);
+            Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,1, CATEGORY_PROPERTY, 1);
+            Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,0.0, CATEGORY_PROPERTY, 1);
+            Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,0.0, CATEGORY_PROPERTY, 1);
+            Idea activationIdea = new Idea(ACTIVATION_IDEA,0.5, CATEGORY_PROPERTY, 1);
+            Idea timestampIdea = new Idea(TIMESTAMP_IDEA,System.currentTimeMillis(), CATEGORY_PROPERTY, 1);
+            Idea relationsIdea = new Idea(RELATIONS_IDEA,null, CATEGORY_PROPERTY, 1);
+            Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, CATEGORY_PROPERTY, 1);
+            Idea recentIdea = new Idea(RECENT_IDEA,true, CATEGORY_PROPERTY, 1);
             scene.add(idIdea);
             scene.add(patternIdea);
             scene.add(timeIdea);
@@ -165,8 +157,6 @@ public class DGProcessCodelet extends Codelet {
             scene = updateScenePositiveAffect(positiveAffect, scene);
             scene = updateSceneNegativeAffect(negativeAffect, scene);
         }
-
-        //SimpleLogger.log(this, "Created scene: " + scene.toString());
         return scene;
     }
     
@@ -196,10 +186,8 @@ public class DGProcessCodelet extends Codelet {
 
                     break;
                 }
-
             }
         }
-        
 
         //SI NO HAY UN PATRON SIMILAR EN MID-TERM LO BUSCA EN LONG-TERM
         if (similar == null) {
@@ -231,7 +219,6 @@ public class DGProcessCodelet extends Codelet {
                 }
             }
         }
-
         return similar;
     }
     
@@ -257,7 +244,6 @@ public class DGProcessCodelet extends Codelet {
         scene.get(ACTIVATION_IDEA).setValue(activation);
         
         return scene;
-        
     }
     
     public Idea updateScenePositiveAffect(double affect, Idea scene) {
@@ -275,21 +261,21 @@ public class DGProcessCodelet extends Codelet {
     }
     
     private Idea storedSceneToIdea(String storedString) {
-        Idea storedSceneIdea = new Idea(STORED_SCENE_IDEA, null, "Property", 1);
+        Idea storedSceneIdea = new Idea(STORED_SCENE_IDEA, null, CATEGORY_PROPERTY, 1);
         
         String data[] = storedString.split(",");
         
-        Idea idIdea = new Idea(ID_IDEA, Integer.parseInt(data[0]), "Property", 1);
-        Idea patternIdea = new Idea(PATTERN_IDEA,data[1] + "," + data[2] + "," + data[3] + "," + data[4] + "," + data[5], "Property", 1);
-        Idea timeIdea = new Idea(TIME_IDEA,Integer.parseInt(data[10]), "Property", 1);
-        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,Integer.parseInt(data[6]), "Property", 1);
-        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,Double.parseDouble(data[7]), "Property", 1);
-        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,Double.parseDouble(data[8]), "Property", 1);
-        Idea activationIdea = new Idea(ACTIVATION_IDEA, Double.parseDouble(data[9]), "Property", 1);
-        Idea timestampIdea = new Idea(TIMESTAMP_IDEA,Long.parseLong(data[11]), "Property", 1);
-        Idea relationsIdea = new Idea(RELATIONS_IDEA,null, "Property", 1);
-        Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, "Property", 1);
-        Idea recentIdea = new Idea(RECENT_IDEA,false, "Property", 1);
+        Idea idIdea = new Idea(ID_IDEA, Integer.parseInt(data[0]), CATEGORY_PROPERTY, 1);
+        Idea patternIdea = new Idea(PATTERN_IDEA,data[1] + "," + data[2] + "," + data[3] + "," + data[4] + "," + data[5], CATEGORY_PROPERTY, 1);
+        Idea timeIdea = new Idea(TIME_IDEA,Integer.parseInt(data[10]), CATEGORY_PROPERTY, 1);
+        Idea repetitionsIdea = new Idea(REPETITIONS_IDEA,Integer.parseInt(data[6]), CATEGORY_PROPERTY, 1);
+        Idea positiveAffectIdea = new Idea(POSITIVE_AFFECT_IDEA,Double.parseDouble(data[7]), CATEGORY_PROPERTY, 1);
+        Idea negativeAffectIdea = new Idea(NEGATIVE_AFFECT_IDEA,Double.parseDouble(data[8]), CATEGORY_PROPERTY, 1);
+        Idea activationIdea = new Idea(ACTIVATION_IDEA, Double.parseDouble(data[9]), CATEGORY_PROPERTY, 1);
+        Idea timestampIdea = new Idea(TIMESTAMP_IDEA,Long.parseLong(data[11]), CATEGORY_PROPERTY, 1);
+        Idea relationsIdea = new Idea(RELATIONS_IDEA,null, CATEGORY_PROPERTY, 1);
+        Idea activeSimilarityIdea = new Idea(ACTIVE_SIMILARITY_IDEA,null, CATEGORY_PROPERTY, 1);
+        Idea recentIdea = new Idea(RECENT_IDEA,false, CATEGORY_PROPERTY, 1);
         
         storedSceneIdea.add(idIdea);
         storedSceneIdea.add(patternIdea);
@@ -303,7 +289,6 @@ public class DGProcessCodelet extends Codelet {
         storedSceneIdea.add(activeSimilarityIdea);
         storedSceneIdea.add(recentIdea);
             
-        
         return storedSceneIdea;
     }
     
@@ -329,11 +314,7 @@ public class DGProcessCodelet extends Codelet {
     private void loadDGSize() {
         //load size of dg
         Idea dgDataIdea = rootIdea.get(DG_DATA_IDEA);
-        Integer dgSize = (Integer) dgDataIdea.get(DG_SIZE_IDEA).getValue();
-        DG_SIZE = dgSize;
-        
+        Integer dgSizeValue = (Integer) dgDataIdea.get(DG_SIZE_IDEA).getValue();
+        dgSize = dgSizeValue;
     }
-    
-  
-    
 }

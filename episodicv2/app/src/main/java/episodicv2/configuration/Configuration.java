@@ -14,8 +14,6 @@ package episodicv2.configuration;
  * @author Luis
  */
 public class Configuration {
-
-    
     public static final int BRIDGE_PORT_PPC = 10500;
     public static final int BRIDGE_PORT_ITC = 10501;
     public static final int BRIDGE_PORT_VLPFC = 10502;
@@ -26,6 +24,39 @@ public class Configuration {
     public static final String CONSOLIDATION_NODE_HOST = "100.112.15.252";
     public static final String PYTHON_CMD = "python";
     public static final String CONSOLIDATION_SERVICE_PATH = "consolidation_server";
+    
+    //Ideas parameters
+    
+    public static final String CATEGORY_PROPERTY = "Property";
+    
+    //Open CV configs
+    
+    public static final String BOXES = "boxes";
+    public static final String CONFIDENCES = "confidences";
+    public static final String CLASS_ID = "class_id";
+    
+    //Codelets names and groups
+    
+    public static final String CONNECTION_CODELET_NAME = "CONNECTION";
+    public static final String VISION_CODELET_NAME = "VISION";
+    public static final String PPC_PHC_ITC_CODELET_NAME = "PPC_PHC_ITC";
+    public static final String PRC_PROCESS_2_CODELET_NAME = "PRC_PROCESS_2";
+    public static final String PRC_STORAGE_HANDLER_CODELET_NAME = "PRC_STORAGE_HANDLER";
+    public static final String DG_BRIDGE_COMPOSED_CODELET_NAME = "DG_BRIDGE_COMPOSED";
+    public static final String DG_PROCESS_CODELET_NAME = "DG_PROCESS";
+    public static final String DG_STORAGE_CODELET_NAME = "DG_STORAGE";
+    public static final String CA3_PROCESS_1_CODELET_NAME = "CA3_PROCESS_1";
+    public static final String CA3_STORAGE_HANDLER_CODELET_NAME = "CA3_STORAGE_HANDLER";
+    public static final String CA1_PROCESS_1_CODELET_NAME = "CA1_PROCESS_1";
+    public static final String CA1_PROCESS_2_CODELET_NAME = "CA1_PROCESS_2";
+    public static final String CA1_STORAGE_HANDLER_CODELET_NAME = "CA1_STORAGE_HANDLER";
+    
+    public static final String COMPILED_PPC_PHC_ITC_CODELET_GROUP = "COMPILED_PPC_PHC_ITC";
+    public static final String VISION_CODELET_GROUP = "VISION_Cs";
+    public static final String VENTRAL_CODELET_GROUP = "VENTRAL_Cs";
+    public static final String DG_CODELET_GROUP = "DG_Cs";
+    public static final String CA3_CODELET_GROUP = "CA3_Cs";
+    public static final String CA1_CODELET_GROUP = "CA1_Cs";
 
     public static final int IMAGE_WIDTH = 640;
     public static final int IMAGE_HEIGHT = 480;
@@ -36,7 +67,7 @@ public class Configuration {
     public static final double WM_RETRIEVAL_SIMILARITY_THRESHOLD = 0.8;
     public static final double RETRIEVABILITY_DECREASING_SCALE = 1000 * 60 * 60 * 8; //1000 * 60 * 60 * 24; //IN DAYS
     public static final double RETRIEVABILITY_THRESHOLD = 0.0;
-    public static final long CONSOLIDATION_INTERVAL = 60 ;//1000 * 60 * 60 * 24;
+    public static final long CONSOLIDATION_INTERVAL = 60 * 60 * 24; //1000 * 60 * 60 * 24;
     public static final double CONSOLIDATION_THRESHOLD = 0.0;
     
     
@@ -88,7 +119,6 @@ public class Configuration {
     public static final String SCENE_ID_1_IDEA = "scene1IdIdea";
     public static final String SCENE_ID_2_IDEA = "scene2IdIdea";
     
-//    public static final String PATTERN_REPLACED = "patternReplaced";
     public static final String TIME_IDEA = "time";
     public static final String POSITIVE_AFFECT_IDEA = "positiveAffect";
     public static final String AFFECT_INTENSITY_IDEA = "affectIntensity";
@@ -149,9 +179,6 @@ public class Configuration {
     public static final String SCENE_RELATION_IDEA = "sceneRelationIdea";
     public static final String RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_IDEA = "recognizedObjectsSpikeAndUnintegratedScenePatternIdea"; 
 
-    
-    
-    
     // MEMORY OBJECTS
     
     public static final String ROOT_MO = "rootMO";
@@ -170,13 +197,5 @@ public class Configuration {
     public static final String NEW_ENCODED_SCENE_TO_STORE_MO = "newEncodedSceneToStoreMO";
     public static final String SCENE_RELATION_VERTEX_TO_STORE_MO = "sceneRelationVertexToStoreMO";
     public static final String RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_MO = "recognizedObjectsSpikeAndUnintegratedScenePatternMO"; 
-
-    
-    
-    
-    
-    
-    
-
 
 }

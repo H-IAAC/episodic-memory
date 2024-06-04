@@ -3,43 +3,13 @@
  */
 package episodicv2;
 
-import episodicv2.FutureCodelets.CA1;
-import episodicv2.FutureCodelets.CA1Process3;
-import episodicv2.FutureCodelets.CA3Process3;
-import episodicv2.FutureCodelets.VLPFCProcess2;
-import episodicv2.FutureCodelets.PRCProcess3;
 import episodicv2.Codelets.CA1Process1Codelet;
-import episodicv2.FutureCodelets.ENC;
-import episodicv2.FutureCodelets.MPFCProcess1;
 import episodicv2.Codelets.CA3Process1Codelet;
 import episodicv2.Codelets.DGStorageHandlerCodelet;
-import episodicv2.FutureCodelets.PCBridge;
-import episodicv2.FutureCodelets.ITCProcess1;
-import episodicv2.FutureCodelets.PRCBridge;
-import episodicv2.FutureCodelets.TaskFrame;
-import episodicv2.FutureCodelets.DLPFCPlanning;
-import episodicv2.Codelets.DGBridgeCodelet;
 import episodicv2.Codelets.PRCStorageHandlerCodelet;
-import episodicv2.FutureCodelets.MPFC;
 import episodicv2.Codelets.CA3StorageHandlerCodelet;
-import episodicv2.FutureCodelets.DLPFC;
-import episodicv2.FutureCodelets.VLPFCProcess1;
-import episodicv2.FutureCodelets.DLPFCBaseController;
-import episodicv2.Codelets.CA1StorageHandlerCodelet;
-import episodicv2.FutureCodelets.CA3;
 import episodicv2.Codelets.DGProcessCodelet;
-import episodicv2.FutureCodelets.ITCFeatures;
 import episodicv2.Codelets.PRCProcess2Codelet;
-import episodicv2.FutureCodelets.VLPFC;
-import episodicv2.FutureCodelets.CA3Process2;
-import episodicv2.FutureCodelets.ITCBridge;
-import episodicv2.Codelets.PPCCodelet;
-import episodicv2.FutureCodelets.SB;
-import episodicv2.FutureCodelets.CA1Process2;
-import episodicv2.Codelets.ITCCodelet;
-import episodicv2.FutureCodelets.PRCProcess1;
-import episodicv2.Codelets.PHCProcess1;
-import episodicv2.Codelets.ImageCodelet;
 import episodicv2.Codelets.VisionCodelet;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
@@ -57,7 +27,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class App {
     
-    Mind m;
     Mind m1;
     
     private void createAndShowGUI(Mind m) {
@@ -65,970 +34,194 @@ public final class App {
         mv.setVisible(true);
     } 
     
-    private void createUnusedIdeas(){
-        
-    }
-    
     public Mind prepareMind() {
-        m = new Mind();
         m1 = new Mind();
-        
-        //Unused ideas
-        
-        Idea requestObjectSpikeIdea = new Idea("requestObjectSpikeIdea");
-        Idea objectId = new Idea("objectId",null, "Property", 1);
-        Idea time4 = new Idea("time",null, "Property", 1);
-        requestObjectSpikeIdea.add(objectId);
-        requestObjectSpikeIdea.add(time4);
-        
-        Idea retrievedObjectTopDown = new Idea("retrievedObjectTopDown");
-        Idea cObjectIdea = new Idea("cObjectIdea");
-        Idea preId = new Idea("preId",null, "Property", 1);
-        Idea classId = new Idea("classId",null, "Property", 1);
-        Idea affect = new Idea("affect",null, "Property", 1);
-        Idea x2 = new Idea("x",null, "Property", 1);
-        Idea y2 = new Idea("y",null, "Property", 1);
-        Idea label = new Idea("time",null, "Property", 1);
-        Idea features3 = new Idea("time",null, "Property", 1);
-        Idea time5 = new Idea("time",null, "Property", 1);
-        Idea time6 = new Idea("time",null, "Property", 1);
-        cObjectIdea.add(preId);
-        cObjectIdea.add(classId);
-        cObjectIdea.add(affect);
-        cObjectIdea.add(x2);
-        cObjectIdea.add(y2);
-        cObjectIdea.add(label);
-        cObjectIdea.add(features3);
-        cObjectIdea.add(time5);
-        retrievedObjectTopDown.add(cObjectIdea);
-        retrievedObjectTopDown.add(time6);
-        
-        Idea pid4 = new Idea("pid",null, "Property", 1);
-        Idea id3 = new Idea("id",null, "Property", 1);
-        Idea class3 = new Idea("class",null, "Property", 1);
-        Idea features4 = new Idea("features",null, "Property", 1);
-        Idea object4 = new Idea("object",null, "Property", 1);
-        object4.add(pid4);
-        object4.add(id3);
-        object4.add(class3);
-        object4.add(features4);
-        
-        ArrayList<Idea> objectsArray1 =  new ArrayList<Idea>();
-        objectsArray1.add(object4);
-        Idea objectsArrayIdea2 = new Idea("objectsArrayIdea2", objectsArray1);
-        
-        Idea iTCFeaturesSpikeIdea = new Idea("iTCFeaturesSpikeIdea");
-        iTCFeaturesSpikeIdea.add(objectsArrayIdea2);
-        
-        Idea currrentFrame4 = new Idea("currrentFrame",null, "Property", 1);
-        Idea time7 = new Idea("time",null, "Property", 1);
-        time7.add(currrentFrame4);
-        iTCFeaturesSpikeIdea.add(time7);
-        
-        Idea objectRelation = new Idea("objectRelation");
-        ArrayList<Idea> relationsArray = new ArrayList<Idea>();
-        relationsArray.add(objectRelation);
-        Idea relationsArrayIdea = new Idea("relationsArrayIdea", relationsArray);
-        
-        Idea objectId1_1 = new Idea("objectId1",null, "Property", 1);
-        Idea objectId2_1 = new Idea("objectId2",null, "Property", 1);
-        Idea activation = new Idea("activation",null, "Property", 1);
-        Idea repetitions = new Idea("repetitions",null, "Property", 1);
-        Idea time8 = new Idea("time",null, "Property", 1);
-        Idea timestamp = new Idea("timestamp",null, "Property", 1);
-        Idea recent = new Idea("recent",null, "Property", 1);
-        Idea updated = new Idea("updated",null, "Property", 1);
-        objectRelation.add(objectId1_1);
-        objectRelation.add(objectId2_1);
-        objectRelation.add(activation);
-        objectRelation.add(repetitions);
-        objectRelation.add(time8);
-        objectRelation.add(timestamp);
-        objectRelation.add(recent);
-        objectRelation.add(updated);
-
-        
-        Idea retrievedObjectRelationTopDownSpikeIdea = new Idea("retrievedObjectRelationTopDownSpikeIdea");
-        Idea objectRelations = new Idea("objectRelations");
-        retrievedObjectRelationTopDownSpikeIdea.add(objectRelations);
-        
-        Idea objectId2 = new Idea("objectId",null, "Property", 1);
-        Idea repetitions3 = new Idea("repetitions",null, "Property", 1);
-        Idea positiveAffect = new Idea("positiveAffect",null, "Property", 1);
-        Idea negativeAffect = new Idea("negativeAffect",null, "Property", 1);
-        Idea activation3 = new Idea("activation",null, "Property", 1);
-        Idea time10 = new Idea("time",null, "Property", 1);
-        Idea timestamp3 = new Idea("timestamp",null, "Property", 1);
-        Idea integer = new Idea("integer",null, "Property", 1);
-        ArrayList<Idea> relationsArray1 = new ArrayList<Idea>();
-        relationsArray1.add(integer);
-        Idea relationsArrayIdea1 = new Idea("relationsIdeaTest",relationsArray1, "Property", 1);
-        objectRelations.add(relationsArrayIdea1);
-        
-        objectRelations.add(objectId2);
-        objectRelations.add(repetitions3);
-        objectRelations.add(positiveAffect);
-        objectRelations.add(negativeAffect);
-        objectRelations.add(activation3);
-        objectRelations.add(time10);
-        objectRelations.add(timestamp3);
-        
-        
-        Idea objectRelationsSpikeIdea = new Idea("objectRelationsSpikeIdea");
-        Idea objectRelations2 = new Idea("objectRelations");
-        objectRelationsSpikeIdea.add(objectRelations2);
-        
-        Idea objectId3 = new Idea("objectId",null, "Property", 1);
-        Idea repetitions4 = new Idea("repetitions",null, "Property", 1);
-        Idea positiveAffect2 = new Idea("positiveAffect",null, "Property", 1);
-        Idea negativeAffect2 = new Idea("negativeAffect",null, "Property", 1);
-        Idea activation4 = new Idea("activation",null, "Property", 1);
-        Idea time11 = new Idea("time",null, "Property", 1);
-        Idea timestamp4 = new Idea("timestamp",null, "Property", 1);
-        Idea relations2 = new Idea("relations",null, "Property", 1);
-        
-        objectRelations.add(objectId3);
-        objectRelations.add(repetitions4);
-        objectRelations.add(positiveAffect2);
-        objectRelations.add(negativeAffect2);
-        objectRelations.add(activation4);
-        objectRelations.add(time11);
-        objectRelations.add(timestamp4);
-        objectRelations.add(relations2);
-        
-//        Idea newEncodedSceneSpikeIdea = new Idea("newEncodedSceneSpikeIdea");
-//        Idea scene = new Idea("scene");
-//        newEncodedSceneSpikeIdea.add(scene);
-//        Idea time12 = new Idea("time",null, "Property", 1);
-//        newEncodedSceneSpikeIdea.add(time12);
-//        
-//        Idea id4 = new Idea("objectId",null, "Property", 1);
-//        Idea pattern2 = new Idea("pattern2",null, "Property", 1);
-//        Idea time13 = new Idea("time",null, "Property", 1);
-//        Idea repetitions5 = new Idea("repetitions",null, "Property", 1);
-//        Idea positiveAffect3 = new Idea("positiveAffect",null, "Property", 1);
-//        Idea negativeAffect3 = new Idea("negativeAffect",null, "Property", 1);
-//        Idea activation5 = new Idea("activation",null, "Property", 1);
-//        Idea timestamp5 = new Idea("timestamp",null, "Property", 1);
-//        Idea relations3 = new Idea("relations",null, "Property", 1);
-//        Idea activeSimilarity = new Idea("activeSimilarity",null, "Property", 1);
-//        Idea recent3 = new Idea("recent",null, "Property", 1);
-//        
-//        scene.add(id4);
-//        scene.add(pattern2);
-//        scene.add(time13);
-//        scene.add(repetitions5);
-//        scene.add(positiveAffect3);
-//        scene.add(negativeAffect3);
-//        scene.add(activation5);
-//        scene.add(timestamp5);
-//        scene.add(relations3);
-//        scene.add(activeSimilarity);
-//        scene.add(recent3);
-//        
-
-//        Idea midTermMemoyScenesIdea = new Idea("midTermMemoyScenesIdea");
-//        ArrayList<Idea> sceneArray = new ArrayList<Idea>();
-//        
-//        Idea sceneArrayIdea = new Idea("sceneArrayIdea", sceneArray);
-//        
-//        Idea scene2 = new Idea("scene");
-//        sceneArray.add(scene2);
-//        midTermMemoyScenesIdea.add(sceneArrayIdea);
-        
-//        Idea id5 = new Idea("objectId",null, "Property", 1);
-//        Idea pattern3 = new Idea("pattern2",null, "Property", 1);
-//        Idea time14 = new Idea("time",null, "Property", 1);
-//        Idea repetitions6 = new Idea("repetitions",null, "Property", 1);
-//        Idea positiveAffect4 = new Idea("positiveAffect",null, "Property", 1);
-//        Idea negativeAffect4 = new Idea("negativeAffect",null, "Property", 1);
-//        Idea activation6 = new Idea("activation",null, "Property", 1);
-//        Idea timestamp6 = new Idea("timestamp",null, "Property", 1);
-        ArrayList<Idea> relationsArray2 = new ArrayList<Idea>();
-        
-        Idea sceneRelationIdea5 = new Idea("sceneRelation");
-        Idea scene1Id4 = new Idea("scene1Id",null, "Property", 1);
-        Idea scene2Id4 = new Idea("scene2Id",null, "Property", 1);
-        Idea activation15 = new Idea("activation",null, "Property", 1);
-        Idea repetitions16 = new Idea("repetitions",null, "Property", 1);
-        Idea time28 = new Idea("time",null, "Property", 1);
-        Idea timestamp15 = new Idea("timestamp",null, "Property", 1);
-        Idea recent13 = new Idea("recent",null, "Property", 1);
-        Idea updated6 = new Idea("recent",null, "Property", 1);
-        
-        sceneRelationIdea5.add(scene1Id4);
-        sceneRelationIdea5.add(scene2Id4);
-        sceneRelationIdea5.add(activation15);
-        sceneRelationIdea5.add(repetitions16);
-        sceneRelationIdea5.add(time28);
-        sceneRelationIdea5.add(timestamp15);
-        sceneRelationIdea5.add(recent13);
-        sceneRelationIdea5.add(updated6);
-       
-        relationsArray2.add(sceneRelationIdea5);
-        
-//        Idea relationsArrayIdea2 = new Idea("relations",relationsArray2, "Property", 1);
-//        Idea activeSimilarity2 = new Idea("activeSimilarity",null, "Property", 1);
-//        Idea recent4 = new Idea("recent",null, "Property", 1);
-        
-//        scene2.add(id5);
-//        scene2.add(pattern3);
-//        scene2.add(time14);
-//        scene2.add(repetitions6);
-//        scene2.add(positiveAffect4);
-//        scene2.add(negativeAffect4);
-//        scene2.add(activation6);
-//        scene2.add(timestamp6);
-//        scene2.add(relationsArrayIdea2);
-//        scene2.add(activeSimilarity2);
-//        scene2.add(recent4);
-        
-        Map<Integer, Idea> midTermMemoryScenesByIDDGIdeaMap = new  ConcurrentHashMap<>();
                 
-        Idea midTermMemoryScenesByIDDGIdea = new Idea("midTermMemoryScenesByIDIdea", midTermMemoryScenesByIDDGIdeaMap);
-
-        Idea scene3 = new Idea("scene");
-        midTermMemoryScenesByIDDGIdea.add(scene3);
-        
-        Idea id6 = new Idea("objectId",null, "Property", 1);
-        Idea pattern4 = new Idea("pattern2",null, "Property", 1);
-        Idea time15 = new Idea("time",null, "Property", 1);
-        Idea repetitions7 = new Idea("repetitions",null, "Property", 1);
-        Idea positiveAffect5 = new Idea("positiveAffect",null, "Property", 1);
-        Idea negativeAffect5 = new Idea("negativeAffect",null, "Property", 1);
-        Idea activation7 = new Idea("activation",null, "Property", 1);
-        Idea timestamp7= new Idea("timestamp",null, "Property", 1);
-        Idea relations5 = new Idea("relations",null, "Property", 1);
-        Idea activeSimilarity3 = new Idea("activeSimilarity",null, "Property", 1);
-        Idea recent5 = new Idea("recent",null, "Property", 1);
-        
-        scene3.add(id6);
-        scene3.add(pattern4);
-        scene3.add(time15);
-        scene3.add(repetitions7);
-        scene3.add(positiveAffect5);
-        scene3.add(negativeAffect5);
-        scene3.add(activation7);
-        scene3.add(timestamp7);
-        scene3.add(relations5);
-        scene3.add(activeSimilarity3);
-        scene3.add(recent5);
-        
-        Map<Integer, Idea> midTermMemoryScenesByIDCA3IdeaMap = new  ConcurrentHashMap<>();        
-        Idea midTermMemoryScenesByIDCA3Idea = new Idea("midTermMemoryScenesByIDIdea", midTermMemoryScenesByIDCA3IdeaMap);
-
-        Idea scene4 = new Idea("scene");
-        midTermMemoryScenesByIDCA3Idea.add(scene4);
-        
-        Idea id7 = new Idea("objectId",null, "Property", 1);
-        Idea pattern5 = new Idea("pattern2",null, "Property", 1);
-        Idea time16 = new Idea("time",null, "Property", 1);
-        Idea repetitions8 = new Idea("repetitions",null, "Property", 1);
-        Idea positiveAffect6 = new Idea("positiveAffect",null, "Property", 1);
-        Idea negativeAffect6 = new Idea("negativeAffect",null, "Property", 1);
-        Idea activation8 = new Idea("activation",null, "Property", 1);
-        Idea timestamp8= new Idea("timestamp",null, "Property", 1);
-        Idea relations6 = new Idea("relations",null, "Property", 1);
-        Idea activeSimilarity4 = new Idea("activeSimilarity",null, "Property", 1);
-        Idea recent6 = new Idea("recent",null, "Property", 1);
-        
-        scene4.add(id7);
-        scene4.add(pattern5);
-        scene4.add(time16);
-        scene4.add(repetitions8);
-        scene4.add(positiveAffect6);
-        scene4.add(negativeAffect6);
-        scene4.add(activation8);
-        scene4.add(timestamp8);
-        scene4.add(relations6);
-        scene4.add(activeSimilarity4);
-        scene4.add(recent6);
-        
-        Idea currentSceneSpikeIdea = new Idea("currentSceneSpikeIdea");
-        
-        Idea time17 = new Idea("time");
-        currentSceneSpikeIdea.add(time17);
-        
-        Idea scene5 = new Idea("scene");
-        currentSceneSpikeIdea.add(scene5);
-        
-        Idea id8 = new Idea("objectId",null, "Property", 1);
-        Idea pattern6 = new Idea("pattern2",null, "Property", 1);
-        Idea time18 = new Idea("time",null, "Property", 1);
-        Idea repetitions9 = new Idea("repetitions",null, "Property", 1);
-        Idea positiveAffect7 = new Idea("positiveAffect",null, "Property", 1);
-        Idea negativeAffect7 = new Idea("negativeAffect",null, "Property", 1);
-        Idea activation9 = new Idea("activation",null, "Property", 1);
-        Idea timestamp9 = new Idea("timestamp",null, "Property", 1);
-        Idea relations7 = new Idea("relations",null, "Property", 1);
-        Idea activeSimilarity5 = new Idea("activeSimilarity",null, "Property", 1);
-        Idea recent7 = new Idea("recent",null, "Property", 1);
-        
-        scene5.add(id8);
-        scene5.add(pattern6);
-        scene5.add(time18);
-        scene5.add(repetitions9);
-        scene5.add(positiveAffect7);
-        scene5.add(negativeAffect7);
-        scene5.add(activation9);
-        scene5.add(timestamp9);
-        scene5.add(relations7);
-        scene5.add(activeSimilarity5);
-        scene5.add(recent7);
-        
-        Idea similarScenesSpikeIdea = new Idea("similarScenesSpikeIdea");
-        
-        Idea time30 = new Idea("time");
-        similarScenesSpikeIdea.add(time30);
-        
-        Idea scene8 = new Idea("scene");
-        ArrayList<Idea> similarScenesArray = new ArrayList<Idea>();
-        similarScenesArray.add(scene8);
-        Idea similarScenesArrayIdea = new Idea("similarScenesArrayIdea", similarScenesArray);
-        
-        similarScenesSpikeIdea.add(similarScenesArrayIdea);
-        
-        Idea id11 = new Idea("objectId",null, "Property", 1);
-        Idea pattern9 = new Idea("pattern2",null, "Property", 1);
-        Idea time31 = new Idea("time",null, "Property", 1);
-        Idea repetitions17 = new Idea("repetitions",null, "Property", 1);
-        Idea positiveAffect10 = new Idea("positiveAffect",null, "Property", 1);
-        Idea negativeAffect10 = new Idea("negativeAffect",null, "Property", 1);
-        Idea activation16 = new Idea("activation",null, "Property", 1);
-        Idea timestamp16 = new Idea("timestamp",null, "Property", 1);
-        Idea relations10 = new Idea("relations",null, "Property", 1);
-        Idea activeSimilarity8 = new Idea("activeSimilarity",null, "Property", 1);
-        Idea recent14 = new Idea("recent",null, "Property", 1);
-        
-        scene8.add(id11);
-        scene8.add(pattern9);
-        scene8.add(time31);
-        scene8.add(repetitions17);
-        scene8.add(positiveAffect10);
-        scene8.add(negativeAffect10);
-        scene8.add(activation16);
-        scene8.add(timestamp16);
-        scene8.add(relations10);
-        scene8.add(activeSimilarity8);
-        scene8.add(recent14);
-        
-        Idea requestSceneByIDSpikeIdea = new Idea("resquestSceneByIDSpikeIdea");
-        Idea integer3 = new Idea("integer");
-        requestSceneByIDSpikeIdea.add(integer3);
-        
-        Idea time19 = new Idea("time");
-        requestSceneByIDSpikeIdea.add(time19);
-        
-        Idea requestSimilarScenesSpikeIdea = new Idea("requestSimilarScenesSpikeIdea");
-        
-        Idea time20 = new Idea("time");
-        requestSimilarScenesSpikeIdea.add(time20);
-        
-        Idea scene6 = new Idea("scene");
-        requestSimilarScenesSpikeIdea.add(scene6);
-        
-        Idea id9 = new Idea("objectId",0, "Property", 1);
-        Idea pattern7 = new Idea("pattern2",null, "Property", 1);
-        Idea time21 = new Idea("time",0, "Property", 1);
-        Idea repetitions10 = new Idea("repetitions",null, "Property", 1);
-        Idea positiveAffect8 = new Idea("positiveAffect",0, "Property", 1);
-        Idea negativeAffect8 = new Idea("negativeAffect",0, "Property", 1);
-        Idea activation10 = new Idea("activation",0.5, "Property", 1);
-        Idea timestamp10 = new Idea("timestamp",null, "Property", 1);
-        Idea relations8 = new Idea("relations",null, "Property", 1);
-        Idea activeSimilarity6 = new Idea("activeSimilarity",null, "Property", 1);
-        Idea recent8 = new Idea("recent",null, "Property", 1);
-        
-        scene6.add(id9);
-        scene6.add(pattern7);
-        scene6.add(time21);
-        scene6.add(repetitions10);
-        scene6.add(positiveAffect8);
-        scene6.add(negativeAffect8);
-        scene6.add(activation10);
-        scene6.add(timestamp10);
-        scene6.add(relations8);
-        scene6.add(activeSimilarity6);
-        scene6.add(recent8);
-    
-        
-        Idea retrievedSceneTopDownSpikeIdea = new Idea("retrievedSceneTopDownSpikeIdea");
-        
-        Idea time22 = new Idea("time");
-        retrievedSceneTopDownSpikeIdea.add(time22);
-        
-        Idea scene7 = new Idea("scene");
-        
-        ArrayList<Idea> similarScenesArray2 = new ArrayList<>();
-        Idea similarScenesArrayIdea2 = new Idea("similarScenesArrayIdea", similarScenesArray2);
-        similarScenesArrayIdea2.add(scene7);
-        retrievedSceneTopDownSpikeIdea.add(similarScenesArrayIdea2);
-        
-        Idea id10 = new Idea("objectId",null, "Property", 1);
-        Idea pattern8 = new Idea("pattern2",null, "Property", 1);
-        Idea time23 = new Idea("time",null, "Property", 1);
-        Idea repetitions11 = new Idea("repetitions",null, "Property", 1);
-        Idea positiveAffect9 = new Idea("positiveAffect",null, "Property", 1);
-        Idea negativeAffect9 = new Idea("negativeAffect",null, "Property", 1);
-        Idea activation11 = new Idea("activation",null, "Property", 1);
-        Idea timestamp11 = new Idea("timestamp",null, "Property", 1);
-        Idea relations9 = new Idea("relations",null, "Property", 1);
-        Idea activeSimilarity7 = new Idea("activeSimilarity",null, "Property", 1);
-        Idea recent9 = new Idea("recent",null, "Property", 1);
-        
-        scene7.add(id10);
-        scene7.add(pattern8);
-        scene7.add(time23);
-        scene7.add(repetitions11);
-        scene7.add(positiveAffect9);
-        scene7.add(negativeAffect9);
-        scene7.add(activation11);
-        scene7.add(timestamp11);
-        scene7.add(relations9);
-        scene7.add(activeSimilarity7);
-        scene7.add(recent9);
-        
-        
-        Map<Integer, ConcurrentHashMap<Integer, Idea>> midTermMemorySceneRelationsCA1IdeaMap = new ConcurrentHashMap<>();
-        
-        
-        Idea midTermMemorySceneRelationsCA1Idea = new Idea("midTermMemorySceneRelationsCA1Idea", midTermMemorySceneRelationsCA1IdeaMap);
-                
-        Idea sceneRelationIdea2 = new Idea("sceneRelation");
-        midTermMemorySceneRelationsCA1Idea.add(sceneRelationIdea2);
-        
-        Idea scene1Id2 = new Idea("scene1Id",null, "Property", 1);
-        Idea scene2Id2 = new Idea("scene2Id",null, "Property", 1);
-        Idea activation13 = new Idea("activation",null, "Property", 1);
-        Idea repetitions13 = new Idea("repetitions",null, "Property", 1);
-        Idea time25 = new Idea("time",null, "Property", 1);
-        Idea timestamp13 = new Idea("timestamp",null, "Property", 1);
-        Idea recent11 = new Idea("recent",null, "Property", 1);
-        Idea updated4 = new Idea("recent",null, "Property", 1);
-        
-        sceneRelationIdea2.add(scene1Id2);
-        sceneRelationIdea2.add(scene2Id2);
-        sceneRelationIdea2.add(activation13);
-        sceneRelationIdea2.add(repetitions13);
-        sceneRelationIdea2.add(time25);
-        sceneRelationIdea2.add(timestamp13);
-        sceneRelationIdea2.add(recent11);
-        sceneRelationIdea2.add(updated4);
-        
-        Idea sceneRelationsSpikeIdea = new Idea("sceneRelationsSpikeIdea");
-        
-        Idea time26 = new Idea("integer");
-        sceneRelationsSpikeIdea.add(time26);
-        
-        ArrayList<Idea> sceneRelationsArray3 = new ArrayList<Idea>();
-        Idea sceneRelationIdea3 = new Idea("sceneRelation");
-        sceneRelationsArray3.add(sceneRelationIdea3);
-        
-        Idea sceneRelationsArrayIdea = new Idea("sceneRelationsArrayIdea", sceneRelationsArray3);
-        sceneRelationsSpikeIdea.add(sceneRelationsArrayIdea);
-        
-        Idea scene1Id3 = new Idea("scene1Id",null, "Property", 1);
-        Idea scene2Id3 = new Idea("scene2Id",null, "Property", 1);
-        Idea activation14 = new Idea("activation",null, "Property", 1);
-        Idea repetitions14 = new Idea("repetitions",null, "Property", 1);
-        Idea time27 = new Idea("time",null, "Property", 1);
-        Idea timestamp14 = new Idea("timestamp",null, "Property", 1);
-        Idea recent12 = new Idea("recent",null, "Property", 1);
-        Idea updated5 = new Idea("recent",null, "Property", 1);
-        
-        sceneRelationIdea3.add(scene1Id3);
-        sceneRelationIdea3.add(scene2Id3);
-        sceneRelationIdea3.add(activation14);
-        sceneRelationIdea3.add(repetitions14);
-        sceneRelationIdea3.add(time27);
-        sceneRelationIdea3.add(timestamp14);
-        sceneRelationIdea3.add(recent12);
-        sceneRelationIdea3.add(updated5);
-        
-        Idea retrievedSceneTopDownLTM = new Idea("retrievedSceneTopDownLTM");
-        
-        Idea time29 = new Idea("integer");
-        retrievedSceneTopDownLTM.add(time29);
-        
-        Idea sceneRelationsIdea2 = new Idea("sceneRelations");
-        Idea sceneRelationIdea4 = new Idea("sceneRelation");
-        sceneRelationsIdea2.add(sceneRelationIdea4);
-        retrievedSceneTopDownLTM.add(sceneRelationsIdea2);
-        
-        Idea scene1Id5 = new Idea("scene1Id",null, "Property", 1);
-        Idea scene2Id5 = new Idea("scene2Id",null, "Property", 1);
-        Idea activation17 = new Idea("activation",null, "Property", 1);
-        Idea repetitions15 = new Idea("repetitions",null, "Property", 1);
-        Idea time32 = new Idea("time",null, "Property", 1);
-        Idea timestamp17 = new Idea("timestamp",null, "Property", 1);
-        Idea recent15 = new Idea("recent",null, "Property", 1);
-        Idea updated7 = new Idea("recent",null, "Property", 1);
-        
-        sceneRelationIdea4.add(scene1Id5);
-        sceneRelationIdea4.add(scene2Id5);
-        sceneRelationIdea4.add(activation17);
-        sceneRelationIdea4.add(repetitions15);
-        sceneRelationIdea4.add(time32);
-        sceneRelationIdea4.add(timestamp17);
-        sceneRelationIdea4.add(recent15);
-        sceneRelationIdea4.add(updated7);
-        
-        Idea taskSetSpikeIdea = new Idea("taskSetSpikeIdea");
-        Idea allowBottom = new Idea("ALLOW_BUTTON_UP",1, "Property", 3);
-        Idea allowTop = new Idea("ALLOW_BUTTON_UP",2, "Property", 3);
-        Idea allowedProcessingFlow = new Idea("allowedProcessingFlow",0, "Property", 3);
-        Idea allowedScenePattern = new Idea("allowedScenePattern","", "Property", 3);
-        Idea allowedObjectRelation = new Idea("allowedObjectRelation",0, "Property", 3);
-        taskSetSpikeIdea.add(allowBottom);
-        taskSetSpikeIdea.add(allowTop);
-        taskSetSpikeIdea.add(allowedProcessingFlow);
-        taskSetSpikeIdea.add(allowedScenePattern);
-        taskSetSpikeIdea.add(allowedObjectRelation);
-        
-        
         //declare Ideas
         //TODO: review as categorias
-        Idea imageReceivedPathIdea = new Idea(IMAGE_RECEIVED_PATH_IDEA,"/yolo/files/simu.jpeg", "Property", 3);
-        Idea centerPointsandClassesIdea = new Idea(CENTER_POINTS_CLASSES_IDEA, null,"Property",1);
-        Idea recognizedObjectsSpikeIdea = new Idea(RECOGNIZED_OBJECTS_SPIKE_IDEA, null,"Property",1);
-        Idea recognizedObjectsSpikeAndunintegratedScenePatternIdea = new Idea(RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_IDEA, null,"Property",1);
-        Idea centerPointsSpikeIdea = new Idea(CENTER_POINTS_SPIKE_IDEA,null,"Property",1);
-        Idea unintegratedScenePatternIdea = new Idea(UNINTEGRATED_SCENE_PATTERN_IDEA,null,"Property",1);
-        Idea newEncodedSceneSpikeIdea = new Idea(NEW_ENCODED_SCENE_SPIKE_IDEA,null,"Property",1);
-        Idea midTermMemoryObjectRelationsIdea = new Idea(PRC_MID_TERM_OBJECT_RELATIONS_IDEA,null,"Property",1);
-        Idea dgMidTermMemoryScenesIdea = new Idea(DG_MID_TERM_MEMORY_SCENES_IDEA,null,"Property",1);
-        Idea dgSizeMidIdea = new Idea(DG_SIZE_IDEA,0,"Property",1);
+        Idea centerPointsandClassesIdea = new Idea(CENTER_POINTS_CLASSES_IDEA, null,CATEGORY_PROPERTY,1);
+        Idea recognizedObjectsSpikeIdea = new Idea(RECOGNIZED_OBJECTS_SPIKE_IDEA, null,CATEGORY_PROPERTY,1);
+        Idea recognizedObjectsSpikeAndunintegratedScenePatternIdea = new Idea(RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_IDEA, null,CATEGORY_PROPERTY,1);
+        Idea newEncodedSceneSpikeIdea = new Idea(NEW_ENCODED_SCENE_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea midTermMemoryObjectRelationsIdea = new Idea(PRC_MID_TERM_OBJECT_RELATIONS_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea dgMidTermMemoryScenesIdea = new Idea(DG_MID_TERM_MEMORY_SCENES_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea dgSizeMidIdea = new Idea(DG_SIZE_IDEA,0,CATEGORY_PROPERTY,1);
         dgMidTermMemoryScenesIdea.add(dgSizeMidIdea);
         
-        Idea patternReplacedIdea = new Idea(PATTERN_REPLACED_IDEA,null,"Property",1);
+        Idea patternReplacedIdea = new Idea(PATTERN_REPLACED_IDEA,null,CATEGORY_PROPERTY,1);
         
-        Idea recentNewEncodedSceneSpikeIdea = new Idea(RECENT_NEW_ENCODED_SCENE_SPIKE_IDEA,null,"Property",1);
-        Idea newEncodedSceneToStoreIdea = new Idea(NEW_ENCODED_SCENE_TO_STORE_IDEA,null,"Property",1);
-        Idea sceneRelationVertexToStoreIdea = new Idea(SCENE_RELATION_VERTEX_TO_STORE_IDEA,null,"Property",1);
+        Idea recentNewEncodedSceneSpikeIdea = new Idea(RECENT_NEW_ENCODED_SCENE_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea newEncodedSceneToStoreIdea = new Idea(NEW_ENCODED_SCENE_TO_STORE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea sceneRelationVertexToStoreIdea = new Idea(SCENE_RELATION_VERTEX_TO_STORE_IDEA,null,CATEGORY_PROPERTY,1);
         
         
-        Idea dgMemoyScenesIdea = new Idea(DG_MEMORY_SCENES_IDEA, new ArrayList<String>(), "Property", 1);
-        Idea dgSizeIdea = new Idea(DG_SIZE_IDEA, 0,"Property",1);
-        Idea dgDataIdea = new Idea(DG_DATA_IDEA,null,"Property",1);
+        Idea dgMemoyScenesIdea = new Idea(DG_MEMORY_SCENES_IDEA, new ArrayList<String>(), CATEGORY_PROPERTY, 1);
+        Idea dgSizeIdea = new Idea(DG_SIZE_IDEA, 0,CATEGORY_PROPERTY,1);
+        Idea dgDataIdea = new Idea(DG_DATA_IDEA,null,CATEGORY_PROPERTY,1);
         dgDataIdea.add(dgMemoyScenesIdea);
         dgDataIdea.add(dgSizeIdea);
         
         
-        Idea ca3MemoryScenesIdea = new Idea(CA3_MEMORY_SCENES_IDEA, new ArrayList<String>(), "Property", 1);
+        Idea ca3MemoryScenesIdea = new Idea(CA3_MEMORY_SCENES_IDEA, new ArrayList<String>(), CATEGORY_PROPERTY, 1);
 
-        Idea rootIdea = new Idea(ROOT_IDEA, null, "Property", 1);
+        Idea rootIdea = new Idea(ROOT_IDEA, null, CATEGORY_PROPERTY, 1);
         rootIdea.add(dgDataIdea);
         rootIdea.add(ca3MemoryScenesIdea);
         
-        Idea prcDataRelationsIdea = new Idea(PRC_DATA_RELATIONS_IDEA,null,"Property",1);
-        Idea prcDataAffectIdea = new Idea(PRC_DATA_AFFECT_IDEA,null,"Property",1);
-        Idea prcDataIdea = new Idea(PRC_DATA_IDEA, null,"Property",1);
+        Idea prcDataRelationsIdea = new Idea(PRC_DATA_RELATIONS_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea prcDataAffectIdea = new Idea(PRC_DATA_AFFECT_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea prcDataIdea = new Idea(PRC_DATA_IDEA, null,CATEGORY_PROPERTY,1);
         
-        ArrayList<String> indexFileData = new ArrayList<String>();
-        Idea indexFileDataIdea = new Idea(INDEX_FILE, indexFileData,"Property",1);
         prcDataIdea.add(prcDataRelationsIdea);
         prcDataIdea.add(prcDataAffectIdea);
         rootIdea.add(prcDataIdea);
         
         MemoryObject rootMO;
-        rootMO = m.createMemoryObject(ROOT_MO);
+        rootMO = m1.createMemoryObject(ROOT_MO);
         rootMO.setI(rootIdea);
         
-        MemoryObject imageReceivedPathMO;
-        imageReceivedPathMO = m.createMemoryObject(IMAGE_RECEIVED_PATH_MO);
-        imageReceivedPathMO.setI(imageReceivedPathIdea);
-        
         MemoryObject centerPointsandClassesMO;
-        centerPointsandClassesMO = m.createMemoryObject(CENTER_POINTS_CLASSES_MO);
+        centerPointsandClassesMO = m1.createMemoryObject(CENTER_POINTS_CLASSES_MO);
         centerPointsandClassesMO.setI(centerPointsandClassesIdea);
         
-        MemoryObject centerPointsSpikeMO;
-        centerPointsSpikeMO = m.createMemoryObject(CENTER_POINTS_SPIKE_MO);
-        centerPointsSpikeMO.setI(centerPointsSpikeIdea);
-        
-        MemoryObject unintegratedScenePatternMO;
-        unintegratedScenePatternMO = m.createMemoryObject(UNINTEGRATED_SCENE_PATTERN_MO);
-        unintegratedScenePatternMO.setI(unintegratedScenePatternIdea);
-        
         MemoryObject recognizedObjectsSpikeMO;
-        recognizedObjectsSpikeMO = m.createMemoryObject(RECOGNIZED_OBJECTS_SPIKE_MO);
+        recognizedObjectsSpikeMO = m1.createMemoryObject(RECOGNIZED_OBJECTS_SPIKE_MO);
         recognizedObjectsSpikeMO.setI(recognizedObjectsSpikeIdea);
         
         MemoryObject recognizedObjectsSpikeAndunintegratedScenePatternMO;
-        recognizedObjectsSpikeAndunintegratedScenePatternMO = m.createMemoryObject(RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_MO);
+        recognizedObjectsSpikeAndunintegratedScenePatternMO = m1.createMemoryObject(RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_MO);
         recognizedObjectsSpikeAndunintegratedScenePatternMO.setI(recognizedObjectsSpikeAndunintegratedScenePatternIdea);
         
         MemoryObject newEncodedSceneSpikeMO;
-        newEncodedSceneSpikeMO = m.createMemoryObject(NEW_ENCODED_SCENE_SPIKE_MO);
+        newEncodedSceneSpikeMO = m1.createMemoryObject(NEW_ENCODED_SCENE_SPIKE_MO);
         newEncodedSceneSpikeMO.setI(newEncodedSceneSpikeIdea);
         
         MemoryObject pRCMidTermMemoryObjectRelationsMO;
-        pRCMidTermMemoryObjectRelationsMO = m.createMemoryObject(PRC_MID_TERM_OBJECT_RELATIONS_MO);
+        pRCMidTermMemoryObjectRelationsMO = m1.createMemoryObject(PRC_MID_TERM_OBJECT_RELATIONS_MO);
         pRCMidTermMemoryObjectRelationsMO.setI(midTermMemoryObjectRelationsIdea);
         
         MemoryObject patternReplacedMO;
-        patternReplacedMO = m.createMemoryObject(PATTERN_REPLACED_MO);
+        patternReplacedMO = m1.createMemoryObject(PATTERN_REPLACED_MO);
         patternReplacedMO.setI(patternReplacedIdea);
         
         MemoryObject dgMidTermMemoryScenesMO;
-        dgMidTermMemoryScenesMO = m.createMemoryObject(DG_MID_TERM_MEMORY_SCENES_MO);
+        dgMidTermMemoryScenesMO = m1.createMemoryObject(DG_MID_TERM_MEMORY_SCENES_MO);
         dgMidTermMemoryScenesMO.setI(dgMidTermMemoryScenesIdea);
         
         MemoryObject recentNewEncodedSceneSpikeMO;
-        recentNewEncodedSceneSpikeMO = m.createMemoryObject(RECENT_NEW_ENCODED_SCENE_SPIKE_MO);
+        recentNewEncodedSceneSpikeMO = m1.createMemoryObject(RECENT_NEW_ENCODED_SCENE_SPIKE_MO);
         recentNewEncodedSceneSpikeMO.setI(recentNewEncodedSceneSpikeIdea);
         
         MemoryObject newEncodedSceneToStoreMO;
-        newEncodedSceneToStoreMO = m.createMemoryObject(NEW_ENCODED_SCENE_TO_STORE_MO);
+        newEncodedSceneToStoreMO = m1.createMemoryObject(NEW_ENCODED_SCENE_TO_STORE_MO);
         newEncodedSceneToStoreMO.setI(newEncodedSceneToStoreIdea);
         
         MemoryObject sceneRelationVertexToStoreMO;
-        sceneRelationVertexToStoreMO = m.createMemoryObject(SCENE_RELATION_VERTEX_TO_STORE_MO);
+        sceneRelationVertexToStoreMO = m1.createMemoryObject(SCENE_RELATION_VERTEX_TO_STORE_MO);
         sceneRelationVertexToStoreMO.setI(sceneRelationVertexToStoreIdea);
         
-   
-//        //Create Sensor Codelets
-//        ImageCodelet imageCodelet = new ImageCodelet();
-//        imageCodelet.setName("IMAGE");
-//        imageCodelet.addOutput(imageReceivedPathMO);
-//        m.insertCodelet(imageCodelet, "VISION_Cs");
-//        
-//        //Gets the image and returns objects points and classes
-//        VisionCodelet visionCodelet = new VisionCodelet();
-//        visionCodelet.setName("VISION");
-//        visionCodelet.addInput(imageReceivedPathMO);
-//        visionCodelet.addOutput(centerPointsandClassesMO);
-//        m.insertCodelet(visionCodelet, "VISION_Cs");
-//        
-//        //Gets the image center points
-//        PPCCodelet ppcCodelet = new PPCCodelet();
-//        ppcCodelet.setName("PPC");
-//        ppcCodelet.addInput(centerPointsandClassesMO);
-//        ppcCodelet.addOutput(centerPointsSpikeMO);
-//        m.insertCodelet(ppcCodelet, "DORSAL_Cs");
-//        
-//        //Creates 2DString pattern
-//        PHCProcess1 pHCProcess1Codelet = new PHCProcess1();
-//        pHCProcess1Codelet.setName("PHC_PROCESS_1");
-//        pHCProcess1Codelet.addInput(centerPointsSpikeMO);
-//        pHCProcess1Codelet.addOutput(unintegratedScenePatternMO);
-//        m.insertCodelet(pHCProcess1Codelet, "DORSAL_Cs");
         
-        //Gets the image classes labels and ids
-//        ITCCodelet iTCCodelet = new ITCCodelet();
-//        iTCCodelet.setName("ITC");
-//        iTCCodelet.addInput(centerPointsandClassesMO);
-//        iTCCodelet.addOutput(recognizedObjectsSpikeMO);
-//        m.insertCodelet(iTCCodelet, "VENTRAL_Cs");
-//        
-//        PRCProcess2Codelet pRCProcess2 = new PRCProcess2Codelet();
-//        pRCProcess2.setName("PRC_PROCESS_2");
-//        pRCProcess2.addInput(recognizedObjectsSpikeMO);
-//        pRCProcess2.addOutput(pRCMidTermMemoryObjectRelationsMO);
-//        m.insertCodelet(pRCProcess2, "VENTRAL_Cs");
-//        
-//        PRCStorageHandlerCodelet pRCStorageHandlerCodelet=new PRCStorageHandlerCodelet();
-//        pRCStorageHandlerCodelet.setName("PRC_STORAGE_HANDLER");
-//        pRCStorageHandlerCodelet.addInput(rootMO);
-//        pRCStorageHandlerCodelet.addInput(pRCMidTermMemoryObjectRelationsMO);
-//        pRCStorageHandlerCodelet.addOutput(rootMO);
-//        m.insertCodelet(pRCStorageHandlerCodelet, "VENTRAL_Cs");
-//        
-//        DGBridgeCodelet dGBridgeCodelet = new DGBridgeCodelet();
-//        dGBridgeCodelet.setName("DG_BRIDGE");
-//        dGBridgeCodelet.addInput(recognizedObjectsSpikeMO);
-//        dGBridgeCodelet.addInput(unintegratedScenePatternMO);
-//        dGBridgeCodelet.addOutput(patternReplacedMO);
-//        m.insertCodelet(dGBridgeCodelet, "DG_Cs");
-        
-//        DGProcessCodelet dGProcessCodelet = new DGProcessCodelet(false);
-//        dGProcessCodelet.setName("DG_PROCESS");
-//        dGProcessCodelet.addInput(rootMO);
-//        dGProcessCodelet.addInput(patternReplacedMO);
-//        dGProcessCodelet.addOutput(newEncodedSceneSpikeMO);
-//        dGProcessCodelet.addOutput(dgMidTermMemoryScenesMO);
-//        m.insertCodelet(dGProcessCodelet, "DG_Cs");
-//        
-//        DGStorageHandlerCodelet dGStorageHandlerCodelet = new DGStorageHandlerCodelet();
-//        dGStorageHandlerCodelet.setName("DG_STORAGE");
-//        dGStorageHandlerCodelet.addInput(rootMO);
-//        dGStorageHandlerCodelet.addInput(dgMidTermMemoryScenesMO);
-//        dGStorageHandlerCodelet.addOutput(rootMO);
-//        m.insertCodelet(dGStorageHandlerCodelet, "DG_Cs");
-        
-//        CA3Process1Codelet cA3Process1Codelet=new CA3Process1Codelet();
-//        cA3Process1Codelet.setName("CA3_PROCESS_1");
-//        cA3Process1Codelet.addInput(newEncodedSceneSpikeMO);
-//        cA3Process1Codelet.addOutput(recentNewEncodedSceneSpikeMO);
-//        cA3Process1Codelet.addOutput(newEncodedSceneToStoreMO);
-//        m.insertCodelet(cA3Process1Codelet, "CA3_Cs");
-//        
-//        CA3StorageHandlerCodelet cA3StorageHandlerCodelet=new CA3StorageHandlerCodelet();
-//        cA3StorageHandlerCodelet.setName("CA3_STORAGE_HANDLER");
-//        cA3StorageHandlerCodelet.addInput(newEncodedSceneToStoreMO);
-//        cA3StorageHandlerCodelet.addInput(rootMO);
-//        cA3StorageHandlerCodelet.addOutput(rootMO);
-//        m.insertCodelet(cA3StorageHandlerCodelet, "CA3_Cs");
-//        
-//        CA1Process1Codelet cA1Process1Codelet=new CA1Process1Codelet();
-//        cA1Process1Codelet.setName("CA1_PROCESS_1");
-//        cA1Process1Codelet.addInput(recentNewEncodedSceneSpikeMO);
-//        cA1Process1Codelet.addOutput(sceneRelationVertexToStoreMO);
-//        m.insertCodelet(cA1Process1Codelet, "CA1_Cs");
-//        
-//        Codelet cA1Process2=new CA1Process2();
-//        cA1Process2.setName("CA1_PROCESS_2");
-//        m.insertCodelet(cA1Process2, "CA1_Cs");
-//        
-//        CA1StorageHandlerCodelet cA1StorageHandlerCodelet=new CA1StorageHandlerCodelet();
-//        cA1StorageHandlerCodelet.setName("CA1_STORAGE_HANDLER");
-//        cA1StorageHandlerCodelet.addInput(sceneRelationVertexToStoreMO);
-//        cA1StorageHandlerCodelet.addInput(rootMO);
-//        cA1StorageHandlerCodelet.addOutput(rootMO);
-//        m.insertCodelet(cA1StorageHandlerCodelet, "CA1_Cs");
-       
-        
-        //Unused codelets
-        
-//        Codelet taskFrame=new TaskFrame();
-//        taskFrame.setName("TASK_NAME");
-//        m.insertCodelet(taskFrame, "VISION_Cs");
-//        
-//        Codelet pC=new PPCCodelet();
-//        pC.setName("PC");
-//        m.insertCodelet(pC, "DORSAL_Cs");
-//        
-//        Codelet pCBridge=new PCBridge();
-//        pCBridge.setName("PC_BRIDGE");
-//        m.insertCodelet(pCBridge, "DORSAL_Cs");
-//        
-//        
-//        Codelet iTCFeatures=new ITCFeatures();
-//        iTCFeatures.setName("ITC_FEATURES");
-//        m.insertCodelet(iTCFeatures, "VENTRAL_Cs");
-//        
-//        Codelet iTCBridge=new ITCBridge();
-//        iTCBridge.setName("ITC_BRIDGE");
-//        m.insertCodelet(iTCBridge, "VENTRAL_Cs");
-//        
-//        Codelet iTCProcess1=new ITCProcess1();
-//        iTCProcess1.setName("ITC_PROCESS_1");
-//        m.insertCodelet(iTCProcess1, "VENTRAL_Cs");
-//        
-//        Codelet pHCBridge=new DGStorageHandlerCodelet();
-//        pHCBridge.setName("PHC_BRIDGE");
-//        m.insertCodelet(pHCBridge, "DORSAL_Cs");
-//        
-//        Codelet pRCBridge=new PRCBridge();
-//        pRCBridge.setName("PRC_BRIDGE");
-//        m.insertCodelet(pRCBridge, "VENTRAL_Cs");
-//        
-//        Codelet pRCProcess1=new PRCProcess1();
-//        pRCProcess1.setName("PRC_PROCESS_1");
-//        m.insertCodelet(pRCProcess1, "VENTRAL_Cs");
-//        
-//        Codelet pRCProcess3=new PRCProcess3();
-//        pRCProcess3.setName("PRC_PROCESS_3");
-//        m.insertCodelet(pRCProcess3, "VENTRAL_Cs");
-//       
-//        Codelet eNC=new ENC();
-//        eNC.setName("ENC");
-//        m.insertCodelet(eNC, "ENC_Cs");
-//        
-//        Codelet cA3=new CA3();
-//        cA3.setName("CA3");
-//        m.insertCodelet(cA3, "CA3_Cs");
-//        
-//        Codelet cA3Process2=new CA3Process2();
-//        cA3Process2.setName("CA3_PROCESS_2");
-//        m.insertCodelet(cA3Process2, "CA3_Cs");
-//        
-//        Codelet cA3Process3=new CA3Process3();
-//        cA3Process3.setName("CA3_PROCESS_3");
-//        m.insertCodelet(cA3Process3, "CA3_Cs");
-//        
-//        Codelet cA1=new CA1();
-//        cA1.setName("CA1");
-//        m.insertCodelet(cA1, "CA1_Cs");
-//        
-//        Codelet cA1Process3=new CA1Process3();
-//        cA1Process3.setName("CA1_PROCESS_3");
-//        m.insertCodelet(cA1Process3, "CA1_Cs");
-//        
-//        Codelet cA1StorageHandler=new CA1StorageHandlerCodelet();
-//        cA1StorageHandler.setName("CA1_STORAGE_HANDLER");
-//        m.insertCodelet(cA1StorageHandler, "CA1_Cs");
-//        
-//        Codelet mPFC=new MPFC();
-//        mPFC.setName("MPFC");
-//        m.insertCodelet(mPFC, "PFC_Cs");
-//        
-//        Codelet mPFCProcess1=new MPFCProcess1();
-//        mPFCProcess1.setName("MPFC_PROCESS_1");
-//        m.insertCodelet(mPFCProcess1, "PFC_Cs");
-//        
-//        Codelet dLPFC=new DLPFC();
-//        dLPFC.setName("DLPFC");
-//        m.insertCodelet(dLPFC, "PFC_Cs");
-//        
-//        Codelet dLPFCPlanning1=new DLPFCPlanning();
-//        dLPFCPlanning1.setName("DLPFC_PLANNING");
-//        m.insertCodelet(dLPFCPlanning1, "PFC_Cs");
-//        
-//        Codelet dLPFCBaseController=new DLPFCBaseController();
-//        dLPFCBaseController.setName("DLPFC_PLANNING");
-//        m.insertCodelet(dLPFCBaseController, "PFC_Cs");
-//        
-//        Codelet vLPFC=new VLPFC();
-//        vLPFC.setName("VLPFC");
-//        m.insertCodelet(vLPFC, "PFC_Cs");
-//        
-//        Codelet vLPFCProcess1=new VLPFCProcess1();
-//        vLPFCProcess1.setName("VLPFC_PROCESS_1");
-//        m.insertCodelet(vLPFCProcess1, "PFC_Cs");
-//        
-//        Codelet vLPFCProcess2=new VLPFCProcess2();
-//        vLPFCProcess2.setName("VLPFC_PROCESS_2");
-//        m.insertCodelet(vLPFCProcess2, "PFC_Cs");
-//        
-//        Codelet sB=new SB();
-//        sB.setName("SB");
-//        m.insertCodelet(sB, "SB_Cs");
-//       
-//        m.start();
-//        
-//        return(m);
-//        
-        Idea socketConnectionPortIdea = new Idea(SOCKET_CONNECTION_PORT_IDEA, 10000, "Property", 1);
+        //Create Memory Objects
+        Idea socketConnectionPortIdea = new Idea(SOCKET_CONNECTION_PORT_IDEA, 10000, CATEGORY_PROPERTY, 1);
         MemoryObject socketConnectionPortMO;
         socketConnectionPortMO = m1.createMemoryObject(SOCKET_CONNECTION_PORT_MO);
         socketConnectionPortMO.setI(socketConnectionPortIdea);
         
-        Idea imageReceivedFromConnectionIdea = new Idea(IMAGE_RECEIVED_FROM_CONNECTION_IDEA, null, "Property", 1);
+        Idea imageReceivedFromConnectionIdea = new Idea(IMAGE_RECEIVED_FROM_CONNECTION_IDEA, null, CATEGORY_PROPERTY, 1);
         MemoryObject imageReceivedFromConnectionMO;
         imageReceivedFromConnectionMO = m1.createMemoryObject(IMAGE_RECEIVED_FROM_CONNECTION_MO);
         imageReceivedFromConnectionMO.setI(imageReceivedFromConnectionIdea);
         
         Codelet connectionCodelet = new ConnectionCodelet();
-        connectionCodelet.setName("CONNECTION");
+        connectionCodelet.setName(CONNECTION_CODELET_NAME);
         connectionCodelet.addInput(socketConnectionPortMO);
         connectionCodelet.addOutput(imageReceivedFromConnectionMO);
         m1.insertCodelet(connectionCodelet);
         
         //Gets the image and returns objects points and classes
         VisionCodelet visionCodelet1 = new VisionCodelet();
-        visionCodelet1.setName("VISION");
+        visionCodelet1.setName(VISION_CODELET_NAME);
         visionCodelet1.addInput(imageReceivedFromConnectionMO);
         visionCodelet1.addOutput(centerPointsandClassesMO);
-        m1.insertCodelet(visionCodelet1, "VISION_Cs");
+        m1.insertCodelet(visionCodelet1, VISION_CODELET_GROUP);
         // VISION -> PPC -> PHC -> DG
         // VISION -> ITC -> DG
         
         //Compile PPC, PHC and ITC
         PPCPHCITCCodelet ppcPhcItcCodelet = new PPCPHCITCCodelet();
-        ppcPhcItcCodelet.setName("PPC_PHC_ITC");
+        ppcPhcItcCodelet.setName(PPC_PHC_ITC_CODELET_NAME);
         ppcPhcItcCodelet.addInput(centerPointsandClassesMO);
         ppcPhcItcCodelet.addOutput(recognizedObjectsSpikeAndunintegratedScenePatternMO);
         ppcPhcItcCodelet.addOutput(recognizedObjectsSpikeMO);
-        m1.insertCodelet(ppcPhcItcCodelet, "COMPILED");
+        m1.insertCodelet(ppcPhcItcCodelet, COMPILED_PPC_PHC_ITC_CODELET_GROUP);
         
         
         //Gets the image center points
-//        PPCCodelet ppcCodelet = new PPCCodelet();
-//        ppcCodelet.setName("PPC");
-//        ppcCodelet.addInput(centerPointsandClassesMO);
-//        ppcCodelet.addOutput(centerPointsSpikeMO);
-//        m1.insertCodelet(ppcCodelet, "DORSAL_Cs");
-        
-        //Creates 2DString pattern
-//        PHCProcess1 pHCProcess1Codelet = new PHCProcess1();
-//        pHCProcess1Codelet.setName("PHC_PROCESS_1");
-//        pHCProcess1Codelet.addInput(centerPointsSpikeMO);
-//        pHCProcess1Codelet.addOutput(unintegratedScenePatternMO);
-//        m1.insertCodelet(pHCProcess1Codelet, "DORSAL_Cs");       
-
-        //Gets the image classes labels and ids
-//        ITCCodelet iTCCodelet = new ITCCodelet();
-//        iTCCodelet.setName("ITC");
-//        iTCCodelet.addInput(centerPointsandClassesMO);
-//        iTCCodelet.addOutput(recognizedObjectsSpikeMO);
-//        m1.insertCodelet(iTCCodelet, "VENTRAL_Cs");
         
         PRCProcess2Codelet pRCProcess2 = new PRCProcess2Codelet();
-        pRCProcess2.setName("PRC_PROCESS_2");
+        pRCProcess2.setName(PRC_PROCESS_2_CODELET_NAME);
         pRCProcess2.addInput(recognizedObjectsSpikeMO);
         pRCProcess2.addOutput(pRCMidTermMemoryObjectRelationsMO);
-        m1.insertCodelet(pRCProcess2, "VENTRAL_Cs");
+        m1.insertCodelet(pRCProcess2, VENTRAL_CODELET_GROUP);
         
         PRCStorageHandlerCodelet pRCStorageHandlerCodelet = new PRCStorageHandlerCodelet();
-        pRCStorageHandlerCodelet.setName("PRC_STORAGE_HANDLER");
+        pRCStorageHandlerCodelet.setName(PRC_STORAGE_HANDLER_CODELET_NAME);
         pRCStorageHandlerCodelet.addInput(rootMO);
         pRCStorageHandlerCodelet.addInput(pRCMidTermMemoryObjectRelationsMO);
         pRCStorageHandlerCodelet.addOutput(rootMO);
-        m1.insertCodelet(pRCStorageHandlerCodelet, "VENTRAL_Cs");
-        
-//        DGBridgeCodelet dGBridgeCodelet = new DGBridgeCodelet();
-//        dGBridgeCodelet.setName("DG_BRIDGE");
-//        dGBridgeCodelet.addInput(recognizedObjectsSpikeMO);
-//        dGBridgeCodelet.addInput(unintegratedScenePatternMO);
-//        dGBridgeCodelet.addOutput(patternReplacedMO);
-//        m1.insertCodelet(dGBridgeCodelet, "DG_Cs");
+        m1.insertCodelet(pRCStorageHandlerCodelet, VENTRAL_CODELET_GROUP);
         
         DGBridgeComposedCodelet dGBridgeComposedCodelet = new DGBridgeComposedCodelet();
-        dGBridgeComposedCodelet.setName("DG_BRIDGE_COMPOSED");
+        dGBridgeComposedCodelet.setName(DG_BRIDGE_COMPOSED_CODELET_NAME);
         dGBridgeComposedCodelet.addInput(recognizedObjectsSpikeAndunintegratedScenePatternMO);
         dGBridgeComposedCodelet.addOutput(patternReplacedMO);
-        m1.insertCodelet(dGBridgeComposedCodelet, "DG_Cs");
-        
-        
-        //TODO: add activation th
+        m1.insertCodelet(dGBridgeComposedCodelet, DG_CODELET_GROUP);
+
         DGProcessCodelet dGProcessCodelet = new DGProcessCodelet(false);
-        dGProcessCodelet.setName("DG_PROCESS");
+        dGProcessCodelet.setName(DG_PROCESS_CODELET_NAME);
         dGProcessCodelet.addInput(rootMO);
         dGProcessCodelet.addInput(patternReplacedMO);
         dGProcessCodelet.addOutput(newEncodedSceneSpikeMO);
         dGProcessCodelet.addOutput(dgMidTermMemoryScenesMO);
-        m1.insertCodelet(dGProcessCodelet, "DG_Cs");
+        m1.insertCodelet(dGProcessCodelet, DG_CODELET_GROUP);
         
         DGStorageHandlerCodelet dGStorageHandlerCodelet = new DGStorageHandlerCodelet();
-        dGStorageHandlerCodelet.setName("DG_STORAGE");
+        dGStorageHandlerCodelet.setName(DG_STORAGE_CODELET_NAME);
         dGStorageHandlerCodelet.addInput(rootMO);
         dGStorageHandlerCodelet.addInput(dgMidTermMemoryScenesMO);
         dGStorageHandlerCodelet.addOutput(rootMO);
-        m1.insertCodelet(dGStorageHandlerCodelet, "DG_Cs");
+        m1.insertCodelet(dGStorageHandlerCodelet, DG_CODELET_GROUP);
         
         CA3Process1Codelet cA3Process1Codelet=new CA3Process1Codelet();
-        cA3Process1Codelet.setName("CA3_PROCESS_1");
+        cA3Process1Codelet.setName(CA3_PROCESS_1_CODELET_NAME);
         cA3Process1Codelet.addInput(newEncodedSceneSpikeMO);
         cA3Process1Codelet.addOutput(recentNewEncodedSceneSpikeMO);
         cA3Process1Codelet.addOutput(newEncodedSceneToStoreMO);
-        m1.insertCodelet(cA3Process1Codelet, "CA3_Cs");
-        
-        //TODO: add activation th
-      
+        m1.insertCodelet(cA3Process1Codelet, CA3_CODELET_GROUP);
+              
         CA3StorageHandlerCodelet cA3StorageHandlerCodelet=new CA3StorageHandlerCodelet();
-        cA3StorageHandlerCodelet.setName("CA3_STORAGE_HANDLER");
+        cA3StorageHandlerCodelet.setName(CA3_STORAGE_HANDLER_CODELET_NAME);
         cA3StorageHandlerCodelet.addInput(newEncodedSceneToStoreMO);
         cA3StorageHandlerCodelet.addInput(rootMO);
         cA3StorageHandlerCodelet.addOutput(rootMO);
-        m1.insertCodelet(cA3StorageHandlerCodelet, "CA3_Cs");
-//        
+        m1.insertCodelet(cA3StorageHandlerCodelet, CA3_CODELET_GROUP);
+       
         CA1Process1Codelet cA1Process1Codelet=new CA1Process1Codelet();
-        cA1Process1Codelet.setName("CA1_PROCESS_1");
+        cA1Process1Codelet.setName(CA1_PROCESS_1_CODELET_NAME);
         cA1Process1Codelet.addInput(recentNewEncodedSceneSpikeMO);
         cA1Process1Codelet.addOutput(sceneRelationVertexToStoreMO);
-        m1.insertCodelet(cA1Process1Codelet, "CA1_Cs");
-//        
+        m1.insertCodelet(cA1Process1Codelet, CA1_CODELET_GROUP);
+        
 //        Codelet cA1Process2=new CA1Process2();
-//        cA1Process2.setName("CA1_PROCESS_2");
-//        m1.insertCodelet(cA1Process2, "CA1_Cs");
+//        cA1Process2.setName("CA1_PROCESS_2_CODELET_NAME");
+//        m1.insertCodelet(cA1Process2, CA1_CODELET_GROUP);
 //        
 //        CA1StorageHandlerCodelet cA1StorageHandlerCodelet=new CA1StorageHandlerCodelet();
-//        cA1StorageHandlerCodelet.setName("CA1_STORAGE_HANDLER");
+//        cA1StorageHandlerCodelet.setName("CA1_STORAGE_HANDLER_CODELET_NAME");
 //        cA1StorageHandlerCodelet.addInput(sceneRelationVertexToStoreMO);
 //        cA1StorageHandlerCodelet.addInput(rootMO);
 //        cA1StorageHandlerCodelet.addOutput(rootMO);
-//        m1.insertCodelet(cA1StorageHandlerCodelet, "CA1_Cs");
+//        m1.insertCodelet(cA1StorageHandlerCodelet, CA1_CODELET_GROUP);
         
         m1.start();
         
@@ -1039,17 +232,12 @@ public final class App {
         Mind m = prepareMind();
         // The next line can be commented if you don't want the Desktop MindViewer
         createAndShowGUI(m);
-        // The next line can be commented if you don't use the MindViewer Web
-        RESTServer rs = new RESTServer(m,5001,true);
-        
-        
     }
     public String getGreeting() {
         return "Hello World!";
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-        
+        System.out.println(new App().getGreeting()); 
     }
 }

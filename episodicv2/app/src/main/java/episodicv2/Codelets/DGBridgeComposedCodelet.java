@@ -33,13 +33,10 @@ public class DGBridgeComposedCodelet extends Codelet {
     Idea patternReplacedIdea;
     
     private EmotionalDecay emotionalDecay = null;
-    private double affectIntensity = 0.0;
     
     private Synchronizer synchronizer = new Synchronizer(2);
     private static final int OBJECTS_LIST_KEY = 10;
     private static final int SCENE_PATTERN_KEY = 20;
-    private ArrayList<Idea> dgObjects;
-    private String dgPattern;
     
     public DGBridgeComposedCodelet() {
         
@@ -57,11 +54,9 @@ public class DGBridgeComposedCodelet extends Codelet {
         patternReplacedMO = (MemoryObject) getOutput(PATTERN_REPLACED_MO);
         patternReplacedIdea = (Idea) patternReplacedMO.getI();
     }
-    
+    //verify if has data in the MO AND has no data with that key in the syncronizer
     @Override
     public void proc() {
-        //TODO: identify what MO changed
-        //verify if has data in the MO AND has no data with that key in the syncronizer
         if (unintegratedScenePatternIdea.get(CURRENT_FRAME_IDEA) != null) {
             Integer currentFramePattern = (Integer) unintegratedScenePatternIdea.get(CURRENT_FRAME_IDEA).getValue();
             String pattern = (String) unintegratedScenePatternIdea.get(PATTERN_IDEA).getValue();
@@ -87,12 +82,12 @@ public class DGBridgeComposedCodelet extends Codelet {
         if (synchronizer.isFull()) {
             initComponents();
 
-            this.dgObjects = (ArrayList<Idea>) synchronizer.getElement(OBJECTS_LIST_KEY);
-            this.dgPattern = (String) synchronizer.getElement(SCENE_PATTERN_KEY);
+            ArrayList<Idea> dgObjects = (ArrayList<Idea>) synchronizer.getElement(OBJECTS_LIST_KEY);
+            String dgPattern = (String) synchronizer.getElement(SCENE_PATTERN_KEY);
 
             //Decode the pattern
-            OccupancyGrid occupancyGrid = T2DString.decodeMatrixAndReplace(createHashMap(this.dgObjects),
-                    this.dgPattern,
+            OccupancyGrid occupancyGrid = T2DString.decodeMatrixAndReplace(createHashMap(dgObjects),
+                    dgPattern,
                     Configuration.GRID_COLUMNS_X,
                     Configuration.GRID_ROWS_Y);
 
@@ -103,22 +98,22 @@ public class DGBridgeComposedCodelet extends Codelet {
                     Configuration.GRID_COLUMNS_X,
                     Configuration.GRID_ROWS_Y);
             
-            affectIntensity = emotionalDecay.getActivation();
+            double affectIntensity = emotionalDecay.getActivation();
             
             System.out.println("Pattern replaced in DGBridgeComposed:" + patternReplaced);
             
-            Idea patternReplacedAtributeIdea = new Idea(PATTERN_IDEA, patternReplaced, "Property", 1);
-            Idea sincTimeIdea = new Idea(TIME_IDEA, synchronizer.getTime(),"Property", 1);
-            Idea positiveActivationIdea = new Idea(POSITIVE_AFFECT_IDEA, emotionalDecay.getPositiveActivation(), "Property", 1);
-            Idea negativeActivationIdea = new Idea(NEGATIVE_AFFECT_IDEA, emotionalDecay.getNegativeActivation(), "Property", 1);
-            Idea affectIntensityIdea = new Idea(AFFECT_INTENSITY_IDEA, affectIntensity, "Property", 1);
+            Idea patternReplacedAtributeIdea = new Idea(PATTERN_IDEA, patternReplaced, CATEGORY_PROPERTY, 1);
+            Idea sincTimeIdea = new Idea(TIME_IDEA, synchronizer.getTime(),CATEGORY_PROPERTY, 1);
+            Idea positiveActivationIdea = new Idea(POSITIVE_AFFECT_IDEA, emotionalDecay.getPositiveActivation(), CATEGORY_PROPERTY, 1);
+            Idea negativeActivationIdea = new Idea(NEGATIVE_AFFECT_IDEA, emotionalDecay.getNegativeActivation(), CATEGORY_PROPERTY, 1);
+            Idea affectIntensityIdea = new Idea(AFFECT_INTENSITY_IDEA, affectIntensity, CATEGORY_PROPERTY, 1);
             patternReplacedIdea.setL(new ArrayList());
             patternReplacedIdea.add(patternReplacedAtributeIdea);
             patternReplacedIdea.add(sincTimeIdea);
             patternReplacedIdea.add(positiveActivationIdea);
             patternReplacedIdea.add(negativeActivationIdea);
             patternReplacedIdea.add(affectIntensityIdea);
-            patternReplacedIdea.add(new Idea(CURRENT_FRAME_IDEA, synchronizer.getTime(), "Property", 1));
+            patternReplacedIdea.add(new Idea(CURRENT_FRAME_IDEA, synchronizer.getTime(), CATEGORY_PROPERTY, 1));
             patternReplacedMO.setI(patternReplacedIdea);
         }
     }

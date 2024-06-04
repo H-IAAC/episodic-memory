@@ -317,7 +317,6 @@ public class T2DString {
      */
     
     public static float lcs2DString(String strImage1, String strImage2, int type) {
-        System.out.println("Executing lcs2DString");
         String alpha[] = strImage1.split(",");
         String beta[] = strImage2.split(",");
 

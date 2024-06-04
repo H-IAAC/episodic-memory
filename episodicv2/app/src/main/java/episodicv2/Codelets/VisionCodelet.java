@@ -47,10 +47,7 @@ import javax.swing.JLabel;
  *
  * @author karenlima
  */
-public class VisionCodelet extends Codelet{
-    
-//    MemoryObject imageReceivedMO;
-//    Idea imageReceivedPathIdea;
+public class VisionCodelet extends Codelet {
     
     MemoryObject imageReceivedFromConnectionMO;
     Idea imageReceivedFromConnectionIdea;
@@ -62,10 +59,10 @@ public class VisionCodelet extends Codelet{
     Boolean hasAnyObject = false;
         
     
-    ArrayList<Idea> objectsClasses = new ArrayList<Idea>();
-    ArrayList<Idea> objectsPoints = new ArrayList<Idea>();
+    ArrayList<Idea> objectsClasses = new ArrayList<>();
+    ArrayList<Idea> objectsPoints = new ArrayList<>();
     
-    List<String> cocoLabels = new ArrayList<String>();
+    List<String> cocoLabels = new ArrayList<>();
     
     String s;
     Net dnnNet;
@@ -78,13 +75,10 @@ public class VisionCodelet extends Codelet{
         } catch (FileNotFoundException ex){
             System.out.printf("Error reading OpenCV lib");
         }
-        
     }    
     
     @Override
     public void accessMemoryObjects() {
-//        imageReceivedMO = (MemoryObject) getInput(IMAGE_RECEIVED_PATH_MO);
-//        imageReceivedPathIdea = (Idea) imageReceivedMO.getI();
 
         imageReceivedFromConnectionMO = (MemoryObject) getInput(Configuration.IMAGE_RECEIVED_FROM_CONNECTION_MO);
         imageReceivedFromConnectionIdea = (Idea) imageReceivedFromConnectionMO.getI();
@@ -96,7 +90,6 @@ public class VisionCodelet extends Codelet{
 
         
         if (image != null) {
-//            System.out.println("showing image on Vision");
             displayImage(image);
         }
     }
@@ -165,18 +158,14 @@ public class VisionCodelet extends Codelet{
         
         //  load our YOLO object detector trained on COCO dataset
       dnnNet = Dnn.readNetFromDarknet(s+"/yolo/files/yolov3.cfg", s+"/yolo/files/yolov3.weights");
-        // YOLO on GPU:
-        //      dnnNet.setPreferableBackend(Dnn.DNN_BACKEND_CUDA);
-        //      dnnNet.setPreferableTarget(Dnn.DNN_TARGET_CUDA);
+        // YOLO on GPU: 
     }
     
     private void detectObjectOnImage() throws FileNotFoundException {
 
-//      String imageReceivedPath = (String) imageReceivedPathIdea.getValue();
       BufferedImage imageReceivedFromConnection = (BufferedImage) imageReceivedFromConnectionIdea.getValue();
       // load our input image
       Mat img = bufferedImageToMat(imageReceivedFromConnection);
-//      Mat img = Imgcodecs.imread(s+imageReceivedPath, Imgcodecs.IMREAD_COLOR); // dining_table.jpg soccer.jpg baggage_claim.jpg
       if (img.empty() == false){
         //  -- determine  the output layer names that we need from YOLO
         // The forward() function in OpenCV’s Net class needs the ending layer till which it should run in the network.
@@ -189,9 +178,9 @@ public class VisionCodelet extends Codelet{
         }
         HashMap<String, List>  result = forwardImageOverNetwork(img, outputLayers);
 
-        ArrayList<Rect2d> boxes = (ArrayList<Rect2d>)result.get("boxes");
-        ArrayList<Float> confidences = (ArrayList<Float>) result.get("confidences");
-        ArrayList<Integer> class_ids = (ArrayList<Integer>)result.get("class_ids");
+        ArrayList<Rect2d> boxes = (ArrayList<Rect2d>)result.get(BOXES);
+        ArrayList<Float> confidences = (ArrayList<Float>) result.get(CONFIDENCES);
+        ArrayList<Integer> classIds = (ArrayList<Integer>)result.get(CLASS_ID);
 
         // -- Now , do so-called “non-maxima suppression”
         //Non-maximum suppression is performed on the boxes whose confidence is equal to or greater than the threshold.
@@ -200,15 +189,11 @@ public class VisionCodelet extends Codelet{
             System.out.println("Could not identify any object in this image");
             hasAnyObject = false;
         } else {
-//            System.out.println("Image has objects");
-            MatOfInt indices =  getBBoxIndicesFromNonMaximumSuppression(boxes,
-                confidences);
+            MatOfInt indices =  getBBoxIndicesFromNonMaximumSuppression(boxes,confidences);
 
-            hasAnyObject = getObjectsCenterAndClasses(indices, boxes, class_ids);
+            hasAnyObject = getObjectsCenterAndClasses(indices, boxes, classIds);
         }
       }
-      
-
     }
 
     private HashMap<String, List> forwardImageOverNetwork(Mat img, List<String> outputLayers) {
@@ -216,9 +201,9 @@ public class VisionCodelet extends Codelet{
         // So, Initialize our lists of detected bounding boxes, confidences, and  class IDs, respectively
         // This is what this method will return:
         HashMap<String, List> result = new HashMap<String, List>();
-        result.put("boxes", new ArrayList<Rect2d>());
-        result.put("confidences", new ArrayList<Float>());
-        result.put("class_ids", new ArrayList<Integer>());
+        result.put(BOXES, new ArrayList<Rect2d>());
+        result.put(CONFIDENCES, new ArrayList<Float>());
+        result.put(CLASS_ID, new ArrayList<Integer>());
 
         // -- The input image to a neural network needs to be in a certain format called a blob.
         //  In this process, it scales the image pixel values to a target range of 0 to 1 using a scale factor of 1/255.
@@ -248,20 +233,19 @@ public class VisionCodelet extends Codelet{
                 Mat row = output.row(i);
                 List<Float> detect = new MatOfFloat(row).toList();
                 List<Float> score = detect.subList(5, output.cols());
-                int class_id = argmax(score); // index maximalnog elementa liste
-                float conf = score.get(class_id);
+                int classId = argmax(score); // index maximalnog elementa liste
+                float conf = score.get(classId);
                 if (conf >= 0.5) {
-                    int center_x = (int) (detect.get(0) * img.cols());
-                    int center_y = (int) (detect.get(1) * img.rows());
+                    int centerX = (int) (detect.get(0) * img.cols());
+                    int centerY = (int) (detect.get(1) * img.rows());
                     int width = (int) (detect.get(2) * img.cols());
                     int height = (int) (detect.get(3) * img.rows());
-                    int x = (center_x - width / 2);
-                    int y = (center_y - height / 2);
+                    int x = (centerX - width / 2);
+                    int y = (centerY - height / 2);
                     Rect2d box = new Rect2d(x, y, width, height);
-                    result.get("boxes").add(box);
-                    result.get("confidences").add(conf);
-                    result.get("class_ids").add(class_id);
-                    
+                    result.get(BOXES).add(box);
+                    result.get(CONFIDENCES).add(conf);
+                    result.get(CLASS_ID).add(classId);
                 }
             }
         }
@@ -300,18 +284,18 @@ public class VisionCodelet extends Codelet{
     
     private Boolean getObjectsCenterAndClasses(MatOfInt indices,
                                     ArrayList<Rect2d> boxes,
-                                    ArrayList<Integer> class_ids) {
+                                    ArrayList<Integer> classIds) {
         objectsClasses.clear();
         objectsPoints.clear();
         if(indices.empty()) {
             System.out.println("Has no indices");
             return false;
         } else {
-            List indices_list = indices.toList();
+            List indicesList = indices.toList();
             for (int i = 0; i < boxes.size(); i++) {
-                if (indices_list.contains(i)) {
+                if (indicesList.contains(i)) {
                     Rect2d box = boxes.get(i);
-                    String label = cocoLabels.get(class_ids.get(i));
+                    String label = cocoLabels.get(classIds.get(i));
                     System.out.println("label: " + label);
 
                     Double xpoint =  box.x + (box.width/2);
