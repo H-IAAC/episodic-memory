@@ -24,8 +24,6 @@ public class VLPFCProcess1Codelet extends Codelet implements STMChangesListener 
     
     private MemoryObject vlpfcProcess1SpikeMO;
     private Idea vlpfcProcess1SpikeIdea;
-    private MemoryObject vlpfcProcess2SpikeMO;
-    private Idea vlpfcProcess2SpikeIdea;
     private MemoryObject dlpfcSpikeMO;
     private Idea dlpfcSpikeIdea;
     private MemoryObject itcSpikeMO;
@@ -55,8 +53,8 @@ public class VLPFCProcess1Codelet extends Codelet implements STMChangesListener 
     
     @Override
     public void accessMemoryObjects() {
-        vlpfcProcess1SpikeMO = (MemoryObject) getInput(Configuration.VLPFC_PROCESS_2_SPIKE_MO);
-        vlpfcProcess1SpikeIdea = (Idea) vlpfcProcess2SpikeMO.getI();
+        vlpfcProcess1SpikeMO = (MemoryObject) getInput(Configuration.VLPFC_PROCESS_1_SPIKE_MO);
+        vlpfcProcess1SpikeIdea = (Idea) vlpfcProcess1SpikeMO.getI();
         
         data = (byte[]) vlpfcProcess1SpikeIdea.get(Configuration.SPIKE_VLPFC_PROCESS_1_DATA_IDEA).getValue();
         

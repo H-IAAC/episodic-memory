@@ -194,6 +194,9 @@ public class Configuration {
     public static final String SPIKE_VLPFC_PROCESS_1_DATA_IDEA = "spikeVLPFCProcess1DataIdea";
     public static final String SPIKE_VLPFC_DATA_IDEA = "spikeVLPFCDataIdea";
     public static final String SPIKE_DLPFC_BASE_CONTROLLER_DATA_IDEA = "spikeDLPFCBaseControllerDataIdea";
+    public static final String SPIKE_ITC_DATA_IDEA = "spikeITCDataIdea";
+    public static final String SPIKE_ITC_PROCESS_1_DATA_IDEA = "spikeITCProcess1DataIdea";
+    public static final String SPIKE_ITC_PROCESS_2_DATA_IDEA = "spikeITCProcess2DataIdea";
 
     // MEMORY OBJECTS
     
@@ -224,5 +227,7 @@ public class Configuration {
     public static final String DLPFC_BASE_CONTROLLER_SPIKE_MO = "dlpfcBaseControllerSpikeMO"; 
     public static final String MPFC_PROCESS_1_SPIKE_MO = "mpfcProcess1SpikeMO"; 
     public static final String MPFC_PROCESS_2_SPIKE_MO = "mpfcProcess2SpikeMO"; 
+    public static final String ITC_PROCESS_1_SPIKE_MO = "itcProcess1SpikeMO";
+    public static final String ITC_PROCESS_2_SPIKE_MO = "itcProcess2SpikeMO"; 
 
 }
