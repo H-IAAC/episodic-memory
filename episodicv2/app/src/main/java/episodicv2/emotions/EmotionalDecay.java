@@ -10,7 +10,8 @@ package episodicv2.emotions;
  */
 
 
-import episodicv2.configuration.Configuration;
+import episodicv2.core.storage.ActivationFunctions;
+import episodicv2.core.configuration.Configuration;
 import java.util.Timer;
 import java.util.TimerTask;
 

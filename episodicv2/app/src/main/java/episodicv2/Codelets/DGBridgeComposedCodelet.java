@@ -7,14 +7,14 @@ package episodicv2.Codelets;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
-import episodicv2.configuration.Configuration;
-import static episodicv2.configuration.Configuration.*;
+import episodicv2.core.configuration.Configuration;
+import static episodicv2.core.configuration.Configuration.*;
 import episodicv2.emotions.EmotionalDecay;
 import java.util.ArrayList;
 import java.util.HashMap;
-import spike.Synchronizer;
-import t2dstring.OccupancyGrid;
-import t2dstring.T2DString;
+import episodicv2.core.spike.Synchronizer;
+import t2dstringIdea.OccupancyGridIdea;
+import t2dstringIdea.T2DStringIdea;
 
 /**
  *
@@ -86,13 +86,13 @@ public class DGBridgeComposedCodelet extends Codelet {
             String dgPattern = (String) synchronizer.getElement(SCENE_PATTERN_KEY);
 
             //Decode the pattern
-            OccupancyGrid occupancyGrid = T2DString.decodeMatrixAndReplace(createHashMap(dgObjects),
+            OccupancyGridIdea occupancyGrid = T2DStringIdea.decodeMatrixAndReplace(createHashMap(dgObjects),
                     dgPattern,
                     Configuration.GRID_COLUMNS_X,
                     Configuration.GRID_ROWS_Y);
 
             //Creates the 2D String pattern
-            String patternReplaced = T2DString.create2DStringPattern(occupancyGrid,
+            String patternReplaced = T2DStringIdea.create2DStringPattern(occupancyGrid,
                     Configuration.IMAGE_WIDTH,
                     Configuration.IMAGE_HEIGHT,
                     Configuration.GRID_COLUMNS_X,

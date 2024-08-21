@@ -8,7 +8,7 @@ import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
 import static episodicv2.Connection.ConnectionCodelet.displayImage;
-import episodicv2.configuration.Configuration;
+import episodicv2.core.configuration.Configuration;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -33,7 +33,7 @@ import org.opencv.utils.Converters;
 import org.opencv.core.Size;
 import org.opencv.core.CvType;
 
-import static episodicv2.configuration.Configuration.*;
+import static episodicv2.core.configuration.Configuration.*;
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;

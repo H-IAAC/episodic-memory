@@ -6,7 +6,7 @@ package objectsassociation;
 
 
 import br.unicamp.cst.representation.idea.Idea;
-import static episodicv2.configuration.Configuration.*;
+import static episodicv2.core.configuration.Configuration.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;

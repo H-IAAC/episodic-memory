@@ -7,7 +7,7 @@ package episodicv2.Codelets;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
-import static episodicv2.configuration.Configuration.*;
+import static episodicv2.core.configuration.Configuration.*;
 import episodicv2.emotions.EmotionalDecay;
 import java.util.ArrayList;
 

@@ -7,7 +7,7 @@ package episodicv2.Codelets;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
-import episodicv2.configuration.Configuration;
+import episodicv2.core.configuration.Configuration;
 
 /**
  *

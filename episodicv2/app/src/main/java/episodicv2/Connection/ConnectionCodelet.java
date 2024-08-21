@@ -7,8 +7,8 @@ package episodicv2.Connection;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
-import episodicv2.configuration.Configuration;
-import static episodicv2.configuration.Configuration.SOCKET_CONNECTION_PORT_MO;
+import episodicv2.core.configuration.Configuration;
+import static episodicv2.core.configuration.Configuration.SOCKET_CONNECTION_PORT_MO;
 
 import javax.swing.*;
 import java.awt.*;

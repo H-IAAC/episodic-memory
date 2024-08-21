@@ -7,13 +7,13 @@ package episodicv2.Codelets;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
-import episodicv2.configuration.Configuration;
-import static episodicv2.configuration.Configuration.*;
-import episodicv2.emotions.ActivationFunctions;
+import episodicv2.core.configuration.Configuration;
+import static episodicv2.core.configuration.Configuration.*;
+import episodicv2.core.storage.ActivationFunctions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import t2dstring.T2DString;
+import t2dstringIdea.T2DStringIdea;
 
 /**
  *
@@ -174,8 +174,7 @@ public class DGProcessCodelet extends Codelet {
             for (int i = 0; i < midTermMemoryScenes.size(); i++) {
                 Idea scene = midTermMemoryScenes.get(i);
                 String patternToCompare = (String) scene.get(PATTERN_IDEA).getValue();
-                System.out.println("Executing get similar");
-                float similarity = T2DString.lcs2DString(pattern, patternToCompare, T2DString.SIMILARITY_TYPE_1);
+                float similarity = T2DStringIdea.lcs2DString(pattern, patternToCompare, T2DStringIdea.SIMILARITY_TYPE_1);
 
                 if (similarity >= SIMILARITY_THRESHOLD) {
                     
@@ -199,7 +198,7 @@ public class DGProcessCodelet extends Codelet {
 
                     String patternToCompare = (String) sceneIdea.get(PATTERN_IDEA).getValue();
 
-                    float similarity = T2DString.lcs2DString(pattern, patternToCompare, T2DString.SIMILARITY_TYPE_1);
+                    float similarity = T2DStringIdea.lcs2DString(pattern, patternToCompare, T2DStringIdea.SIMILARITY_TYPE_1);
 
                     if (similarity >= SIMILARITY_THRESHOLD) {
 

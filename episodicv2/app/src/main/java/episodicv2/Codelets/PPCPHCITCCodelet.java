@@ -7,10 +7,10 @@ package episodicv2.Codelets;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
-import static episodicv2.configuration.Configuration.*;
+import static episodicv2.core.configuration.Configuration.*;
 import java.util.ArrayList;
-import t2dstring.OccupancyGrid;
-import t2dstring.T2DString;
+import t2dstringIdea.OccupancyGridIdea;
+import t2dstringIdea.T2DStringIdea;
 
 /**
  *
@@ -94,7 +94,7 @@ public class PPCPHCITCCodelet extends Codelet {
             Idea gridRowsY1 = new Idea(GRID_ROWS_IDEA,7, CATEGORY_PROPERTY, 1);
             
             //Creates the Occupancy Grid
-            OccupancyGrid occupancyGrid = T2DString.createOccupancyGrid(
+            OccupancyGridIdea occupancyGrid = T2DStringIdea.createOccupancyGrid(
                         objects,
                         (int) imageWidth1.getValue(),
                         (int) imageHeight1.getValue(),
@@ -102,7 +102,7 @@ public class PPCPHCITCCodelet extends Codelet {
                         (int) gridRowsY1.getValue());
 
             //Creates the 2D String pattern
-            String pattern = T2DString.create2DStringPattern(occupancyGrid,
+            String pattern = T2DStringIdea.create2DStringPattern(occupancyGrid,
                     (int) imageWidth1.getValue(),
                     (int) imageHeight1.getValue(),
                     (int) gridColumnsX1.getValue(),
