@@ -14,19 +14,24 @@ import episodicv2.Codelets.VisionCodelet;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
-import br.unicamp.cst.io.rest.RESTServer;
 import br.unicamp.cst.util.viewer.MindViewer;
 import br.unicamp.cst.representation.idea.Idea;
 import episodicv2.Codelets.storage.CA1StorageHandlerCodelet;
 import episodicv2.Codelets.DGBridgeComposedCodelet;
 import episodicv2.Codelets.PPCPHCITCCodelet;
+import episodicv2.Codelets.itc.ITCCodelet;
+import episodicv2.Codelets.itc.ITCProcess1Codelet;
+import episodicv2.Codelets.itc.ITCProcess2Codelet;
+import episodicv2.Codelets.mpfc.MPFCCodelet;
+import episodicv2.Codelets.mpfc.MPFCProcess1Codelet;
+import episodicv2.Codelets.mpfc.MPFCProcess2Codelet;
+import episodicv2.Codelets.vlpfc.VLPFCCodelet;
+import episodicv2.Codelets.vlpfc.VLPFCProcess1Codelet;
 import episodicv2.Codelets.vlpfc.VLPFCProcess2Codelet;
+import episodicv2.Codelets.vlpfc.VLPFCProcess3Codelet;
 import episodicv2.Connection.ConnectionCodelet;
-import episodicv2.core.configuration.Configuration;
 import static episodicv2.core.configuration.Configuration.*;
 import java.util.ArrayList; 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class App {
     
@@ -131,20 +136,7 @@ public final class App {
         MemoryObject sceneRelationVertexToStoreMO;
         sceneRelationVertexToStoreMO = m1.createMemoryObject(SCENE_RELATION_VERTEX_TO_STORE_MO);
         sceneRelationVertexToStoreMO.setI(sceneRelationVertexToStoreIdea);
-        
-        Idea vlpfcProcess2SpikeIdea = new Idea(VLPFC_PROCESS_2_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeVlpfcProcess2DataIdea = new Idea(SPIKE_VLPFC_PROCESS_2_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        vlpfcProcess2SpikeIdea.add(spikeVlpfcProcess2DataIdea);
 
-        MemoryObject vlpfcProcess2SpikeMO;
-        vlpfcProcess2SpikeMO = m1.createMemoryObject(VLPFC_PROCESS_2_SPIKE_MO);
-        vlpfcProcess2SpikeMO.setI(vlpfcProcess2SpikeIdea);
-        
-        MemoryObject dlpfcSpikeMO;
-        dlpfcSpikeMO = m1.createMemoryObject(DLPFC_SPIKE_MO);
-        Idea dlpfcSpikeIdea = new Idea(DLPFC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        dlpfcSpikeMO.setI(dlpfcSpikeIdea);
-        
         MemoryObject prcSpikeMO;
         prcSpikeMO = m1.createMemoryObject(PRC_SPIKE_MO);
         Idea prcSpikeIdea = new Idea(PRC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
@@ -183,7 +175,6 @@ public final class App {
         ppcPhcItcCodelet.addOutput(recognizedObjectsSpikeAndunintegratedScenePatternMO);
         ppcPhcItcCodelet.addOutput(recognizedObjectsSpikeMO);
         m1.insertCodelet(ppcPhcItcCodelet, COMPILED_PPC_PHC_ITC_CODELET_GROUP);
-        
         
         //Gets the image center points
         
@@ -242,16 +233,66 @@ public final class App {
         cA1Process1Codelet.addOutput(sceneRelationVertexToStoreMO);
         m1.insertCodelet(cA1Process1Codelet, CA1_CODELET_GROUP);
         
-//        Codelet cA1Process2=new CA1Process2();
-//        cA1Process2.setName("CA1_PROCESS_2_CODELET_NAME");
-//        m1.insertCodelet(cA1Process2, CA1_CODELET_GROUP);
-//        
         CA1StorageHandlerCodelet cA1StorageHandlerCodelet = new CA1StorageHandlerCodelet();
         cA1StorageHandlerCodelet.setName(CA1_STORAGE_HANDLER_CODELET_NAME);
         cA1StorageHandlerCodelet.addInput(sceneRelationVertexToStoreMO);
         cA1StorageHandlerCodelet.addInput(rootMO);
         cA1StorageHandlerCodelet.addOutput(rootMO);
         m1.insertCodelet(cA1StorageHandlerCodelet, CA1_CODELET_GROUP);
+        
+        MemoryObject dlpfcSpikeMO;
+        dlpfcSpikeMO = m1.createMemoryObject(DLPFC_SPIKE_MO);
+        Idea dlpfcSpikeIdea = new Idea(DLPFC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        dlpfcSpikeMO.setI(dlpfcSpikeIdea);
+        
+        MemoryObject vlpfcSpikeMO;
+        vlpfcSpikeMO = m1.createMemoryObject(VLPFC_SPIKE_MO);
+        Idea vlpfcSpikeIdea = new Idea(VLPFC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        vlpfcSpikeMO.setI(vlpfcSpikeIdea);
+        
+        MemoryObject vlpfcProcess1SpikeMO;
+        vlpfcProcess1SpikeMO = m1.createMemoryObject(VLPFC_PROCESS_1_SPIKE_MO);
+        Idea vlpfcProcess1SpikeIdea = new Idea(VLPFC_PROCESS_1_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeVlpfcProcess1DataIdea = new Idea(SPIKE_VLPFC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        vlpfcProcess1SpikeIdea.add(spikeVlpfcProcess1DataIdea);
+        vlpfcProcess1SpikeMO.setI(vlpfcProcess1SpikeIdea);
+        
+        MemoryObject vlpfcProcess2SpikeMO;
+        vlpfcProcess2SpikeMO = m1.createMemoryObject(VLPFC_PROCESS_2_SPIKE_MO);
+        Idea vlpfcProcess2SpikeIdea = new Idea(VLPFC_PROCESS_2_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeVlpfcProcess2DataIdea = new Idea(SPIKE_VLPFC_PROCESS_2_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        vlpfcProcess2SpikeIdea.add(spikeVlpfcProcess2DataIdea);
+        vlpfcProcess2SpikeMO.setI(vlpfcProcess2SpikeIdea);
+        
+        MemoryObject vlpfcProcess3SpikeMO;
+        vlpfcProcess3SpikeMO = m1.createMemoryObject(VLPFC_PROCESS_3_SPIKE_MO);
+        Idea vlpfcProcess3SpikeIdea = new Idea(VLPFC_PROCESS_3_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeVlpfcProcess3DataIdea = new Idea(SPIKE_VLPFC_PROCESS_3_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        vlpfcProcess3SpikeIdea.add(spikeVlpfcProcess3DataIdea);
+        vlpfcProcess3SpikeMO.setI(vlpfcProcess3SpikeIdea);
+        
+        MemoryObject itcSpikeMO;
+        itcSpikeMO = m1.createMemoryObject(ITC_SPIKE_MO);
+        Idea itcSpikeIdea = new Idea(ITC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeItcDataIdea = new Idea(SPIKE_ITC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        itcSpikeIdea.add(spikeItcDataIdea);
+        itcSpikeMO.setI(itcSpikeIdea);
+
+        VLPFCCodelet vLPFCCodelet = new VLPFCCodelet();
+        vLPFCCodelet.setName(VLPFC_CODELET_NAME);
+        vLPFCCodelet.addInput(vlpfcSpikeMO);
+        vLPFCCodelet.addOutput(dlpfcSpikeMO);
+        vLPFCCodelet.addOutput(vlpfcProcess1SpikeMO);
+        vLPFCCodelet.addOutput(vlpfcProcess2SpikeMO);
+        vLPFCCodelet.addOutput(vlpfcProcess3SpikeMO);
+        m1.insertCodelet(vLPFCCodelet, VLPFC_CODELET_GROUP);
+        
+        VLPFCProcess1Codelet vLPFCProcess1Codelet = new VLPFCProcess1Codelet();
+        vLPFCProcess1Codelet.setName(VLPFC_PROCESS_1_CODELET_NAME);
+        vLPFCProcess1Codelet.addInput(vlpfcProcess1SpikeMO);
+        vLPFCProcess1Codelet.addOutput(dlpfcSpikeMO);
+        vLPFCProcess1Codelet.addOutput(itcSpikeMO);
+        m1.insertCodelet(vLPFCProcess1Codelet, VLPFC_CODELET_GROUP);
         
         VLPFCProcess2Codelet vLPFCProcess2Codelet = new VLPFCProcess2Codelet();
         vLPFCProcess2Codelet.setName(VLPFC_PROCESS_2_CODELET_NAME);
@@ -260,6 +301,93 @@ public final class App {
         vLPFCProcess2Codelet.addOutput(prcSpikeMO);
         m1.insertCodelet(vLPFCProcess2Codelet, VLPFC_CODELET_GROUP);
         
+        VLPFCProcess3Codelet vLPFCProcess3Codelet = new VLPFCProcess3Codelet();
+        vLPFCProcess3Codelet.setName(VLPFC_PROCESS_3_CODELET_NAME);
+        vLPFCProcess3Codelet.addInput(vlpfcProcess3SpikeMO);
+        vLPFCProcess3Codelet.addOutput(prcSpikeMO);
+        m1.insertCodelet(vLPFCProcess3Codelet, VLPFC_CODELET_GROUP);
+        
+        MemoryObject mpfcSpikeMO;
+        mpfcSpikeMO = m1.createMemoryObject(MPFC_SPIKE_MO);
+        Idea mpfcSpikeIdea = new Idea(MPFC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeMpfcDataIdea = new Idea(SPIKE_MPFC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        mpfcSpikeIdea.add(spikeMpfcDataIdea);
+        mpfcSpikeMO.setI(mpfcSpikeIdea);
+        
+        MemoryObject mpfcProcess1SpikeMO;
+        mpfcProcess1SpikeMO = m1.createMemoryObject(MPFC_PROCESS_1_SPIKE_MO);
+        Idea mpfcProcess1SpikeIdea = new Idea(MPFC_PROCESS_1_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeMpfcProcess1DataIdea = new Idea(SPIKE_MPFC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        mpfcProcess1SpikeIdea.add(spikeMpfcProcess1DataIdea);
+        mpfcProcess1SpikeMO.setI(mpfcProcess1SpikeIdea);
+        
+        MemoryObject mpfcProcess2SpikeMO;
+        mpfcProcess2SpikeMO = m1.createMemoryObject(MPFC_PROCESS_2_SPIKE_MO);
+        Idea mpfcProcess2SpikeIdea = new Idea(MPFC_PROCESS_2_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeMpfcProcess2DataIdea = new Idea(SPIKE_MPFC_PROCESS_2_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        mpfcProcess2SpikeIdea.add(spikeMpfcProcess2DataIdea);
+        mpfcProcess2SpikeMO.setI(mpfcProcess2SpikeIdea);
+        
+        MPFCCodelet mPFCCodelet = new MPFCCodelet();
+        mPFCCodelet.setName(MLPFC_CODELET_NAME);
+        mPFCCodelet.addInput(mpfcSpikeMO);
+        mPFCCodelet.addOutput(mpfcProcess1SpikeMO);
+        mPFCCodelet.addOutput(mpfcProcess2SpikeMO);
+        mPFCCodelet.addOutput(dlpfcSpikeMO);
+        m1.insertCodelet(mPFCCodelet, MLPFC_CODELET_GROUP);
+        
+        MemoryObject encSpikeMO;
+        encSpikeMO = m1.createMemoryObject(ENC_SPIKE_MO);
+        Idea encSpikeIdea = new Idea(ENC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeEncDataIdea = new Idea(SPIKE_ENC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        encSpikeIdea.add(spikeEncDataIdea);
+        encSpikeMO.setI(encSpikeIdea);
+        
+        MPFCProcess1Codelet mPFCProcess1Codelet = new MPFCProcess1Codelet();
+        mPFCProcess1Codelet.setName(MLPFC_PROCESS_1_CODELET_NAME);
+        mPFCProcess1Codelet.addInput(mpfcProcess1SpikeMO);
+        mPFCProcess1Codelet.addOutput(dlpfcSpikeMO);
+        mPFCProcess1Codelet.addOutput(encSpikeMO);
+        m1.insertCodelet(mPFCProcess1Codelet, MLPFC_CODELET_GROUP);
+        
+        MPFCProcess2Codelet mPFCProcess2Codelet = new MPFCProcess2Codelet();
+        mPFCProcess2Codelet.setName(MLPFC_PROCESS_2_CODELET_NAME);
+        mPFCProcess2Codelet.addInput(mpfcProcess2SpikeMO);
+        mPFCProcess2Codelet.addOutput(encSpikeMO);
+        m1.insertCodelet(mPFCProcess2Codelet, MLPFC_CODELET_GROUP);
+        
+        MemoryObject itcProcess1SpikeMO;
+        itcProcess1SpikeMO = m1.createMemoryObject(ITC_PROCESS_1_SPIKE_MO);
+        Idea itcProcess1SpikeIdea = new Idea(ITC_PROCESS_1_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeItcProcess1DataIdea = new Idea(SPIKE_ITC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        itcProcess1SpikeIdea.add(spikeItcProcess1DataIdea);
+        itcProcess1SpikeMO.setI(itcProcess1SpikeIdea);
+        
+        ITCCodelet iTCCodelet = new ITCCodelet();
+        iTCCodelet.setName(ITC_CODELET_NAME);
+        iTCCodelet.addInput(itcSpikeMO);
+        iTCCodelet.addOutput(itcProcess1SpikeMO);
+        m1.insertCodelet(iTCCodelet, ITC_CODELET_GROUP);
+        
+        ITCProcess1Codelet iTCProcess1Codelet = new ITCProcess1Codelet();
+        iTCProcess1Codelet.setName(ITC_CODELET_NAME);
+        iTCProcess1Codelet.addInput(itcProcess1SpikeMO);
+        iTCProcess1Codelet.addOutput(vlpfcSpikeMO);
+        m1.insertCodelet(iTCProcess1Codelet, ITC_CODELET_GROUP);
+        
+        MemoryObject itcProcess2SpikeMO;
+        itcProcess2SpikeMO = m1.createMemoryObject(ITC_PROCESS_2_SPIKE_MO);
+        Idea itcProcess2SpikeIdea = new Idea(ITC_PROCESS_2_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeItcProcess2DataIdea = new Idea(SPIKE_ITC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        itcProcess2SpikeIdea.add(spikeItcProcess2DataIdea);
+        itcProcess2SpikeMO.setI(itcSpikeIdea);
+        
+        ITCProcess2Codelet iTCProcess2Codelet = new ITCProcess2Codelet();
+        iTCProcess2Codelet.setName(ITC_CODELET_NAME);
+        iTCProcess2Codelet.addInput(itcProcess2SpikeMO);
+        iTCProcess2Codelet.addOutput(vlpfcSpikeMO);
+        m1.insertCodelet(iTCProcess2Codelet, ITC_CODELET_GROUP);
+
         m1.start();
         
         return(m1);

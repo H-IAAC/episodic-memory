@@ -4,7 +4,6 @@
  */
 package episodicv2.Codelets.vlpfc;
 
-import episodicv2.FutureCodelets.*;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;

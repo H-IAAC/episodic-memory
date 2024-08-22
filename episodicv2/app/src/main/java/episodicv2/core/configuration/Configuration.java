@@ -50,8 +50,16 @@ public class Configuration {
     public static final String CA1_PROCESS_1_CODELET_NAME = "CA1_PROCESS_1";
     public static final String CA1_PROCESS_2_CODELET_NAME = "CA1_PROCESS_2";
     public static final String CA1_STORAGE_HANDLER_CODELET_NAME = "CA1_STORAGE_HANDLER";
+    public static final String VLPFC_PROCESS_1_CODELET_NAME = "VLPFC_PROCESS_1";
     public static final String VLPFC_PROCESS_2_CODELET_NAME = "VLPFC_PROCESS_2";
-    
+    public static final String VLPFC_PROCESS_3_CODELET_NAME = "VLPFC_PROCESS_3";
+    public static final String VLPFC_CODELET_NAME = "VLPFC";
+    public static final String MLPFC_CODELET_NAME = "MPFC";
+    public static final String MLPFC_PROCESS_1_CODELET_NAME = "MPFC_PROCESS_1";
+    public static final String MLPFC_PROCESS_2_CODELET_NAME = "MPFC_PROCESS_2";
+    public static final String ITC_CODELET_NAME = "ITC";
+    public static final String ITC_PROCESS_1_CODELET_NAME = "ITC_PROCESS_1";
+    public static final String ITC_PROCESS_2_CODELET_NAME = "ITC_PROCESS_2";
     public static final String COMPILED_PPC_PHC_ITC_CODELET_GROUP = "COMPILED_PPC_PHC_ITC";
     public static final String VISION_CODELET_GROUP = "VISION_Cs";
     public static final String VENTRAL_CODELET_GROUP = "VENTRAL_Cs";
@@ -59,6 +67,9 @@ public class Configuration {
     public static final String CA3_CODELET_GROUP = "CA3_Cs";
     public static final String CA1_CODELET_GROUP = "CA1_Cs";
     public static final String VLPFC_CODELET_GROUP = "VLPFC_Cs";
+    public static final String MLPFC_CODELET_GROUP = "MLPFC_Cs";
+    public static final String ITC_CODELET_GROUP = "ITC_Cs";
+    
 
     public static final int IMAGE_WIDTH = 640;
     public static final int IMAGE_HEIGHT = 480;
@@ -186,13 +197,28 @@ public class Configuration {
     public static final String SCENE_RELATION_IDEA = "sceneRelationIdea";
     public static final String RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_IDEA = "recognizedObjectsSpikeAndUnintegratedScenePatternIdea"; 
     public static final String REQUEST_OBJECT_RELATION_SPIKE_IDEA= "requestObjectRelationSpikeIdea";
-    public static final String VLPFC_PROCESS_2_SPIKE_IDEA = "vlpfcProcess2SpikeIdea"; 
     public static final String SPIKE_TYPE_IDEA = "spikeTypeIdea"; 
     public static final String DLPFC_SPIKE_IDEA = "dlpfcSpikeIdea"; 
+    public static final String VLPFC_SPIKE_IDEA = "vlpfcSpikeIdea"; 
+    public static final String VLPFC_PROCESS_1_SPIKE_IDEA = "vlpfcProcess1SpikeIdea"; 
+    public static final String VLPFC_PROCESS_2_SPIKE_IDEA = "vlpfcProcess2SpikeIdea"; 
+    public static final String VLPFC_PROCESS_3_SPIKE_IDEA = "vlpfcProcess3SpikeIdea"; 
     public static final String PRC_SPIKE_IDEA = "prcSpikeIdea";
-    public static final String SPIKE_VLPFC_PROCESS_2_DATA_IDEA = "spikeVLPFCProcess2DataIdea";
+    public static final String ITC_SPIKE_IDEA = "itcSpikeIdea";
+    public static final String ITC_PROCESS_1_SPIKE_IDEA = "itcProcess1SpikeIdea";
+    public static final String ITC_PROCESS_2_SPIKE_IDEA = "itcProcess2SpikeIdea";
+    public static final String ENC_SPIKE_IDEA = "encSpikeIdea";
+    public static final String MPFC_SPIKE_IDEA = "mpfcSpikeIdea";
+    public static final String MPFC_PROCESS_1_SPIKE_IDEA = "mpfcProcess1SpikeIdea";
+    public static final String MPFC_PROCESS_2_SPIKE_IDEA = "mpfcProcess2SpikeIdea";
     public static final String SPIKE_VLPFC_PROCESS_1_DATA_IDEA = "spikeVLPFCProcess1DataIdea";
+    public static final String SPIKE_VLPFC_PROCESS_2_DATA_IDEA = "spikeVLPFCProcess2DataIdea";
+    public static final String SPIKE_VLPFC_PROCESS_3_DATA_IDEA = "spikeVLPFCProcess3DataIdea";    
     public static final String SPIKE_VLPFC_DATA_IDEA = "spikeVLPFCDataIdea";
+    public static final String SPIKE_MPFC_DATA_IDEA = "spikeMPFCDataIdea";
+    public static final String SPIKE_MPFC_PROCESS_1_DATA_IDEA = "spikeMPFCProcess1DataIdea";
+    public static final String SPIKE_MPFC_PROCESS_2_DATA_IDEA = "spikeMPFCProcess2DataIdea";
+    public static final String SPIKE_ENC_DATA_IDEA = "spikeENCDataIdea";
     public static final String SPIKE_DLPFC_BASE_CONTROLLER_DATA_IDEA = "spikeDLPFCBaseControllerDataIdea";
     public static final String SPIKE_ITC_DATA_IDEA = "spikeITCDataIdea";
     public static final String SPIKE_ITC_PROCESS_1_DATA_IDEA = "spikeITCProcess1DataIdea";
@@ -221,10 +247,12 @@ public class Configuration {
     public static final String PRC_SPIKE_MO = "prcSpikeMO"; 
     public static final String VLPFC_SPIKE_MO = "vlpfcSpikeMO"; 
     public static final String ITC_SPIKE_MO = "itcSpikeMO"; 
+    public static final String ENC_SPIKE_MO = "encSpikeMO"; 
     public static final String VLPFC_PROCESS_1_SPIKE_MO = "vlpfcProcess1SpikeMO"; 
     public static final String VLPFC_PROCESS_2_SPIKE_MO = "vlpfcProcess2SpikeMO"; 
     public static final String VLPFC_PROCESS_3_SPIKE_MO = "vlpfcProcess3SpikeMO"; 
     public static final String DLPFC_BASE_CONTROLLER_SPIKE_MO = "dlpfcBaseControllerSpikeMO"; 
+    public static final String MPFC_SPIKE_MO = "mpfcSpikeMO"; 
     public static final String MPFC_PROCESS_1_SPIKE_MO = "mpfcProcess1SpikeMO"; 
     public static final String MPFC_PROCESS_2_SPIKE_MO = "mpfcProcess2SpikeMO"; 
     public static final String ITC_PROCESS_1_SPIKE_MO = "itcProcess1SpikeMO";
