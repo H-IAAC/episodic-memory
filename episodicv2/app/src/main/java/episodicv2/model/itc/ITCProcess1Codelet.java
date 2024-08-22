@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package episodicv2.Codelets.itc;
+package episodicv2.model.itc;
 
+import episodicv2.FutureCodelets.*;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
@@ -19,10 +20,10 @@ import java.awt.image.BufferedImage;
  *
  * @author karenlima
  */
-public class ITCProcess2Codelet extends Codelet {
+public class ITCProcess1Codelet extends Codelet {
     
-    private MemoryObject itcProcess2SpikeMO;
-    private Idea itcProcess2SpikeIdea;
+    private MemoryObject itcProcess1SpikeMO;
+    private Idea itcProcess1SpikeIdea;
     
     private MemoryObject vlpfcSpikeMO;
     private Idea vlpfcSpikeIdea;
@@ -30,16 +31,20 @@ public class ITCProcess2Codelet extends Codelet {
     private byte[] data = null;
     private static ITCStorageHandler itcStorageHandler = ITCStorageHandler.getInstance();
 
+    public ITCProcess1Codelet() {
+        setIsMemoryObserver(true);
+    }
+    
     @Override
     public void accessMemoryObjects() {
         setIsMemoryObserver(true);
         
-        itcProcess2SpikeMO = (MemoryObject) getOutput(Configuration.ITC_PROCESS_2_SPIKE_MO);
-        itcProcess2SpikeIdea = (Idea) itcProcess2SpikeMO.getI();
+        itcProcess1SpikeMO = (MemoryObject) getInput(Configuration.ITC_PROCESS_1_SPIKE_MO);
+        itcProcess1SpikeIdea = (Idea) itcProcess1SpikeMO.getI();
         
-        data = (byte[]) itcProcess2SpikeIdea.get(Configuration.SPIKE_ITC_PROCESS_2_DATA_IDEA).getValue();
+        data = (byte[]) itcProcess1SpikeIdea.get(Configuration.SPIKE_ITC_PROCESS_1_DATA_IDEA).getValue();
        
-        vlpfcSpikeMO = (MemoryObject) getInput(Configuration.VLPFC_SPIKE_MO);
+        vlpfcSpikeMO = (MemoryObject) getOutput(Configuration.VLPFC_SPIKE_MO);
         vlpfcSpikeIdea = (Idea) vlpfcSpikeMO.getI();
     }
     
@@ -49,10 +54,10 @@ public class ITCProcess2Codelet extends Codelet {
 
         Integer classId = spike.getObject();
 
-        BufferedImage searchedFeatures = itcStorageHandler.getFeaturesFromLTM(classId);
+        BufferedImage searchedFeatures = itcStorageHandler.getFeatures(classId);
+        
         String base64String = ImageUtils.toBase64(searchedFeatures);
 
-        
         SpikeObject<CObject> itemSpike = new SpikeObject(SpikeType.RETRIEVED_OBJECT_TOP_DOWN, new CObject(classId, classId, 0, 0, "", base64String, 0), 0);
         
         //To Working Memory

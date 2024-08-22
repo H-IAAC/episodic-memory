@@ -40,15 +40,14 @@ public class Configuration {
     public static final String CONNECTION_CODELET_NAME = "CONNECTION";
     public static final String VISION_CODELET_NAME = "VISION";
     public static final String PPC_PHC_ITC_CODELET_NAME = "PPC_PHC_ITC";
-    public static final String PRC_PROCESS_2_CODELET_NAME = "PRC_PROCESS_2";
     public static final String PRC_STORAGE_HANDLER_CODELET_NAME = "PRC_STORAGE_HANDLER";
     public static final String DG_BRIDGE_COMPOSED_CODELET_NAME = "DG_BRIDGE_COMPOSED";
     public static final String DG_PROCESS_CODELET_NAME = "DG_PROCESS";
     public static final String DG_STORAGE_CODELET_NAME = "DG_STORAGE";
-    public static final String CA3_PROCESS_1_CODELET_NAME = "CA3_PROCESS_1";
     public static final String CA3_STORAGE_HANDLER_CODELET_NAME = "CA3_STORAGE_HANDLER";
     public static final String CA1_PROCESS_1_CODELET_NAME = "CA1_PROCESS_1";
     public static final String CA1_PROCESS_2_CODELET_NAME = "CA1_PROCESS_2";
+    public static final String CA1_PROCESS_3_CODELET_NAME = "CA1_PROCESS_3";
     public static final String CA1_STORAGE_HANDLER_CODELET_NAME = "CA1_STORAGE_HANDLER";
     public static final String VLPFC_PROCESS_1_CODELET_NAME = "VLPFC_PROCESS_1";
     public static final String VLPFC_PROCESS_2_CODELET_NAME = "VLPFC_PROCESS_2";
@@ -60,6 +59,22 @@ public class Configuration {
     public static final String ITC_CODELET_NAME = "ITC";
     public static final String ITC_PROCESS_1_CODELET_NAME = "ITC_PROCESS_1";
     public static final String ITC_PROCESS_2_CODELET_NAME = "ITC_PROCESS_2";
+    public static final String PRC_CODELET_NAME = "PRC";
+    public static final String PRC_PROCESS_1_CODELET_NAME = "PRC_PROCESS_1";
+    public static final String PRC_PROCESS_2_CODELET_NAME = "PRC_PROCESS_2";
+    public static final String PRC_PROCESS_3_CODELET_NAME = "PRC_PROCESS_3";
+    public static final String PHC_CODELET_NAME = "PHC";
+    public static final String PHC_PROCESS_1_CODELET_NAME = "PHC_PROCESS_1";
+    public static final String CA1_CODELET_NAME = "CA1";    
+    public static final String ENC_CODELET_NAME = "ENC";    
+    public static final String SB_CODELET_NAME = "SB";    
+    public static final String CA3_CODELET_NAME = "CA3";    
+    public static final String CA3_PROCESS_1_CODELET_NAME = "CA3_Process1";
+    public static final String CA3_PROCESS_2_CODELET_NAME = "CA3_Process2";
+    public static final String CA3_PROCESS_3_CODELET_NAME = "CA3_Process3";
+
+    
+    
     public static final String COMPILED_PPC_PHC_ITC_CODELET_GROUP = "COMPILED_PPC_PHC_ITC";
     public static final String VISION_CODELET_GROUP = "VISION_Cs";
     public static final String VENTRAL_CODELET_GROUP = "VENTRAL_Cs";
@@ -69,8 +84,12 @@ public class Configuration {
     public static final String VLPFC_CODELET_GROUP = "VLPFC_Cs";
     public static final String MLPFC_CODELET_GROUP = "MLPFC_Cs";
     public static final String ITC_CODELET_GROUP = "ITC_Cs";
-    
-
+    public static final String PRC_CODELET_GROUP = "PRC_Cs";
+    public static final String ENC_CODELET_GROUP = "ENC_Cs";
+    public static final String SB_CODELET_GROUP = "SB_Cs";
+    public static final String PPC_CODELET_GROUP = "PPC_Cs";
+    public static final String PHC_CODELET_GROUP = "PHC_Cs";
+   
     public static final int IMAGE_WIDTH = 640;
     public static final int IMAGE_HEIGHT = 480;
     public static final int GRID_COLUMNS_X = 10;
@@ -189,6 +208,8 @@ public class Configuration {
     public static final String OBJECT_RELATION_IDEA = "objectRelationIdea";
     public static final String OBJECT_RELATIONS_IDEA = "objectRelationsIdea";
     public static final String PRC_DATA_IDEA = "pRCDataIdea";
+    
+    
     public static final String PRC_DATA_RELATIONS_IDEA = "pRCDataRelationsIdea";
     public static final String PRC_DATA_AFFECT_IDEA = "pRCDataAffectIdea";
     public static final String RECENT_NEW_ENCODED_SCENE_SPIKE_IDEA = "recentNewEncodedSceneSpikeIdea";
@@ -204,6 +225,23 @@ public class Configuration {
     public static final String VLPFC_PROCESS_2_SPIKE_IDEA = "vlpfcProcess2SpikeIdea"; 
     public static final String VLPFC_PROCESS_3_SPIKE_IDEA = "vlpfcProcess3SpikeIdea"; 
     public static final String PRC_SPIKE_IDEA = "prcSpikeIdea";
+    public static final String PRC_PROCESS_1_SPIKE_IDEA = "prcProcess1SpikeIdea";
+    public static final String PRC_PROCESS_2_SPIKE_IDEA = "prcProcess2SpikeIdea";
+    public static final String PRC_PROCESS_3_SPIKE_IDEA = "prcProcess3SpikeIdea";
+    public static final String PPC_SPIKE_IDEA = "ppcSpikeIdea";
+    public static final String PHC_SPIKE_IDEA = "phcSpikeIdea";
+    public static final String PHC_PROCESS_1_SPIKE_IDEA = "phcProcess1SpikeIdea";
+    public static final String DG_SPIKE_IDEA = "dgSpikeIdea";
+    public static final String CA3_SPIKE_IDEA = "ca3SpikeIdea";
+    public static final String CA3_PROCESS_1_SPIKE_IDEA = "ca3Process1SpikeIdea";
+    public static final String CA3_PROCESS_2_SPIKE_IDEA = "ca3Process2SpikeIdea";
+    public static final String CA3_PROCESS_3_SPIKE_IDEA = "ca3Process3SpikeIdea";
+    public static final String CA1_SPIKE_IDEA = "ca1SpikeIdea";
+    public static final String CA1_PROCESS_1_SPIKE_IDEA = "ca1Process1SpikeIdea";
+    public static final String CA1_PROCESS_2_SPIKE_IDEA = "ca1Process2SpikeIdea";
+    public static final String CA1_PROCESS_3_SPIKE_IDEA = "ca1Process3SpikeIdea";
+    public static final String SB_SPIKE_IDEA = "sbSpikeIdea";
+    
     public static final String ITC_SPIKE_IDEA = "itcSpikeIdea";
     public static final String ITC_PROCESS_1_SPIKE_IDEA = "itcProcess1SpikeIdea";
     public static final String ITC_PROCESS_2_SPIKE_IDEA = "itcProcess2SpikeIdea";
@@ -215,6 +253,10 @@ public class Configuration {
     public static final String SPIKE_VLPFC_PROCESS_2_DATA_IDEA = "spikeVLPFCProcess2DataIdea";
     public static final String SPIKE_VLPFC_PROCESS_3_DATA_IDEA = "spikeVLPFCProcess3DataIdea";    
     public static final String SPIKE_VLPFC_DATA_IDEA = "spikeVLPFCDataIdea";
+    public static final String SPIKE_PRC_DATA_IDEA = "spikePRCDataIdea";
+    public static final String SPIKE_PRC_PROCESS_1_DATA_IDEA = "spikePRCProcess1DataIdea";
+    public static final String SPIKE_PRC_PROCESS_2_DATA_IDEA = "spikePRCProcess2DataIdea";
+    public static final String SPIKE_PRC_PROCESS_3_DATA_IDEA = "spikePRCProcess3DataIdea";
     public static final String SPIKE_MPFC_DATA_IDEA = "spikeMPFCDataIdea";
     public static final String SPIKE_MPFC_PROCESS_1_DATA_IDEA = "spikeMPFCProcess1DataIdea";
     public static final String SPIKE_MPFC_PROCESS_2_DATA_IDEA = "spikeMPFCProcess2DataIdea";
@@ -223,7 +265,24 @@ public class Configuration {
     public static final String SPIKE_ITC_DATA_IDEA = "spikeITCDataIdea";
     public static final String SPIKE_ITC_PROCESS_1_DATA_IDEA = "spikeITCProcess1DataIdea";
     public static final String SPIKE_ITC_PROCESS_2_DATA_IDEA = "spikeITCProcess2DataIdea";
+    public static final String SPIKE_PPC_DATA_IDEA = "pPCDataIdea";
+    public static final String SPIKE_PHC_DATA_IDEA = "pHCDataIdea";
+    public static final String SPIKE_PHC_PROCESS_1_DATA_IDEA = "pHCProcess1DataIdea";
+    public static final String SPIKE_DG_DATA_IDEA = "dGDataIdea";
+    public static final String SPIKE_DG_PROCESS_1_DATA_IDEA = "dGProcess1DataIdea";
+    
+    public static final String SPIKE_CA3_DATA_IDEA = "cA3DataIdea";
+    public static final String SPIKE_CA3_PROCESS_1_DATA_IDEA = "cA3Process1DataIdea";
+    public static final String SPIKE_CA3_PROCESS_2_DATA_IDEA = "cA3Process2DataIdea";
+    public static final String SPIKE_CA3_PROCESS_3_DATA_IDEA = "cA3Process3DataIdea";
+    
+    public static final String SPIKE_CA1_DATA_IDEA = "ca1DataIdea";
+    public static final String SPIKE_CA1_PROCESS_1_DATA_IDEA = "ca1Process1DataIdea";
+    public static final String SPIKE_CA1_PROCESS_2_DATA_IDEA = "ca1Process2DataIdea";
+    public static final String SPIKE_CA1_PROCESS_3_DATA_IDEA = "ca1Process3DataIdea";
 
+    public static final String SPIKE_SB_DATA_IDEA = "sBDataIdea";
+    
     // MEMORY OBJECTS
     
     public static final String ROOT_MO = "rootMO";
@@ -245,9 +304,28 @@ public class Configuration {
     public static final String RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_MO = "recognizedObjectsSpikeAndUnintegratedScenePatternMO"; 
     public static final String DLPFC_SPIKE_MO = "dlpfcSpikeMO"; 
     public static final String PRC_SPIKE_MO = "prcSpikeMO"; 
+    public static final String PRC_PROCESS_1_SPIKE_MO = "prcProcess1SpikeMO"; 
+    public static final String PRC_PROCESS_2_SPIKE_MO = "prcProcess2SpikeMO"; 
+    public static final String PRC_PROCESS_3_SPIKE_MO = "prcProcess3SpikeMO"; 
     public static final String VLPFC_SPIKE_MO = "vlpfcSpikeMO"; 
     public static final String ITC_SPIKE_MO = "itcSpikeMO"; 
     public static final String ENC_SPIKE_MO = "encSpikeMO"; 
+    public static final String PPC_SPIKE_MO = "ppcSpikeMO"; 
+    public static final String PHC_SPIKE_MO = "phcSpikeMO"; 
+    public static final String PHC_PROCESS_1_SPIKE_MO = "phcProcess1SpikeMO"; 
+    public static final String CA1_SPIKE_MO = "ca1SpikeMO"; 
+    public static final String CA1_PROCESS_1_SPIKE_MO = "ca1Process1SpikeMO";
+    public static final String CA1_PROCESS_2_SPIKE_MO = "ca1Process2SpikeMO";
+    public static final String CA1_PROCESS_3_SPIKE_MO = "ca1Process3SpikeMO";
+    public static final String CA3_SPIKE_MO = "ca3SpikeMO"; 
+    public static final String CA3_PROCESS_1_SPIKE_MO = "ca3Process1SpikeMO"; 
+    public static final String CA3_PROCESS_2_SPIKE_MO = "ca3Process2SpikeMO"; 
+    public static final String CA3_PROCESS_3_SPIKE_MO = "ca3Process3SpikeMO"; 
+    
+    public static final String SB_SPIKE_MO = "sbSpikeMO"; 
+    public static final String DG_SPIKE_MO = "dgSpikeMO"; 
+    public static final String DG_PROCESS_1_SPIKE_MO = "dgProcess1SpikeMO"; 
+    
     public static final String VLPFC_PROCESS_1_SPIKE_MO = "vlpfcProcess1SpikeMO"; 
     public static final String VLPFC_PROCESS_2_SPIKE_MO = "vlpfcProcess2SpikeMO"; 
     public static final String VLPFC_PROCESS_3_SPIKE_MO = "vlpfcProcess3SpikeMO"; 
