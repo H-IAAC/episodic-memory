@@ -7,7 +7,6 @@ package episodicv2.Codelets;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
-import static episodicv2.Connection.ConnectionCodelet.displayImage;
 import episodicv2.core.configuration.Configuration;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,7 +27,6 @@ import org.opencv.core.Rect2d;
 import org.opencv.core.Scalar;
 import org.opencv.dnn.Dnn;
 import org.opencv.dnn.Net;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.utils.Converters;
 import org.opencv.core.Size;
 import org.opencv.core.CvType;
@@ -37,9 +35,14 @@ import static episodicv2.core.configuration.Configuration.*;
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 
 
@@ -49,11 +52,20 @@ import javax.swing.JLabel;
  */
 public class VisionCodelet extends Codelet {
     
-    MemoryObject imageReceivedFromConnectionMO;
-    Idea imageReceivedFromConnectionIdea;
+    private MemoryObject imageReceivedFromConnectionMO;
+    private Idea imageReceivedFromConnectionIdea;
     
-    MemoryObject centerPointsandClassesMO;
-    Idea centerPointsandClassesIdea;
+    private MemoryObject itcSpikeMO;
+    private Idea itcSpikeIdea;
+    
+    private MemoryObject ppcSpikeMO;
+    private Idea ppcSpikeIdea;
+    
+    private String spikeITCData;
+    private String spikePPCData;
+    
+//    MemoryObject centerPointsandClassesMO;
+//    Idea centerPointsandClassesIdea;
     
     Integer currentFrame = 0;
     Boolean hasAnyObject = false;
@@ -67,8 +79,14 @@ public class VisionCodelet extends Codelet {
     String s;
     Net dnnNet;
     
-    public VisionCodelet() {
-        
+    List<Map<String, String>> detectionsResult = new ArrayList<>();
+    
+    private Map<String, Integer> dictionary;
+    
+    public VisionCodelet(Map<String, Integer> dictionary) {
+
+        this.dictionary = dictionary;
+    
         setIsMemoryObserver(true);
         try {
             loadOpenCVLibraryFromCurrentPath();
@@ -83,8 +101,8 @@ public class VisionCodelet extends Codelet {
         imageReceivedFromConnectionMO = (MemoryObject) getInput(Configuration.IMAGE_RECEIVED_FROM_CONNECTION_MO);
         imageReceivedFromConnectionIdea = (Idea) imageReceivedFromConnectionMO.getI();
         
-        centerPointsandClassesMO = (MemoryObject) getOutput(CENTER_POINTS_CLASSES_MO);
-        centerPointsandClassesIdea = (Idea) centerPointsandClassesMO.getI();
+//        centerPointsandClassesMO = (MemoryObject) getOutput(CENTER_POINTS_CLASSES_MO);
+//        centerPointsandClassesIdea = (Idea) centerPointsandClassesMO.getI();
         
         BufferedImage image = (BufferedImage) imageReceivedFromConnectionIdea.getValue();
 
@@ -92,6 +110,12 @@ public class VisionCodelet extends Codelet {
         if (image != null) {
             displayImage(image);
         }
+        
+        itcSpikeMO = (MemoryObject) getOutput(Configuration.ITC_SPIKE_MO);
+        itcSpikeIdea = (Idea) itcSpikeMO.getI();
+        
+        ppcSpikeMO = (MemoryObject) getOutput(Configuration.PPC_SPIKE_MO);
+        ppcSpikeIdea = (Idea) ppcSpikeMO.getI();
     }
     
     public static void displayImage(BufferedImage image) {
@@ -119,15 +143,19 @@ public class VisionCodelet extends Codelet {
     }
     
      private void saveObjectsIdea() {//TODO: ver se precisa criar essas novas ideas msms
-        centerPointsandClassesIdea.setL(new ArrayList());
-        Idea objectsClassesIdea = new Idea(OBJECTS_CLASSES_IDEA, objectsClasses);
-        Idea objectsPointsIdea = new Idea(OBJECTS_POINTS_IDEA, objectsPoints);
-        centerPointsandClassesIdea.add(objectsClassesIdea);
-        centerPointsandClassesIdea.add(objectsPointsIdea);
-        currentFrame+=1;
-        Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame);
-        centerPointsandClassesIdea.add(currentFrameIdea);
-        centerPointsandClassesMO.setI(centerPointsandClassesIdea);
+        itcSpikeIdea.setL(new ArrayList());
+        ppcSpikeIdea.setL(new ArrayList());
+        Idea spikeITCDataIdea = new Idea(SPIKE_ITC_DATA_IDEA, spikeITCData);
+        Idea spikePPCDataIdea = new Idea(SPIKE_PPC_DATA_IDEA, spikePPCData);
+        itcSpikeIdea.add(spikeITCDataIdea);
+        ppcSpikeIdea.add(spikePPCDataIdea);
+//        Idea objectsPointsIdea = new Idea(OBJECTS_POINTS_IDEA, objectsPoints);
+//        centerPointsandClassesIdea.add(objectsClassesIdea);
+//        centerPointsandClassesIdea.add(objectsPointsIdea);
+//        currentFrame+=1;
+//        Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame);
+//        centerPointsandClassesIdea.add(currentFrameIdea);
+//        centerPointsandClassesMO.setI(centerPointsandClassesIdea);
     }
     
     @Override
@@ -191,7 +219,12 @@ public class VisionCodelet extends Codelet {
         } else {
             MatOfInt indices =  getBBoxIndicesFromNonMaximumSuppression(boxes,confidences);
 
-            hasAnyObject = getObjectsCenterAndClasses(indices, boxes, classIds);
+            detectionsResult = getObjectsCenterAndClasses(indices, boxes, classIds);
+            currentFrame += 1;
+            spikeITCData = getItcSpike(currentFrame, detectionsResult);
+            spikePPCData = getPpcSpike(currentFrame, detectionsResult);
+            
+            hasAnyObject = true;
         }
       }
     }
@@ -282,44 +315,95 @@ public class VisionCodelet extends Codelet {
         return result;
     }
     
-    private Boolean getObjectsCenterAndClasses(MatOfInt indices,
-                                    ArrayList<Rect2d> boxes,
-                                    ArrayList<Integer> classIds) {
-        objectsClasses.clear();
-        objectsPoints.clear();
-        if(indices.empty()) {
+    private List<Map<String, String>> getObjectsCenterAndClasses(MatOfInt indices,
+                                                             ArrayList<Rect2d> boxes,
+                                                             ArrayList<Integer> classIds) {
+        List<Map<String, String>> detections = new ArrayList<>();  // Lista de mapas que armazenará as detecções
+
+        if (indices.empty()) {
             System.out.println("Has no indices");
-            return false;
+            return detections;  // Retorna lista vazia
         } else {
-            List indicesList = indices.toList();
+            List<Integer> indicesList = indices.toList();  // Converte MatOfInt em uma lista de inteiros
             for (int i = 0; i < boxes.size(); i++) {
                 if (indicesList.contains(i)) {
-                    Rect2d box = boxes.get(i);
-                    String label = cocoLabels.get(classIds.get(i));
+                    Rect2d box = boxes.get(i);  // Obtém a caixa delimitadora (bounding box)
+                    String label = cocoLabels.get(classIds.get(i));  // Obtém o rótulo correspondente ao ID da classe
                     System.out.println("label: " + label);
 
-                    Double xpoint =  box.x + (box.width/2);
-                    Double ypoint = box.y + (box.height/2);
+                    // Calcula o ponto central da caixa delimitadora
+                    Double xpoint = box.x + (box.width / 2);
+                    Double ypoint = box.y + (box.height / 2);
 
-                    Idea xpointIdea = new Idea(X_IDEA, xpoint.intValue());
-                    Idea ypointIdea = new Idea(Y_IDEA, ypoint.intValue());
+                    // Cria um mapa para armazenar as informações da detecção
+                    Map<String, String> detectionData = new HashMap<>();
+                    detectionData.put("label", label);
+                    detectionData.put("classId", String.valueOf(classIds.get(i)));  // Armazena o ID da classe
+                    detectionData.put("xpoint", xpoint.toString());  // Armazena o ponto x
+                    detectionData.put("ypoint", ypoint.toString());  // Armazena o ponto y
 
-                    Idea point = new Idea(POINT_IDEA);
-                    point.add(xpointIdea);
-                    point.add(ypointIdea);
-
-                    Idea classIdea = new Idea(CLASS_IDEA);
-                    Idea labelIdea = new Idea(LABEL_IDEA, label);
-                    Idea classIdIdea = new Idea(CLASS_ID_IDEA, i);
-                    classIdea.add(labelIdea);
-                    classIdea.add(classIdIdea);
-
-                    objectsClasses.add(classIdea);
-                    objectsPoints.add(point);
+                    // Adiciona o mapa à lista de detecções
+                    detections.add(detectionData);
                 }
             }
-            return true;
+            return detections;  // Retorna a lista de detecções
         }
+    }
+    
+//    """ 
+//        Regresa un JSON de la lista de clases que fueron detectadas en la imagen, como representa los procesos de ITC
+//        que seran a enviados a PRC no se requiere la informacion espacial
+//    """
+
+    public String getItcSpike(int currentFrame, List<Map<String, String>> detections) {
+
+        JSONArray objectLog = new JSONArray();
+        int detectionId = 0;
+
+        // Itera sobre os objetos de detecção
+        for (Map<String, String> eachObject : detections) {
+            detectionId++;
+
+            JSONObject objectData = new JSONObject();
+            objectData.put("pid", detectionId);
+            objectData.put("id", this.dictionary.get(eachObject.get("name")));
+            objectData.put("class", eachObject.get("name"));
+            objectData.put("features", "");
+
+            objectLog.add(objectData);
+        }
+
+        // Cria o log da cena
+        JSONObject sceneLog = new JSONObject();
+        sceneLog.put("time", currentFrame);
+        sceneLog.put("objects", objectLog);
+
+        // Converte para JSON string e retorna
+        return sceneLog.toString();
+    }
+    
+    public String getPpcSpike(int currentFrame, List<Map<String, String>> detections) {
+        JSONArray objectLog = new JSONArray();
+        int detectionId = 0;
+
+        for (Map<String, String> eachObject : detections) {
+            detectionId += 1;
+            double cx = Double.parseDouble(eachObject.get("xpoint"));
+            double cy = Double.parseDouble(eachObject.get("ypoint"));
+
+            JSONObject objectData = new JSONObject();
+            objectData.put("pid", detectionId);
+            objectData.put("x", cx);
+            objectData.put("y", cy);
+
+            objectLog.add(objectData);
+        }
+
+        JSONObject sceneLog = new JSONObject();
+        sceneLog.put("time", currentFrame);
+        sceneLog.put("objects", objectLog);
+
+        return sceneLog.toString();  // Serializa o objeto JSON como string (equivalente ao json.dumps do Python)
     }
     
 }

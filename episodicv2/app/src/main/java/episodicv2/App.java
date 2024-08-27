@@ -38,6 +38,8 @@ import episodicv2.model.prc.PRCProcess1Codelet;
 import episodicv2.model.prc.PRCProcess2Codelet;
 import episodicv2.model.prc.PRCProcess3Codelet;
 import episodicv2.model.sb.SBCodelet;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class App {
     
@@ -64,15 +66,6 @@ public final class App {
         recognizedObjectsSpikeMO = m1.createMemoryObject(RECOGNIZED_OBJECTS_SPIKE_MO);
         recognizedObjectsSpikeMO.setI(recognizedObjectsSpikeIdea);
         
-//        MemoryObject recognizedObjectsSpikeAndunintegratedScenePatternMO;
-//        recognizedObjectsSpikeAndunintegratedScenePatternMO = m1.createMemoryObject(RECOGNIZED_OBJECTS_SPIKE_AND_UNINTEGRATED_SCENE_PATTERN_MO);
-//        recognizedObjectsSpikeAndunintegratedScenePatternMO.setI(recognizedObjectsSpikeAndunintegratedScenePatternIdea);
-//        
-//        MemoryObject prcSpikeMO;
-//        prcSpikeMO = m1.createMemoryObject(PRC_SPIKE_MO);
-//        Idea prcSpikeIdea = new Idea(PRC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-//        prcSpikeMO.setI(prcSpikeIdea);
-        
         //Create Memory Objects
         Idea socketConnectionPortIdea = new Idea(SOCKET_CONNECTION_PORT_IDEA, 10000, CATEGORY_PROPERTY, 1);
         MemoryObject socketConnectionPortMO;
@@ -91,15 +84,16 @@ public final class App {
         connectionCodelet.addOutput(imageReceivedFromConnectionMO);
         m1.insertCodelet(connectionCodelet);
         
+        Map<String, Integer> dictionary = createDictionary();
+        
         //Gets the image and returns objects points and classes
-        VisionCodelet visionCodelet1 = new VisionCodelet();
+        VisionCodelet visionCodelet1 = new VisionCodelet(dictionary);
         visionCodelet1.setName(VISION_CODELET_NAME);
         visionCodelet1.addInput(imageReceivedFromConnectionMO);
         visionCodelet1.addOutput(centerPointsandClassesMO);
         m1.insertCodelet(visionCodelet1, VISION_CODELET_GROUP);
         // VISION -> PPC -> PHC -> DG
         // VISION -> ITC -> DG
-
 
         MemoryObject dlpfcSpikeMO;
         dlpfcSpikeMO = m1.createMemoryObject(DLPFC_SPIKE_MO);
@@ -483,6 +477,61 @@ public final class App {
         m1.start();
         
         return(m1);
+    }
+    
+    
+    private Map<String, Integer> createDictionary() {
+        // Lista de labels
+        String[] labels = {"person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck",
+                "boat", "traffic light", "fire hydrant", "stop sign", "parking meter", "bench",
+                "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe",
+                "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard",
+                "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard",
+                "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana",
+                "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza", "donut", "cake",
+                "chair", "sofa", "potted plant", "bed", "dining table", "toilet", "tv", "laptop", "mouse",
+                "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator",
+                "book", "clock", "vase", "scissors", "teddy bear", "hair drier", "toothbrush", "couch"};
+
+        // Lista de valores booleanos para definir se a classe é válida ou não
+        boolean[] inputValues = {true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true};
+
+        // Mapa para armazenar o mapeamento de labels para IDs
+        Map<String, Integer> labelsId = new HashMap<>();
+
+        // Mapa para armazenar as classes permitidas
+        Map<String, String> allowedClasses = new HashMap<>();
+
+        int labelId = 1; // Inicializamos com 1 para começar os IDs das labels
+
+        // Itera sobre as labels e valores de input
+        for (int i = 0; i < labels.length; i++) {
+            String label = labels[i];
+
+            // Verifica se a classe é permitida
+            if (inputValues[i]) {
+                allowedClasses.put(label, "valid");
+            } else {
+                allowedClasses.put(label, "invalid");
+            }
+
+            // Adiciona o mapeamento de label para ID
+            labelsId.put(label, labelId);
+            labelId++;
+        }
+
+        // Exibe o resultado
+        System.out.println("Labels ID Map: " + labelsId);
+        System.out.println("Allowed Classes Map: " + allowedClasses);
+        return labelsId;
     }
     
     public App() {
