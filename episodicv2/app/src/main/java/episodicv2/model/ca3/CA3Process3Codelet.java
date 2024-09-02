@@ -33,6 +33,9 @@ public class CA3Process3Codelet extends Codelet {
     
     private static CA3StorageHandler ca3StorageHandler = CA3StorageHandler.getInstance(Configuration.LOAD_MEMORY);
 
+    public CA3Process3Codelet() {
+        setIsMemoryObserver(true);
+    }
 
     @Override
     public void accessMemoryObjects() {

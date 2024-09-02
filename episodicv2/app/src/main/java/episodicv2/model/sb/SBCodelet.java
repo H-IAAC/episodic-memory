@@ -31,7 +31,7 @@ public class SBCodelet extends Codelet {
         sbSpikeIdea = (Idea) sbSpikeMO.getI();
         data = (byte[]) sbSpikeIdea.get(Configuration.SPIKE_SB_DATA_IDEA).getValue();
 
-        encSpikeMO = (MemoryObject) getInput(Configuration.ENC_SPIKE_MO);
+        encSpikeMO = (MemoryObject) getOutput(Configuration.ENC_SPIKE_MO);
         encSpikeIdea = (Idea) encSpikeMO.getI();
         
     }

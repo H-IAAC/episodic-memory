@@ -21,7 +21,7 @@ public class Configuration {
     
     public static final int CONSOLIDATION_NODE_PORT = 11001;
 
-    public static final String CONSOLIDATION_NODE_HOST = "100.112.15.252";
+    public static final String CONSOLIDATION_NODE_HOST = "127.0.0.1";
     public static final String PYTHON_CMD = "python";
     public static final String CONSOLIDATION_SERVICE_PATH = "consolidation_server";
     

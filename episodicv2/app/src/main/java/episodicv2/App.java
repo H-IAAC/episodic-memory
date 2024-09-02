@@ -52,21 +52,7 @@ public final class App {
     
     public Mind prepareMind() {
         m1 = new Mind();
-                
-        //declare Ideas
-        //TODO: review as categorias
-        Idea centerPointsandClassesIdea = new Idea(CENTER_POINTS_CLASSES_IDEA, null,CATEGORY_PROPERTY,1);
-        Idea recognizedObjectsSpikeIdea = new Idea(RECOGNIZED_OBJECTS_SPIKE_IDEA, null,CATEGORY_PROPERTY,1);
-       
-        MemoryObject centerPointsandClassesMO;
-        centerPointsandClassesMO = m1.createMemoryObject(CENTER_POINTS_CLASSES_MO);
-        centerPointsandClassesMO.setI(centerPointsandClassesIdea);
         
-        MemoryObject recognizedObjectsSpikeMO;
-        recognizedObjectsSpikeMO = m1.createMemoryObject(RECOGNIZED_OBJECTS_SPIKE_MO);
-        recognizedObjectsSpikeMO.setI(recognizedObjectsSpikeIdea);
-        
-        //Create Memory Objects
         Idea socketConnectionPortIdea = new Idea(SOCKET_CONNECTION_PORT_IDEA, 10000, CATEGORY_PROPERTY, 1);
         MemoryObject socketConnectionPortMO;
         socketConnectionPortMO = m1.createMemoryObject(SOCKET_CONNECTION_PORT_MO);
@@ -76,24 +62,22 @@ public final class App {
         MemoryObject imageReceivedFromConnectionMO;
         imageReceivedFromConnectionMO = m1.createMemoryObject(IMAGE_RECEIVED_FROM_CONNECTION_MO);
         imageReceivedFromConnectionMO.setI(imageReceivedFromConnectionIdea);
-        
-        //REALIZA A CONEXÃO E OBTÉM A IMAGEM
-        Codelet connectionCodelet = new ConnectionCodelet();
-        connectionCodelet.setName(CONNECTION_CODELET_NAME);
-        connectionCodelet.addInput(socketConnectionPortMO);
-        connectionCodelet.addOutput(imageReceivedFromConnectionMO);
-        m1.insertCodelet(connectionCodelet);
-        
+
         Map<String, Integer> dictionary = createDictionary();
         
-        //Gets the image and returns objects points and classes
-        VisionCodelet visionCodelet1 = new VisionCodelet(dictionary);
-        visionCodelet1.setName(VISION_CODELET_NAME);
-        visionCodelet1.addInput(imageReceivedFromConnectionMO);
-        visionCodelet1.addOutput(centerPointsandClassesMO);
-        m1.insertCodelet(visionCodelet1, VISION_CODELET_GROUP);
-        // VISION -> PPC -> PHC -> DG
-        // VISION -> ITC -> DG
+        MemoryObject itcSpikeMO;
+        itcSpikeMO = m1.createMemoryObject(ITC_SPIKE_MO);
+        Idea itcSpikeIdea = new Idea(ITC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeItcDataIdea = new Idea(SPIKE_ITC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        itcSpikeIdea.add(spikeItcDataIdea);
+        itcSpikeMO.setI(itcSpikeIdea);
+        
+        MemoryObject ppcSpikeMO;
+        ppcSpikeMO = m1.createMemoryObject(PPC_SPIKE_MO);
+        Idea ppcSpikeIdea = new Idea(PPC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikePpcDataIdea = new Idea(SPIKE_PPC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        ppcSpikeIdea.add(spikePpcDataIdea);
+        ppcSpikeMO.setI(ppcSpikeIdea);
 
         MemoryObject dlpfcSpikeMO;
         dlpfcSpikeMO = m1.createMemoryObject(DLPFC_SPIKE_MO);
@@ -125,30 +109,7 @@ public final class App {
         Idea spikeVlpfcProcess3DataIdea = new Idea(SPIKE_VLPFC_PROCESS_3_DATA_IDEA,null,CATEGORY_PROPERTY,1);
         vlpfcProcess3SpikeIdea.add(spikeVlpfcProcess3DataIdea);
         vlpfcProcess3SpikeMO.setI(vlpfcProcess3SpikeIdea);
-        
-        MemoryObject itcSpikeMO;
-        itcSpikeMO = m1.createMemoryObject(ITC_SPIKE_MO);
-        Idea itcSpikeIdea = new Idea(ITC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeItcDataIdea = new Idea(SPIKE_ITC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        itcSpikeIdea.add(spikeItcDataIdea);
-        itcSpikeMO.setI(itcSpikeIdea);
-
-        VLPFCCodelet vLPFCCodelet = new VLPFCCodelet();
-        vLPFCCodelet.setName(VLPFC_CODELET_NAME);
-        vLPFCCodelet.addInput(vlpfcSpikeMO);
-        vLPFCCodelet.addOutput(dlpfcSpikeMO);
-        vLPFCCodelet.addOutput(vlpfcProcess1SpikeMO);
-        vLPFCCodelet.addOutput(vlpfcProcess2SpikeMO);
-        vLPFCCodelet.addOutput(vlpfcProcess3SpikeMO);
-        m1.insertCodelet(vLPFCCodelet, VLPFC_CODELET_GROUP);
-        
-        VLPFCProcess1Codelet vLPFCProcess1Codelet = new VLPFCProcess1Codelet();
-        vLPFCProcess1Codelet.setName(VLPFC_PROCESS_1_CODELET_NAME);
-        vLPFCProcess1Codelet.addInput(vlpfcProcess1SpikeMO);
-        vLPFCProcess1Codelet.addOutput(dlpfcSpikeMO);
-        vLPFCProcess1Codelet.addOutput(itcSpikeMO);
-        m1.insertCodelet(vLPFCProcess1Codelet, VLPFC_CODELET_GROUP);
-        
+    
         MemoryObject prcSpikeMO;
         prcSpikeMO = m1.createMemoryObject(PRC_SPIKE_MO);
         Idea prcSpikeIdea = new Idea(PRC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
@@ -156,19 +117,7 @@ public final class App {
         prcSpikeIdea.add(spikePrcDataIdea);
         prcSpikeMO.setI(prcSpikeIdea);
         
-        VLPFCProcess2Codelet vLPFCProcess2Codelet = new VLPFCProcess2Codelet();
-        vLPFCProcess2Codelet.setName(VLPFC_PROCESS_2_CODELET_NAME);
-        vLPFCProcess2Codelet.addInput(vlpfcProcess2SpikeMO);
-        vLPFCProcess2Codelet.addOutput(dlpfcSpikeMO);
-        vLPFCProcess2Codelet.addOutput(prcSpikeMO);
-        m1.insertCodelet(vLPFCProcess2Codelet, VLPFC_CODELET_GROUP);
-        
-        VLPFCProcess3Codelet vLPFCProcess3Codelet = new VLPFCProcess3Codelet();
-        vLPFCProcess3Codelet.setName(VLPFC_PROCESS_3_CODELET_NAME);
-        vLPFCProcess3Codelet.addInput(vlpfcProcess3SpikeMO);
-        vLPFCProcess3Codelet.addOutput(prcSpikeMO);
-        m1.insertCodelet(vLPFCProcess3Codelet, VLPFC_CODELET_GROUP);
-        
+         
         MemoryObject mpfcSpikeMO;
         mpfcSpikeMO = m1.createMemoryObject(MPFC_SPIKE_MO);
         Idea mpfcSpikeIdea = new Idea(MPFC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
@@ -190,14 +139,6 @@ public final class App {
         mpfcProcess2SpikeIdea.add(spikeMpfcProcess2DataIdea);
         mpfcProcess2SpikeMO.setI(mpfcProcess2SpikeIdea);
         
-        MPFCCodelet mPFCCodelet = new MPFCCodelet();
-        mPFCCodelet.setName(MLPFC_CODELET_NAME);
-        mPFCCodelet.addInput(mpfcSpikeMO);
-        mPFCCodelet.addOutput(mpfcProcess1SpikeMO);
-        mPFCCodelet.addOutput(mpfcProcess2SpikeMO);
-        mPFCCodelet.addOutput(dlpfcSpikeMO);
-        m1.insertCodelet(mPFCCodelet, MLPFC_CODELET_GROUP);
-        
         MemoryObject encSpikeMO;
         encSpikeMO = m1.createMemoryObject(ENC_SPIKE_MO);
         Idea encSpikeIdea = new Idea(ENC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
@@ -205,51 +146,12 @@ public final class App {
         encSpikeIdea.add(spikeEncDataIdea);
         encSpikeMO.setI(encSpikeIdea);
         
-        MPFCProcess1Codelet mPFCProcess1Codelet = new MPFCProcess1Codelet();
-        mPFCProcess1Codelet.setName(MLPFC_PROCESS_1_CODELET_NAME);
-        mPFCProcess1Codelet.addInput(mpfcProcess1SpikeMO);
-        mPFCProcess1Codelet.addOutput(dlpfcSpikeMO);
-        mPFCProcess1Codelet.addOutput(encSpikeMO);
-        m1.insertCodelet(mPFCProcess1Codelet, MLPFC_CODELET_GROUP);
-        
-        MPFCProcess2Codelet mPFCProcess2Codelet = new MPFCProcess2Codelet();
-        mPFCProcess2Codelet.setName(MLPFC_PROCESS_2_CODELET_NAME);
-        mPFCProcess2Codelet.addInput(mpfcProcess2SpikeMO);
-        mPFCProcess2Codelet.addOutput(encSpikeMO);
-        m1.insertCodelet(mPFCProcess2Codelet, MLPFC_CODELET_GROUP);
-        
         MemoryObject itcProcess1SpikeMO;
         itcProcess1SpikeMO = m1.createMemoryObject(ITC_PROCESS_1_SPIKE_MO);
         Idea itcProcess1SpikeIdea = new Idea(ITC_PROCESS_1_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
         Idea spikeItcProcess1DataIdea = new Idea(SPIKE_ITC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
         itcProcess1SpikeIdea.add(spikeItcProcess1DataIdea);
         itcProcess1SpikeMO.setI(itcProcess1SpikeIdea);
-        
-        ITCCodelet iTCCodelet = new ITCCodelet();
-        iTCCodelet.setName(ITC_CODELET_NAME);
-        iTCCodelet.addInput(itcSpikeMO);
-        iTCCodelet.addOutput(itcProcess1SpikeMO);
-        iTCCodelet.addOutput(prcSpikeMO);
-        m1.insertCodelet(iTCCodelet, ITC_CODELET_GROUP);
-        
-        ITCProcess1Codelet iTCProcess1Codelet = new ITCProcess1Codelet();
-        iTCProcess1Codelet.setName(ITC_CODELET_NAME);
-        iTCProcess1Codelet.addInput(itcProcess1SpikeMO);
-        iTCProcess1Codelet.addOutput(vlpfcSpikeMO);
-        m1.insertCodelet(iTCProcess1Codelet, ITC_CODELET_GROUP);
-        
-        MemoryObject itcProcess2SpikeMO;
-        itcProcess2SpikeMO = m1.createMemoryObject(ITC_PROCESS_2_SPIKE_MO);
-        Idea itcProcess2SpikeIdea = new Idea(ITC_PROCESS_2_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeItcProcess2DataIdea = new Idea(SPIKE_ITC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        itcProcess2SpikeIdea.add(spikeItcProcess2DataIdea);
-        itcProcess2SpikeMO.setI(itcSpikeIdea);
-        
-        ITCProcess2Codelet iTCProcess2Codelet = new ITCProcess2Codelet();
-        iTCProcess2Codelet.setName(ITC_CODELET_NAME);
-        iTCProcess2Codelet.addInput(itcProcess2SpikeMO);
-        iTCProcess2Codelet.addOutput(vlpfcSpikeMO);
-        m1.insertCodelet(iTCProcess2Codelet, ITC_CODELET_GROUP);
         
         MemoryObject prcProcess1SpikeMO;
         prcProcess1SpikeMO = m1.createMemoryObject(PRC_PROCESS_1_SPIKE_MO);
@@ -271,39 +173,13 @@ public final class App {
         Idea spikePrcProcess3DataIdea = new Idea(SPIKE_PRC_PROCESS_3_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
         prcProcess3SpikeIdea.add(spikePrcProcess3DataIdea);
         prcProcess3SpikeMO.setI(prcProcess3SpikeIdea);
-
         
-        PRCCodelet pRCCodelet = new PRCCodelet();
-        pRCCodelet.setName(PRC_CODELET_NAME);
-        pRCCodelet.addInput(prcSpikeMO);
-        pRCCodelet.addOutput(prcProcess1SpikeMO);
-        pRCCodelet.addOutput(prcProcess2SpikeMO);
-        pRCCodelet.addOutput(prcProcess3SpikeMO);
-        m1.insertCodelet(pRCCodelet, PRC_CODELET_GROUP);
-        
-        PRCProcess1Codelet pRCProcess1Codelet = new PRCProcess1Codelet();
-        pRCProcess1Codelet.setName(PRC_PROCESS_1_CODELET_NAME);
-        pRCProcess1Codelet.addInput(prcProcess1SpikeMO);
-        pRCProcess1Codelet.addOutput(encSpikeMO);
-        m1.insertCodelet(pRCProcess1Codelet, PRC_CODELET_GROUP);
-        
-        PRCProcess2Codelet pRCProcess2Codelet = new PRCProcess2Codelet();
-        pRCProcess2Codelet.setName(PRC_PROCESS_2_CODELET_NAME);
-        pRCProcess2Codelet.addInput(prcProcess2SpikeMO);
-        m1.insertCodelet(pRCProcess2Codelet, PRC_CODELET_GROUP);
-
-        PRCProcess3Codelet pRCProcess3Codelet = new PRCProcess3Codelet();
-        pRCProcess3Codelet.setName(PRC_PROCESS_3_CODELET_NAME);
-        pRCProcess3Codelet.addInput(prcProcess3SpikeMO);
-        pRCProcess3Codelet.addOutput(vlpfcSpikeMO);
-        m1.insertCodelet(pRCProcess3Codelet, PRC_CODELET_GROUP);
-        
-        MemoryObject ppcSpikeMO;
-        ppcSpikeMO = m1.createMemoryObject(PPC_SPIKE_MO);
-        Idea ppcSpikeIdea = new Idea(PPC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikePpcDataIdea = new Idea(SPIKE_PPC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        ppcSpikeIdea.add(spikePpcDataIdea);
-        ppcSpikeMO.setI(ppcSpikeIdea);
+        MemoryObject itcProcess2SpikeMO;
+        itcProcess2SpikeMO = m1.createMemoryObject(ITC_PROCESS_2_SPIKE_MO);
+        Idea itcProcess2SpikeIdea = new Idea(ITC_PROCESS_2_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
+        Idea spikeItcProcess2DataIdea = new Idea(SPIKE_ITC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
+        itcProcess2SpikeIdea.add(spikeItcProcess2DataIdea);
+        itcProcess2SpikeMO.setI(itcSpikeIdea);
         
         MemoryObject phcSpikeMO;
         phcSpikeMO = m1.createMemoryObject(PHC_SPIKE_MO);
@@ -311,32 +187,14 @@ public final class App {
         Idea spikePhcDataIdea = new Idea(SPIKE_PHC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
         phcSpikeIdea.add(spikePhcDataIdea);
         phcSpikeMO.setI(phcSpikeIdea);
-        
-        PPCCodelet pPCCodelet = new PPCCodelet();
-        pPCCodelet.setName(PRC_CODELET_NAME);
-        pPCCodelet.addInput(ppcSpikeMO);
-        pPCCodelet.addOutput(phcSpikeMO);
-        m1.insertCodelet(pRCCodelet, PPC_CODELET_GROUP);
-        
+                
         MemoryObject phcProcess1SpikeMO;
         phcProcess1SpikeMO = m1.createMemoryObject(PHC_PROCESS_1_SPIKE_MO);
         Idea phcProcess1SpikeIdea = new Idea(PHC_PROCESS_1_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
         Idea spikePhcProcess1DataIdea = new Idea(SPIKE_PHC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
         phcProcess1SpikeIdea.add(spikePhcProcess1DataIdea);
         phcProcess1SpikeMO.setI(phcProcess1SpikeIdea);
-        
-        PHCCodelet pHCCodelet = new PHCCodelet();
-        pHCCodelet.setName(PHC_CODELET_NAME);
-        pHCCodelet.addInput(phcSpikeMO);
-        pHCCodelet.addOutput(phcProcess1SpikeMO);
-        m1.insertCodelet(pHCCodelet, PHC_CODELET_GROUP);
-        
-        PHCProcess1Codelet pHCProcess1Codelet = new PHCProcess1Codelet();
-        pHCProcess1Codelet.setName(PHC_CODELET_NAME);
-        pHCProcess1Codelet.addInput(phcProcess1SpikeMO);
-        pHCProcess1Codelet.addOutput(encSpikeMO);
-        m1.insertCodelet(pHCProcess1Codelet, PHC_CODELET_GROUP);
-        
+
         MemoryObject dgSpikeMO;
         dgSpikeMO = m1.createMemoryObject(DG_SPIKE_MO);
         Idea dgSpikeIdea = new Idea(DG_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
@@ -350,15 +208,7 @@ public final class App {
         Idea spikeCa3DataIdea = new Idea(SPIKE_CA3_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
         ca3SpikeIdea.add(spikeCa3DataIdea);
         ca3SpikeMO.setI(ca3SpikeIdea);
-
-        ENCCodelet eNCCodelet = new ENCCodelet();
-        eNCCodelet.setName(ENC_CODELET_NAME);
-        eNCCodelet.addInput(encSpikeMO);
-        eNCCodelet.addOutput(dgSpikeMO);
-        eNCCodelet.addOutput(ca3SpikeMO);
-        eNCCodelet.addOutput(mpfcSpikeMO);
-        m1.insertCodelet(eNCCodelet, ENC_CODELET_GROUP);
-        
+                
         MemoryObject ca3Process1SpikeMO;
         ca3Process1SpikeMO = m1.createMemoryObject(CA3_PROCESS_1_SPIKE_MO);
         Idea ca3Process1SpikeIdea = new Idea(CA3_PROCESS_1_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
@@ -386,8 +236,172 @@ public final class App {
         Idea spikeCa1DataIdea = new Idea(SPIKE_CA1_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
         ca1SpikeIdea.add(spikeCa1DataIdea);
         ca1SpikeMO.setI(ca1SpikeIdea);
-
         
+        
+        MemoryObject ca1Process1SpikeMO = m1.createMemoryObject(CA1_PROCESS_1_SPIKE_MO);
+        Idea ca1Process1SpikeIdea = new Idea(CA1_PROCESS_1_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
+        Idea spikeCa1Process1DataIdea = new Idea(SPIKE_CA1_PROCESS_1_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
+        ca1Process1SpikeIdea.add(spikeCa1Process1DataIdea);
+        ca1Process1SpikeMO.setI(ca1Process1SpikeIdea);
+
+        MemoryObject ca1Process2SpikeMO = m1.createMemoryObject(CA1_PROCESS_2_SPIKE_MO);
+        Idea ca1Process2SpikeIdea = new Idea(CA1_PROCESS_2_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
+        Idea spikeCa1Process2DataIdea = new Idea(SPIKE_CA1_PROCESS_2_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
+        ca1Process2SpikeIdea.add(spikeCa1Process2DataIdea);
+        ca1Process2SpikeMO.setI(ca1Process2SpikeIdea);
+
+        MemoryObject ca1Process3SpikeMO = m1.createMemoryObject(CA1_PROCESS_3_SPIKE_MO);
+        Idea ca1Process3SpikeIdea = new Idea(CA1_PROCESS_3_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
+        Idea spikeCa1Process3DataIdea = new Idea(SPIKE_CA1_PROCESS_3_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
+        ca1Process3SpikeIdea.add(spikeCa1Process3DataIdea);
+        ca1Process3SpikeMO.setI(ca1Process3SpikeIdea);
+
+        MemoryObject sbSpikeMO = m1.createMemoryObject(SB_SPIKE_MO);
+        Idea sbSpikeIdea = new Idea(SB_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
+        Idea spikeSbDataIdea = new Idea(SPIKE_SB_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
+        sbSpikeIdea.add(spikeSbDataIdea);
+        sbSpikeMO.setI(sbSpikeIdea);
+
+        //INITIALIZE CODELETS
+        
+        //REALIZA A CONEXÃO E OBTÉM A IMAGEM
+        Codelet connectionCodelet = new ConnectionCodelet();
+        connectionCodelet.setName(CONNECTION_CODELET_NAME);
+        connectionCodelet.addInput(socketConnectionPortMO);
+        connectionCodelet.addOutput(imageReceivedFromConnectionMO);
+        m1.insertCodelet(connectionCodelet);
+        
+        //Gets the image and returns objects points and classes
+        VisionCodelet visionCodelet = new VisionCodelet(dictionary);
+        visionCodelet.setName(VISION_CODELET_NAME);
+        visionCodelet.addInput(imageReceivedFromConnectionMO);
+        visionCodelet.addOutput(itcSpikeMO);
+        visionCodelet.addOutput(ppcSpikeMO);
+        m1.insertCodelet(visionCodelet, VISION_CODELET_GROUP);
+        // VISION -> PPC -> PHC -> DG
+        // VISION -> ITC -> DG
+        
+        VLPFCCodelet vLPFCCodelet = new VLPFCCodelet();
+        vLPFCCodelet.setName(VLPFC_CODELET_NAME);
+        vLPFCCodelet.addInput(vlpfcSpikeMO);
+        vLPFCCodelet.addOutput(dlpfcSpikeMO);
+        vLPFCCodelet.addOutput(vlpfcProcess1SpikeMO);
+        vLPFCCodelet.addOutput(vlpfcProcess2SpikeMO);
+        vLPFCCodelet.addOutput(vlpfcProcess3SpikeMO);
+        m1.insertCodelet(vLPFCCodelet, VLPFC_CODELET_GROUP);
+        
+        VLPFCProcess1Codelet vLPFCProcess1Codelet = new VLPFCProcess1Codelet();
+        vLPFCProcess1Codelet.setName(VLPFC_PROCESS_1_CODELET_NAME);
+        vLPFCProcess1Codelet.addInput(vlpfcProcess1SpikeMO);
+        vLPFCProcess1Codelet.addOutput(dlpfcSpikeMO);
+        vLPFCProcess1Codelet.addOutput(itcSpikeMO);
+        m1.insertCodelet(vLPFCProcess1Codelet, VLPFC_CODELET_GROUP);
+
+        VLPFCProcess2Codelet vLPFCProcess2Codelet = new VLPFCProcess2Codelet();
+        vLPFCProcess2Codelet.setName(VLPFC_PROCESS_2_CODELET_NAME);
+        vLPFCProcess2Codelet.addInput(vlpfcProcess2SpikeMO);
+        vLPFCProcess2Codelet.addOutput(dlpfcSpikeMO);
+        vLPFCProcess2Codelet.addOutput(prcSpikeMO);
+        m1.insertCodelet(vLPFCProcess2Codelet, VLPFC_CODELET_GROUP);
+        
+        VLPFCProcess3Codelet vLPFCProcess3Codelet = new VLPFCProcess3Codelet();
+        vLPFCProcess3Codelet.setName(VLPFC_PROCESS_3_CODELET_NAME);
+        vLPFCProcess3Codelet.addInput(vlpfcProcess3SpikeMO);
+        vLPFCProcess3Codelet.addOutput(prcSpikeMO);
+        m1.insertCodelet(vLPFCProcess3Codelet, VLPFC_CODELET_GROUP);
+        
+        MPFCCodelet mPFCCodelet = new MPFCCodelet();
+        mPFCCodelet.setName(MLPFC_CODELET_NAME);
+        mPFCCodelet.addInput(mpfcSpikeMO);
+        mPFCCodelet.addOutput(mpfcProcess1SpikeMO);
+        mPFCCodelet.addOutput(mpfcProcess2SpikeMO);
+        mPFCCodelet.addOutput(dlpfcSpikeMO);
+        m1.insertCodelet(mPFCCodelet, MLPFC_CODELET_GROUP);
+        
+        MPFCProcess1Codelet mPFCProcess1Codelet = new MPFCProcess1Codelet();
+        mPFCProcess1Codelet.setName(MLPFC_PROCESS_1_CODELET_NAME);
+        mPFCProcess1Codelet.addInput(mpfcProcess1SpikeMO);
+        mPFCProcess1Codelet.addOutput(dlpfcSpikeMO);
+        mPFCProcess1Codelet.addOutput(encSpikeMO);
+        m1.insertCodelet(mPFCProcess1Codelet, MLPFC_CODELET_GROUP);
+        
+        MPFCProcess2Codelet mPFCProcess2Codelet = new MPFCProcess2Codelet();
+        mPFCProcess2Codelet.setName(MLPFC_PROCESS_2_CODELET_NAME);
+        mPFCProcess2Codelet.addInput(mpfcProcess2SpikeMO);
+        mPFCProcess2Codelet.addOutput(encSpikeMO);
+        m1.insertCodelet(mPFCProcess2Codelet, MLPFC_CODELET_GROUP);
+
+        ITCCodelet iTCCodelet = new ITCCodelet();
+        iTCCodelet.setName(ITC_CODELET_NAME);
+        iTCCodelet.addInput(itcSpikeMO);
+        iTCCodelet.addOutput(itcProcess1SpikeMO);
+        iTCCodelet.addOutput(prcSpikeMO);
+        m1.insertCodelet(iTCCodelet, ITC_CODELET_GROUP);
+        
+        ITCProcess1Codelet iTCProcess1Codelet = new ITCProcess1Codelet();
+        iTCProcess1Codelet.setName(ITC_PROCESS_1_CODELET_NAME);
+        iTCProcess1Codelet.addInput(itcProcess1SpikeMO);
+        iTCProcess1Codelet.addOutput(vlpfcSpikeMO);
+        m1.insertCodelet(iTCProcess1Codelet, ITC_CODELET_GROUP);
+        
+       
+        ITCProcess2Codelet iTCProcess2Codelet = new ITCProcess2Codelet();
+        iTCProcess2Codelet.setName(ITC_PROCESS_2_CODELET_NAME);
+        iTCProcess2Codelet.addInput(itcProcess2SpikeMO);
+        iTCProcess2Codelet.addOutput(vlpfcSpikeMO);
+        m1.insertCodelet(iTCProcess2Codelet, ITC_CODELET_GROUP);
+        
+        PRCCodelet pRCCodelet = new PRCCodelet();
+        pRCCodelet.setName(PRC_CODELET_NAME);
+        pRCCodelet.addInput(prcSpikeMO);
+        pRCCodelet.addOutput(prcProcess1SpikeMO);
+        pRCCodelet.addOutput(prcProcess2SpikeMO);
+        pRCCodelet.addOutput(prcProcess3SpikeMO);
+        m1.insertCodelet(pRCCodelet, PRC_CODELET_GROUP);
+        
+        PRCProcess1Codelet pRCProcess1Codelet = new PRCProcess1Codelet();
+        pRCProcess1Codelet.setName(PRC_PROCESS_1_CODELET_NAME);
+        pRCProcess1Codelet.addInput(prcProcess1SpikeMO);
+        pRCProcess1Codelet.addOutput(encSpikeMO);
+        m1.insertCodelet(pRCProcess1Codelet, PRC_CODELET_GROUP);
+        
+        PRCProcess2Codelet pRCProcess2Codelet = new PRCProcess2Codelet();
+        pRCProcess2Codelet.setName(PRC_PROCESS_2_CODELET_NAME);
+        pRCProcess2Codelet.addInput(prcProcess2SpikeMO);
+        m1.insertCodelet(pRCProcess2Codelet, PRC_CODELET_GROUP);
+
+        PRCProcess3Codelet pRCProcess3Codelet = new PRCProcess3Codelet();
+        pRCProcess3Codelet.setName(PRC_PROCESS_3_CODELET_NAME);
+        pRCProcess3Codelet.addInput(prcProcess3SpikeMO);
+        pRCProcess3Codelet.addOutput(vlpfcSpikeMO);
+        m1.insertCodelet(pRCProcess3Codelet, PRC_CODELET_GROUP);
+
+        PPCCodelet pPCCodelet = new PPCCodelet();
+        pPCCodelet.setName(PRC_CODELET_NAME);
+        pPCCodelet.addInput(ppcSpikeMO);
+        pPCCodelet.addOutput(phcSpikeMO);
+        m1.insertCodelet(pRCCodelet, PPC_CODELET_GROUP);
+        
+        PHCCodelet pHCCodelet = new PHCCodelet();
+        pHCCodelet.setName(PHC_CODELET_NAME);
+        pHCCodelet.addInput(phcSpikeMO);
+        pHCCodelet.addOutput(phcProcess1SpikeMO);
+        m1.insertCodelet(pHCCodelet, PHC_CODELET_GROUP);
+        
+        PHCProcess1Codelet pHCProcess1Codelet = new PHCProcess1Codelet();
+        pHCProcess1Codelet.setName(PHC_CODELET_NAME);
+        pHCProcess1Codelet.addInput(phcProcess1SpikeMO);
+        pHCProcess1Codelet.addOutput(encSpikeMO);
+        m1.insertCodelet(pHCProcess1Codelet, PHC_CODELET_GROUP);
+
+        ENCCodelet eNCCodelet = new ENCCodelet();
+        eNCCodelet.setName(ENC_CODELET_NAME);
+        eNCCodelet.addInput(encSpikeMO);
+        eNCCodelet.addOutput(dgSpikeMO);
+        eNCCodelet.addOutput(ca3SpikeMO);
+        eNCCodelet.addOutput(mpfcSpikeMO);
+        m1.insertCodelet(eNCCodelet, ENC_CODELET_GROUP);
+
         CA3Codelet cA3Codelet = new CA3Codelet();
         cA3Codelet.setName(CA3_CODELET_NAME);
         cA3Codelet.addInput(ca3SpikeMO);
@@ -414,30 +428,6 @@ public final class App {
         ca3Process3Codelet.addInput(ca3Process3SpikeMO);
         ca3Process3Codelet.addOutput(ca1SpikeMO);
         m1.insertCodelet(ca3Process3Codelet, CA3_CODELET_GROUP);
-
-        MemoryObject ca1Process1SpikeMO = m1.createMemoryObject(CA1_PROCESS_1_SPIKE_MO);
-        Idea ca1Process1SpikeIdea = new Idea(CA1_PROCESS_1_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa1Process1DataIdea = new Idea(SPIKE_CA1_PROCESS_1_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca1Process1SpikeIdea.add(spikeCa1Process1DataIdea);
-        ca1Process1SpikeMO.setI(ca1Process1SpikeIdea);
-
-        MemoryObject ca1Process2SpikeMO = m1.createMemoryObject(CA1_PROCESS_2_SPIKE_MO);
-        Idea ca1Process2SpikeIdea = new Idea(CA1_PROCESS_2_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa1Process2DataIdea = new Idea(SPIKE_CA1_PROCESS_2_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca1Process2SpikeIdea.add(spikeCa1Process2DataIdea);
-        ca1Process2SpikeMO.setI(ca1Process2SpikeIdea);
-
-        MemoryObject ca1Process3SpikeMO = m1.createMemoryObject(CA1_PROCESS_3_SPIKE_MO);
-        Idea ca1Process3SpikeIdea = new Idea(CA1_PROCESS_3_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa1Process3DataIdea = new Idea(SPIKE_CA1_PROCESS_3_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca1Process3SpikeIdea.add(spikeCa1Process3DataIdea);
-        ca1Process3SpikeMO.setI(ca1Process3SpikeIdea);
-
-        MemoryObject sbSpikeMO = m1.createMemoryObject(SB_SPIKE_MO);
-        Idea sbSpikeIdea = new Idea(SB_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeSbDataIdea = new Idea(SPIKE_SB_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        sbSpikeIdea.add(spikeSbDataIdea);
-        sbSpikeMO.setI(sbSpikeIdea);
 
         CA1Codelet ca1Codelet = new CA1Codelet();
         ca1Codelet.setName(CA1_CODELET_NAME);
@@ -472,13 +462,10 @@ public final class App {
         sbCodelet.addOutput(encSpikeMO); // Supondo que `encSpikeMO` é o `MemoryObject` de saída desejado
         m1.insertCodelet(sbCodelet, SB_CODELET_GROUP);
 
-
-
         m1.start();
         
         return(m1);
     }
-    
     
     private Map<String, Integer> createDictionary() {
         // Lista de labels

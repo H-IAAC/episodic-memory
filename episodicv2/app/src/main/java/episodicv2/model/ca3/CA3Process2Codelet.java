@@ -81,6 +81,10 @@ public class CA3Process2Codelet extends Codelet {
     private String dgPattern;
     private double affectIntensity = 0.0;
     private double affectiveValues[] = new double[]{0, 0};
+    
+    public CA3Process2Codelet() {
+        setIsMemoryObserver(true);
+    }
 
     @Override
     public void accessMemoryObjects() {

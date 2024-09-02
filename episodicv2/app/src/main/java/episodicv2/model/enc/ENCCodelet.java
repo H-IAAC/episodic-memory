@@ -41,20 +41,22 @@ public class ENCCodelet extends Codelet {
         encSpikeIdea = (Idea) encSpikeMO.getI();
         data = (byte[]) encSpikeIdea.get(Configuration.SPIKE_ENC_DATA_IDEA).getValue();
         
-        dgSpikeMO = (MemoryObject) getInput(Configuration.DG_SPIKE_MO);
+        dgSpikeMO = (MemoryObject) getOutput(Configuration.DG_SPIKE_MO);
         dgSpikeIdea = (Idea) dgSpikeMO.getI();
         
-        ca3SpikeMO = (MemoryObject) getInput(Configuration.CA3_SPIKE_MO);
+        ca3SpikeMO = (MemoryObject) getOutput(Configuration.CA3_SPIKE_MO);
         ca3SpikeIdea = (Idea) ca3SpikeMO.getI();
         
-        mpfcSpikeMO = (MemoryObject) getInput(Configuration.MPFC_SPIKE_MO);
+        mpfcSpikeMO = (MemoryObject) getOutput(Configuration.MPFC_SPIKE_MO);
         mpfcSpikeIdea = (Idea) mpfcSpikeMO.getI();
     }
     
     @Override
     public void proc() {
         
-
+        if(data == null) {
+            return;
+        }
         SpikeObject spike = SpikeObject.fromBytes(data);
 
         switch (spike.getId()) {

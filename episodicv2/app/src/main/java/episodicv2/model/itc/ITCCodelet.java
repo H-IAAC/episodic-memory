@@ -67,9 +67,12 @@ public class ITCCodelet extends Codelet {
     
     @Override
     public void proc() {
+        System.out.println("Entrou o proc de ITC Codelet : ");
         
         if (dataSpike != null) {
+            
             SpikeObject spike = SpikeObject.fromBytes(dataSpike);
+            System.out.println("Processando ITC Codelet : " + spike.getName());
             switch (spike.getId()) {
                 case SpikeType.REQUEST_OBJECT:
                     //SEARCH IN MTM
@@ -89,6 +92,7 @@ public class ITCCodelet extends Codelet {
             if (encapsulatedObjects != null) {
 
                 SpikeObject<ArrayList<CObject>> spike = new SpikeObject(SpikeType.RECOGNIZED_OBJECTS, encapsulatedObjects.getObjects(), encapsulatedObjects.getTime());
+                System.out.println("Processando ITC Codelet dataString : " + spike.getName());
                 prcSpikeIdea.setValue(dataString);
                 prcSpikeMO.setI(prcSpikeIdea);
 //                send(AreaNames.PRC, spike.toBytes());

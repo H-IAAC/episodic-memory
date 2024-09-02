@@ -41,10 +41,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-
 
 /**
  *
@@ -64,15 +60,8 @@ public class VisionCodelet extends Codelet {
     private String spikeITCData;
     private String spikePPCData;
     
-//    MemoryObject centerPointsandClassesMO;
-//    Idea centerPointsandClassesIdea;
-    
     Integer currentFrame = 0;
     Boolean hasAnyObject = false;
-        
-    
-    ArrayList<Idea> objectsClasses = new ArrayList<>();
-    ArrayList<Idea> objectsPoints = new ArrayList<>();
     
     List<String> cocoLabels = new ArrayList<>();
     
@@ -101,11 +90,7 @@ public class VisionCodelet extends Codelet {
         imageReceivedFromConnectionMO = (MemoryObject) getInput(Configuration.IMAGE_RECEIVED_FROM_CONNECTION_MO);
         imageReceivedFromConnectionIdea = (Idea) imageReceivedFromConnectionMO.getI();
         
-//        centerPointsandClassesMO = (MemoryObject) getOutput(CENTER_POINTS_CLASSES_MO);
-//        centerPointsandClassesIdea = (Idea) centerPointsandClassesMO.getI();
-        
         BufferedImage image = (BufferedImage) imageReceivedFromConnectionIdea.getValue();
-
         
         if (image != null) {
             displayImage(image);
@@ -147,15 +132,12 @@ public class VisionCodelet extends Codelet {
         ppcSpikeIdea.setL(new ArrayList());
         Idea spikeITCDataIdea = new Idea(SPIKE_ITC_DATA_IDEA, spikeITCData);
         Idea spikePPCDataIdea = new Idea(SPIKE_PPC_DATA_IDEA, spikePPCData);
+        System.out.println("Saved spike itc: " + spikeITCData);
+        System.out.println("Saved spike ppc: " + spikePPCData);
         itcSpikeIdea.add(spikeITCDataIdea);
         ppcSpikeIdea.add(spikePPCDataIdea);
-//        Idea objectsPointsIdea = new Idea(OBJECTS_POINTS_IDEA, objectsPoints);
-//        centerPointsandClassesIdea.add(objectsClassesIdea);
-//        centerPointsandClassesIdea.add(objectsPointsIdea);
-//        currentFrame+=1;
-//        Idea currentFrameIdea = new Idea(CURRENT_FRAME_IDEA,currentFrame);
-//        centerPointsandClassesIdea.add(currentFrameIdea);
-//        centerPointsandClassesMO.setI(centerPointsandClassesIdea);
+        itcSpikeMO.setI(itcSpikeIdea);
+        ppcSpikeMO.setI(ppcSpikeIdea);
     }
     
     @Override
@@ -363,11 +345,12 @@ public class VisionCodelet extends Codelet {
         // Itera sobre os objetos de detecção
         for (Map<String, String> eachObject : detections) {
             detectionId++;
+            System.out.println("Detected object name: " + eachObject.get("label"));
 
             JSONObject objectData = new JSONObject();
             objectData.put("pid", detectionId);
-            objectData.put("id", this.dictionary.get(eachObject.get("name")));
-            objectData.put("class", eachObject.get("name"));
+            objectData.put("id", this.dictionary.get(eachObject.get("label")));
+            objectData.put("class", eachObject.get("label"));
             objectData.put("features", "");
 
             objectLog.add(objectData);

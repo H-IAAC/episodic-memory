@@ -34,7 +34,6 @@ public class ConnectionCodelet extends Codelet {
     MemoryObject imageReceivedFromConnectionMO;
     Idea imageReceivedFromConnectionIdea;
     
-
     @Override
     public void accessMemoryObjects() {
         socketConnectionPortMO = (MemoryObject) getInput(SOCKET_CONNECTION_PORT_MO);
@@ -46,6 +45,7 @@ public class ConnectionCodelet extends Codelet {
     
     @Override
     public void proc() {
+        System.out.println("Entered connection codelet proc");
         Integer port = (Integer) socketConnectionPortIdea.getValue();
         try {
             ServerSocket serverSocket = new ServerSocket(port);
