@@ -39,7 +39,7 @@ public class CA1Process3Codelet extends Codelet {
     public void accessMemoryObjects() {
         ca1Process3SpikeMO = (MemoryObject) getOutput(Configuration.CA1_PROCESS_2_SPIKE_MO);
         ca1Process3SpikeIdea = (Idea) ca1Process3SpikeMO.getI();
-        data = (byte[]) ca1Process3SpikeIdea.get(Configuration.SPIKE_CA1_PROCESS_2_DATA_IDEA).getValue();
+        data = (byte[]) ca1Process3SpikeIdea.getValue();
 
         sbSpikeMO = (MemoryObject) getOutput(Configuration.SB_SPIKE_MO);
         sbSpikeIdea = (Idea) sbSpikeMO.getI();

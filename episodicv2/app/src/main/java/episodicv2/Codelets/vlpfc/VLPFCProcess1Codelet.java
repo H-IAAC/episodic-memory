@@ -56,7 +56,7 @@ public class VLPFCProcess1Codelet extends Codelet implements STMChangesListener 
         vlpfcProcess1SpikeMO = (MemoryObject) getInput(Configuration.VLPFC_PROCESS_1_SPIKE_MO);
         vlpfcProcess1SpikeIdea = (Idea) vlpfcProcess1SpikeMO.getI();
         
-        data = (byte[]) vlpfcProcess1SpikeIdea.get(Configuration.SPIKE_VLPFC_PROCESS_1_DATA_IDEA).getValue();
+        data = (byte[]) vlpfcProcess1SpikeIdea.getValue();
         
         dlpfcSpikeMO = (MemoryObject) getOutput(Configuration.DLPFC_SPIKE_MO);
         dlpfcSpikeIdea = (Idea) dlpfcSpikeMO.getI();

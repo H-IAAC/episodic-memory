@@ -199,7 +199,7 @@ public class Configuration {
     public static final String PRC_MID_TERM_OBJECT_RELATIONS_IDEA = "pRCMidTermMemoryObjectRelationsIdea";
     public static final String REQUEST_OBJECT_RELATION_IDEA = "requestObjectRelationIdea";
     public static final String PATTERN_REPLACED_IDEA = "patternReplacedIdea";
-    public static final String DG_DATA_IDEA = "dgDataIdea";
+//    public static final String DG_DATA_IDEA = "dgDataIdea";
     public static final String ROOT_IDEA = "rootIdea";
     public static final String SCENE_IDEA = "sceneIdea";
     public static final String STORED_SCENE_IDEA = "storedSceneIdea";
@@ -207,7 +207,7 @@ public class Configuration {
     public static final String DG_MID_TERM_MEMORY_SCENES_IDEA = "dGMidTermMemoryScenesIdea";
     public static final String OBJECT_RELATION_IDEA = "objectRelationIdea";
     public static final String OBJECT_RELATIONS_IDEA = "objectRelationsIdea";
-    public static final String PRC_DATA_IDEA = "pRCDataIdea";
+//    public static final String PRC_DATA_IDEA = "pRCDataIdea";
     
     
     public static final String PRC_DATA_RELATIONS_IDEA = "pRCDataRelationsIdea";
@@ -249,39 +249,39 @@ public class Configuration {
     public static final String MPFC_SPIKE_IDEA = "mpfcSpikeIdea";
     public static final String MPFC_PROCESS_1_SPIKE_IDEA = "mpfcProcess1SpikeIdea";
     public static final String MPFC_PROCESS_2_SPIKE_IDEA = "mpfcProcess2SpikeIdea";
-    public static final String SPIKE_VLPFC_PROCESS_1_DATA_IDEA = "spikeVLPFCProcess1DataIdea";
-    public static final String SPIKE_VLPFC_PROCESS_2_DATA_IDEA = "spikeVLPFCProcess2DataIdea";
-    public static final String SPIKE_VLPFC_PROCESS_3_DATA_IDEA = "spikeVLPFCProcess3DataIdea";    
-    public static final String SPIKE_VLPFC_DATA_IDEA = "spikeVLPFCDataIdea";
-    public static final String SPIKE_PRC_DATA_IDEA = "spikePRCDataIdea";
-    public static final String SPIKE_PRC_PROCESS_1_DATA_IDEA = "spikePRCProcess1DataIdea";
-    public static final String SPIKE_PRC_PROCESS_2_DATA_IDEA = "spikePRCProcess2DataIdea";
-    public static final String SPIKE_PRC_PROCESS_3_DATA_IDEA = "spikePRCProcess3DataIdea";
-    public static final String SPIKE_MPFC_DATA_IDEA = "spikeMPFCDataIdea";
-    public static final String SPIKE_MPFC_PROCESS_1_DATA_IDEA = "spikeMPFCProcess1DataIdea";
-    public static final String SPIKE_MPFC_PROCESS_2_DATA_IDEA = "spikeMPFCProcess2DataIdea";
-    public static final String SPIKE_ENC_DATA_IDEA = "spikeENCDataIdea";
-    public static final String SPIKE_DLPFC_BASE_CONTROLLER_DATA_IDEA = "spikeDLPFCBaseControllerDataIdea";
-    public static final String SPIKE_ITC_DATA_IDEA = "spikeITCDataIdea";
-    public static final String SPIKE_ITC_PROCESS_1_DATA_IDEA = "spikeITCProcess1DataIdea";
-    public static final String SPIKE_ITC_PROCESS_2_DATA_IDEA = "spikeITCProcess2DataIdea";
-    public static final String SPIKE_PPC_DATA_IDEA = "pPCDataIdea";
-    public static final String SPIKE_PHC_DATA_IDEA = "pHCDataIdea";
-    public static final String SPIKE_PHC_PROCESS_1_DATA_IDEA = "pHCProcess1DataIdea";
-    public static final String SPIKE_DG_DATA_IDEA = "dGDataIdea";
-    public static final String SPIKE_DG_PROCESS_1_DATA_IDEA = "dGProcess1DataIdea";
+//    public static final String SPIKE_VLPFC_PROCESS_1_DATA_IDEA = "spikeVLPFCProcess1DataIdea";
+//    public static final String SPIKE_VLPFC_PROCESS_2_DATA_IDEA = "spikeVLPFCProcess2DataIdea";
+//    public static final String SPIKE_VLPFC_PROCESS_3_DATA_IDEA = "spikeVLPFCProcess3DataIdea";    
+//    public static final String SPIKE_VLPFC_DATA_IDEA = "spikeVLPFCDataIdea";
+//    public static final String SPIKE_PRC_DATA_IDEA = "spikePRCDataIdea";
+//    public static final String SPIKE_PRC_PROCESS_1_DATA_IDEA = "spikePRCProcess1DataIdea";
+//    public static final String SPIKE_PRC_PROCESS_2_DATA_IDEA = "spikePRCProcess2DataIdea";
+//    public static final String SPIKE_PRC_PROCESS_3_DATA_IDEA = "spikePRCProcess3DataIdea";
+//    public static final String SPIKE_MPFC_DATA_IDEA = "spikeMPFCDataIdea";
+//    public static final String SPIKE_MPFC_PROCESS_1_DATA_IDEA = "spikeMPFCProcess1DataIdea";
+//    public static final String SPIKE_MPFC_PROCESS_2_DATA_IDEA = "spikeMPFCProcess2DataIdea";
+//    public static final String SPIKE_ENC_DATA_IDEA = "spikeENCDataIdea";
+//    public static final String SPIKE_DLPFC_BASE_CONTROLLER_DATA_IDEA = "spikeDLPFCBaseControllerDataIdea";
+//    public static final String SPIKE_ITC_DATA_IDEA = "spikeITCDataIdea";
+//    public static final String SPIKE_ITC_PROCESS_1_DATA_IDEA = "spikeITCProcess1DataIdea";
+//    public static final String SPIKE_ITC_PROCESS_2_DATA_IDEA = "spikeITCProcess2DataIdea";
+//    public static final String SPIKE_PPC_DATA_IDEA = "pPCDataIdea";
+//    public static final String SPIKE_PHC_DATA_IDEA = "pHCDataIdea";
+//    public static final String SPIKE_PHC_PROCESS_1_DATA_IDEA = "pHCProcess1DataIdea";
+//    public static final String SPIKE_DG_DATA_IDEA = "dGDataIdea";
+//    public static final String SPIKE_DG_PROCESS_1_DATA_IDEA = "dGProcess1DataIdea";
     
-    public static final String SPIKE_CA3_DATA_IDEA = "cA3DataIdea";
-    public static final String SPIKE_CA3_PROCESS_1_DATA_IDEA = "cA3Process1DataIdea";
-    public static final String SPIKE_CA3_PROCESS_2_DATA_IDEA = "cA3Process2DataIdea";
-    public static final String SPIKE_CA3_PROCESS_3_DATA_IDEA = "cA3Process3DataIdea";
-    
-    public static final String SPIKE_CA1_DATA_IDEA = "ca1DataIdea";
-    public static final String SPIKE_CA1_PROCESS_1_DATA_IDEA = "ca1Process1DataIdea";
-    public static final String SPIKE_CA1_PROCESS_2_DATA_IDEA = "ca1Process2DataIdea";
-    public static final String SPIKE_CA1_PROCESS_3_DATA_IDEA = "ca1Process3DataIdea";
-
-    public static final String SPIKE_SB_DATA_IDEA = "sBDataIdea";
+//    public static final String SPIKE_CA3_DATA_IDEA = "cA3DataIdea";
+//    public static final String SPIKE_CA3_PROCESS_1_DATA_IDEA = "cA3Process1DataIdea";
+//    public static final String SPIKE_CA3_PROCESS_2_DATA_IDEA = "cA3Process2DataIdea";
+//    public static final String SPIKE_CA3_PROCESS_3_DATA_IDEA = "cA3Process3DataIdea";
+//    
+//    public static final String SPIKE_CA1_DATA_IDEA = "ca1DataIdea";
+//    public static final String SPIKE_CA1_PROCESS_1_DATA_IDEA = "ca1Process1DataIdea";
+//    public static final String SPIKE_CA1_PROCESS_2_DATA_IDEA = "ca1Process2DataIdea";
+//    public static final String SPIKE_CA1_PROCESS_3_DATA_IDEA = "ca1Process3DataIdea";
+//
+//    public static final String SPIKE_SB_DATA_IDEA = "sBDataIdea";
     
     // MEMORY OBJECTS
     

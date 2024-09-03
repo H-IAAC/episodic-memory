@@ -32,7 +32,7 @@ public class PPCCodelet extends Codelet {
     public void accessMemoryObjects() {
         ppcSpikeMO = (MemoryObject) getInput(Configuration.PPC_SPIKE_MO);
         ppcSpikeIdea = (Idea) ppcSpikeMO.getI();
-        data = (String) ppcSpikeIdea.get(Configuration.SPIKE_PPC_DATA_IDEA).getValue();
+        data = (String) ppcSpikeIdea.getValue();
         
         phcSpikeMO = (MemoryObject) getOutput(Configuration.PHC_SPIKE_MO);
         phcSpikeIdea = (Idea) phcSpikeMO.getI();

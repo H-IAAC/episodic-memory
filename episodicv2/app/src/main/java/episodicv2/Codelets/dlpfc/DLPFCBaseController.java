@@ -56,7 +56,7 @@ public abstract class DLPFCBaseController extends Codelet {
         dlpfcBaseControllerSpikeMO = (MemoryObject) getInput(Configuration.DLPFC_BASE_CONTROLLER_SPIKE_MO);
         dlpfcBaseControllerSpikeIdea = (Idea) dlpfcBaseControllerSpikeMO.getI();
         
-        data = (byte[]) dlpfcBaseControllerSpikeIdea.get(Configuration.SPIKE_DLPFC_BASE_CONTROLLER_DATA_IDEA).getValue();
+        data = (byte[]) dlpfcBaseControllerSpikeIdea.getValue();
         
         
         vlpfcProcess1SpikeMO = (MemoryObject) getOutput(Configuration.VLPFC_PROCESS_1_SPIKE_MO);

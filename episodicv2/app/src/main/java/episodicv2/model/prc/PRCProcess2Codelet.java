@@ -47,7 +47,7 @@ public class PRCProcess2Codelet extends Codelet {
     public void accessMemoryObjects() {
         prcProcess2SpikeMO = (MemoryObject) getInput(Configuration.PRC_PROCESS_2_SPIKE_MO);
         prcProcess2SpikeIdea = (Idea) prcProcess2SpikeMO.getI();
-        data = (byte[]) prcProcess2SpikeIdea.get(Configuration.SPIKE_PRC_PROCESS_2_DATA_IDEA).getValue();
+        data = (byte[]) prcProcess2SpikeIdea.getValue();
         
     }
     

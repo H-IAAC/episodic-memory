@@ -52,7 +52,7 @@ public class VLPFCProcess2Codelet extends Codelet {
     public void accessMemoryObjects() {
         vlpfcProcess2SpikeMO = (MemoryObject) getInput(Configuration.VLPFC_PROCESS_2_SPIKE_MO);
         vlpfcProcess2SpikeIdea = (Idea) vlpfcProcess2SpikeMO.getI();
-        data = (byte[]) vlpfcProcess2SpikeIdea.get(Configuration.SPIKE_VLPFC_PROCESS_2_DATA_IDEA).getValue();
+        data = (byte[]) vlpfcProcess2SpikeIdea.getValue();
         
         dlpfcSpikeMO = (MemoryObject) getOutput(Configuration.DLPFC_SPIKE_MO);
         dlpfcSpikeIdea = (Idea) dlpfcSpikeMO.getI();

@@ -4,7 +4,6 @@
  */
 package episodicv2.model.itc;
 
-import episodicv2.FutureCodelets.*;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
@@ -42,7 +41,7 @@ public class ITCProcess1Codelet extends Codelet {
         itcProcess1SpikeMO = (MemoryObject) getInput(Configuration.ITC_PROCESS_1_SPIKE_MO);
         itcProcess1SpikeIdea = (Idea) itcProcess1SpikeMO.getI();
         
-        data = (byte[]) itcProcess1SpikeIdea.get(Configuration.SPIKE_ITC_PROCESS_1_DATA_IDEA).getValue();
+        data = (byte[]) itcProcess1SpikeIdea.getValue();
        
         vlpfcSpikeMO = (MemoryObject) getOutput(Configuration.VLPFC_SPIKE_MO);
         vlpfcSpikeIdea = (Idea) vlpfcSpikeMO.getI();

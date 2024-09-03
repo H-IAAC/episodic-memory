@@ -133,8 +133,8 @@ public class Utils2DString {
                 JSONObject sceneObject = iterator.next();
 
                 long preId = (Long) sceneObject.get("pid");
-                long x = (Long) sceneObject.get("x");
-                long y = (Long) sceneObject.get("y");
+                double x = (double) sceneObject.get("x");
+                double y = (double) sceneObject.get("y");
 
                 sceneObjects.add(new CObject((int) preId, 0, (int) x, (int) y, "", "", (int) time));
 

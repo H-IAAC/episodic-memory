@@ -39,7 +39,7 @@ public class VLPFCProcess3Codelet extends Codelet {
         vlpfcProcess3SpikeMO = (MemoryObject) getInput(Configuration.VLPFC_PROCESS_3_SPIKE_MO);
         vlpfcProcess3SpikeIdea = (Idea) vlpfcProcess3SpikeMO.getI();
         
-        data = (byte[]) vlpfcProcess3SpikeIdea.get(Configuration.SPIKE_VLPFC_PROCESS_3_DATA_IDEA).getValue();
+        data = (byte[]) vlpfcProcess3SpikeIdea.getValue();
         
         prcSpikeMO = (MemoryObject) getOutput(Configuration.PRC_SPIKE_MO);
         prcSpikeIdea = (Idea) prcSpikeMO.getI();

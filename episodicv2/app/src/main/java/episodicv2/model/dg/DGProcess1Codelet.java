@@ -54,7 +54,7 @@ public class DGProcess1Codelet extends Codelet {
     public void accessMemoryObjects() {
         dgProcess1SpikeMO = (MemoryObject) getInput(Configuration.DG_PROCESS_1_SPIKE_MO);
         dgProcess1SpikeIdea = (Idea) dgProcess1SpikeMO.getI();
-        data = (byte[]) dgProcess1SpikeIdea.get(Configuration.SPIKE_DG_PROCESS_1_DATA_IDEA).getValue();
+        data = (byte[]) dgProcess1SpikeIdea.getValue();
         
         ca3SpikeMO = (MemoryObject) getInput(Configuration.CA3_SPIKE_MO);
         ca3SpikeIdea = (Idea) ca3SpikeMO.getI();

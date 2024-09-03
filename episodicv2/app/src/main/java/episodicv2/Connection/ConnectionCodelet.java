@@ -80,8 +80,8 @@ public class ConnectionCodelet extends Codelet {
                     // Display the received image
                      
                      if (image != null) {
-                         System.out.println("showing image");
-                         displayImage(image);
+                         System.out.println("image received");
+//                         displayImage(image);
                          imageReceivedFromConnectionIdea.setValue(image);
                          imageReceivedFromConnectionMO.setI(imageReceivedFromConnectionIdea);
                      } else {

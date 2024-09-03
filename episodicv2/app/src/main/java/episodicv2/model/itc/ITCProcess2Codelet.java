@@ -41,7 +41,7 @@ public class ITCProcess2Codelet extends Codelet {
         itcProcess2SpikeMO = (MemoryObject) getOutput(Configuration.ITC_PROCESS_2_SPIKE_MO);
         itcProcess2SpikeIdea = (Idea) itcProcess2SpikeMO.getI();
         
-        data = (byte[]) itcProcess2SpikeIdea.get(Configuration.SPIKE_ITC_PROCESS_2_DATA_IDEA).getValue();
+        data = (byte[]) itcProcess2SpikeIdea.getValue();
        
         vlpfcSpikeMO = (MemoryObject) getInput(Configuration.VLPFC_SPIKE_MO);
         vlpfcSpikeIdea = (Idea) vlpfcSpikeMO.getI();

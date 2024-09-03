@@ -35,7 +35,7 @@ public class MPFCCodelet extends Codelet {
     public void accessMemoryObjects() {
         mpfcSpikeMO = (MemoryObject) getInput(Configuration.MPFC_SPIKE_MO);
         mpfcSpikeIdea = (Idea) mpfcSpikeMO.getI();
-        data = (byte[]) mpfcSpikeIdea.get(Configuration.SPIKE_MPFC_DATA_IDEA).getValue();
+        data = (byte[]) mpfcSpikeIdea.getValue();
         
         mpfcProcess1SpikeMO = (MemoryObject) getOutput(Configuration.MPFC_PROCESS_1_SPIKE_MO);
         mpfcProcess1SpikeIdea = (Idea) mpfcProcess1SpikeMO.getI();

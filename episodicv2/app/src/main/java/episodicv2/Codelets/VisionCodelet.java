@@ -93,7 +93,8 @@ public class VisionCodelet extends Codelet {
         BufferedImage image = (BufferedImage) imageReceivedFromConnectionIdea.getValue();
         
         if (image != null) {
-            displayImage(image);
+            System.out.println("image received on vision");
+//            displayImage(image);
         }
         
         itcSpikeMO = (MemoryObject) getOutput(Configuration.ITC_SPIKE_MO);
@@ -128,14 +129,16 @@ public class VisionCodelet extends Codelet {
     }
     
      private void saveObjectsIdea() {//TODO: ver se precisa criar essas novas ideas msms
-        itcSpikeIdea.setL(new ArrayList());
-        ppcSpikeIdea.setL(new ArrayList());
-        Idea spikeITCDataIdea = new Idea(SPIKE_ITC_DATA_IDEA, spikeITCData);
-        Idea spikePPCDataIdea = new Idea(SPIKE_PPC_DATA_IDEA, spikePPCData);
-        System.out.println("Saved spike itc: " + spikeITCData);
-        System.out.println("Saved spike ppc: " + spikePPCData);
-        itcSpikeIdea.add(spikeITCDataIdea);
-        ppcSpikeIdea.add(spikePPCDataIdea);
+//        itcSpikeIdea.setL(new ArrayList());
+//        ppcSpikeIdea.setL(new ArrayList());
+//        Idea spikeITCDataIdea = new Idea(SPIKE_ITC_DATA_IDEA, spikeITCData);
+//        Idea spikePPCDataIdea = new Idea(SPIKE_PPC_DATA_IDEA, spikePPCData);
+//        System.out.println("Saved spike itc: " + spikeITCData);
+//        System.out.println("Saved spike ppc: " + spikePPCData);
+//        itcSpikeIdea.add(spikeITCDataIdea);
+//        ppcSpikeIdea.add(spikePPCDataIdea);
+        itcSpikeIdea.setValue(spikeITCData);
+        ppcSpikeIdea.setValue(spikePPCData);
         itcSpikeMO.setI(itcSpikeIdea);
         ppcSpikeMO.setI(ppcSpikeIdea);
     }

@@ -43,7 +43,7 @@ public class VLPFCCodelet extends Codelet {
     public void accessMemoryObjects() {
         vlpfcSpikeMO = (MemoryObject) getInput(Configuration.VLPFC_SPIKE_MO);
         vlpfcSpikeIdea = (Idea) vlpfcSpikeMO.getI();
-        data = (byte[]) vlpfcSpikeIdea.get(Configuration.SPIKE_VLPFC_DATA_IDEA).getValue();
+        data = (byte[]) vlpfcSpikeIdea.getValue();
         
         dlpfcSpikeMO = (MemoryObject) getOutput(Configuration.DLPFC_SPIKE_MO);
         dlpfcSpikeIdea = (Idea) dlpfcSpikeMO.getI();

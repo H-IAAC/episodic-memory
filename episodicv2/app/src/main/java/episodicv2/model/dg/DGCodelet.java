@@ -32,7 +32,7 @@ public class DGCodelet extends Codelet {
     public void accessMemoryObjects() {
         dgSpikeMO = (MemoryObject) getInput(Configuration.DG_SPIKE_MO);
         dgSpikeIdea = (Idea) dgSpikeMO.getI();
-        data = (byte[]) dgSpikeIdea.get(Configuration.SPIKE_DG_DATA_IDEA).getValue();
+        data = (byte[]) dgSpikeIdea.getValue();
         
         dgProcess1SpikeMO = (MemoryObject) getOutput(Configuration.DG_PROCESS_1_SPIKE_MO);
         dgProcess1SpikeIdea = (Idea) dgProcess1SpikeMO.getI();

@@ -37,7 +37,7 @@ public class PHCProcess1Codelet extends Codelet {
     public void accessMemoryObjects() {
         phcProcess1SpikeMO = (MemoryObject) getInput(Configuration.PHC_PROCESS_1_SPIKE_MO);
         phcProcess1SpikeIdea = (Idea) phcProcess1SpikeMO.getI();
-        data = (byte[]) phcProcess1SpikeIdea.get(Configuration.SPIKE_PHC_PROCESS_1_DATA_IDEA).getValue();
+        data = (byte[]) phcProcess1SpikeIdea.getValue();
         
         encSpikeMO = (MemoryObject) getOutput(Configuration.ENC_SPIKE_MO);
         encSpikeIdea = (Idea) encSpikeMO.getI();

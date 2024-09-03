@@ -39,7 +39,7 @@ public class ENCCodelet extends Codelet {
     public void accessMemoryObjects() {
         encSpikeMO = (MemoryObject) getInput(Configuration.ENC_SPIKE_MO);
         encSpikeIdea = (Idea) encSpikeMO.getI();
-        data = (byte[]) encSpikeIdea.get(Configuration.SPIKE_ENC_DATA_IDEA).getValue();
+        data = (byte[]) encSpikeIdea.getValue();
         
         dgSpikeMO = (MemoryObject) getOutput(Configuration.DG_SPIKE_MO);
         dgSpikeIdea = (Idea) dgSpikeMO.getI();

@@ -68,15 +68,11 @@ public final class App {
         MemoryObject itcSpikeMO;
         itcSpikeMO = m1.createMemoryObject(ITC_SPIKE_MO);
         Idea itcSpikeIdea = new Idea(ITC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeItcDataIdea = new Idea(SPIKE_ITC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        itcSpikeIdea.add(spikeItcDataIdea);
         itcSpikeMO.setI(itcSpikeIdea);
         
         MemoryObject ppcSpikeMO;
         ppcSpikeMO = m1.createMemoryObject(PPC_SPIKE_MO);
         Idea ppcSpikeIdea = new Idea(PPC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikePpcDataIdea = new Idea(SPIKE_PPC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        ppcSpikeIdea.add(spikePpcDataIdea);
         ppcSpikeMO.setI(ppcSpikeIdea);
 
         MemoryObject dlpfcSpikeMO;
@@ -92,174 +88,124 @@ public final class App {
         MemoryObject vlpfcProcess1SpikeMO;
         vlpfcProcess1SpikeMO = m1.createMemoryObject(VLPFC_PROCESS_1_SPIKE_MO);
         Idea vlpfcProcess1SpikeIdea = new Idea(VLPFC_PROCESS_1_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeVlpfcProcess1DataIdea = new Idea(SPIKE_VLPFC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        vlpfcProcess1SpikeIdea.add(spikeVlpfcProcess1DataIdea);
         vlpfcProcess1SpikeMO.setI(vlpfcProcess1SpikeIdea);
         
         MemoryObject vlpfcProcess2SpikeMO;
         vlpfcProcess2SpikeMO = m1.createMemoryObject(VLPFC_PROCESS_2_SPIKE_MO);
         Idea vlpfcProcess2SpikeIdea = new Idea(VLPFC_PROCESS_2_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeVlpfcProcess2DataIdea = new Idea(SPIKE_VLPFC_PROCESS_2_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        vlpfcProcess2SpikeIdea.add(spikeVlpfcProcess2DataIdea);
+
         vlpfcProcess2SpikeMO.setI(vlpfcProcess2SpikeIdea);
         
         MemoryObject vlpfcProcess3SpikeMO;
         vlpfcProcess3SpikeMO = m1.createMemoryObject(VLPFC_PROCESS_3_SPIKE_MO);
         Idea vlpfcProcess3SpikeIdea = new Idea(VLPFC_PROCESS_3_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeVlpfcProcess3DataIdea = new Idea(SPIKE_VLPFC_PROCESS_3_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        vlpfcProcess3SpikeIdea.add(spikeVlpfcProcess3DataIdea);
         vlpfcProcess3SpikeMO.setI(vlpfcProcess3SpikeIdea);
     
         MemoryObject prcSpikeMO;
         prcSpikeMO = m1.createMemoryObject(PRC_SPIKE_MO);
         Idea prcSpikeIdea = new Idea(PRC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikePrcDataIdea = new Idea(SPIKE_PRC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        prcSpikeIdea.add(spikePrcDataIdea);
         prcSpikeMO.setI(prcSpikeIdea);
         
-         
         MemoryObject mpfcSpikeMO;
         mpfcSpikeMO = m1.createMemoryObject(MPFC_SPIKE_MO);
         Idea mpfcSpikeIdea = new Idea(MPFC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeMpfcDataIdea = new Idea(SPIKE_MPFC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        mpfcSpikeIdea.add(spikeMpfcDataIdea);
         mpfcSpikeMO.setI(mpfcSpikeIdea);
         
         MemoryObject mpfcProcess1SpikeMO;
         mpfcProcess1SpikeMO = m1.createMemoryObject(MPFC_PROCESS_1_SPIKE_MO);
         Idea mpfcProcess1SpikeIdea = new Idea(MPFC_PROCESS_1_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeMpfcProcess1DataIdea = new Idea(SPIKE_MPFC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        mpfcProcess1SpikeIdea.add(spikeMpfcProcess1DataIdea);
         mpfcProcess1SpikeMO.setI(mpfcProcess1SpikeIdea);
         
         MemoryObject mpfcProcess2SpikeMO;
         mpfcProcess2SpikeMO = m1.createMemoryObject(MPFC_PROCESS_2_SPIKE_MO);
         Idea mpfcProcess2SpikeIdea = new Idea(MPFC_PROCESS_2_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeMpfcProcess2DataIdea = new Idea(SPIKE_MPFC_PROCESS_2_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        mpfcProcess2SpikeIdea.add(spikeMpfcProcess2DataIdea);
         mpfcProcess2SpikeMO.setI(mpfcProcess2SpikeIdea);
         
         MemoryObject encSpikeMO;
         encSpikeMO = m1.createMemoryObject(ENC_SPIKE_MO);
         Idea encSpikeIdea = new Idea(ENC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeEncDataIdea = new Idea(SPIKE_ENC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        encSpikeIdea.add(spikeEncDataIdea);
         encSpikeMO.setI(encSpikeIdea);
         
         MemoryObject itcProcess1SpikeMO;
         itcProcess1SpikeMO = m1.createMemoryObject(ITC_PROCESS_1_SPIKE_MO);
         Idea itcProcess1SpikeIdea = new Idea(ITC_PROCESS_1_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeItcProcess1DataIdea = new Idea(SPIKE_ITC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        itcProcess1SpikeIdea.add(spikeItcProcess1DataIdea);
         itcProcess1SpikeMO.setI(itcProcess1SpikeIdea);
         
         MemoryObject prcProcess1SpikeMO;
         prcProcess1SpikeMO = m1.createMemoryObject(PRC_PROCESS_1_SPIKE_MO);
         Idea prcProcess1SpikeIdea = new Idea(PRC_PROCESS_1_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikePrcProcess1DataIdea = new Idea(SPIKE_PRC_PROCESS_1_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        prcProcess1SpikeIdea.add(spikePrcProcess1DataIdea);
         prcProcess1SpikeMO.setI(prcProcess1SpikeIdea);
 
         MemoryObject prcProcess2SpikeMO;
         prcProcess2SpikeMO = m1.createMemoryObject(PRC_PROCESS_2_SPIKE_MO);
         Idea prcProcess2SpikeIdea = new Idea(PRC_PROCESS_2_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikePrcProcess2DataIdea = new Idea(SPIKE_PRC_PROCESS_2_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        prcProcess2SpikeIdea.add(spikePrcProcess2DataIdea);
         prcProcess2SpikeMO.setI(prcProcess2SpikeIdea);
 
         MemoryObject prcProcess3SpikeMO;
         prcProcess3SpikeMO = m1.createMemoryObject(PRC_PROCESS_3_SPIKE_MO);
         Idea prcProcess3SpikeIdea = new Idea(PRC_PROCESS_3_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikePrcProcess3DataIdea = new Idea(SPIKE_PRC_PROCESS_3_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        prcProcess3SpikeIdea.add(spikePrcProcess3DataIdea);
         prcProcess3SpikeMO.setI(prcProcess3SpikeIdea);
         
         MemoryObject itcProcess2SpikeMO;
         itcProcess2SpikeMO = m1.createMemoryObject(ITC_PROCESS_2_SPIKE_MO);
         Idea itcProcess2SpikeIdea = new Idea(ITC_PROCESS_2_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeItcProcess2DataIdea = new Idea(SPIKE_ITC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        itcProcess2SpikeIdea.add(spikeItcProcess2DataIdea);
         itcProcess2SpikeMO.setI(itcSpikeIdea);
         
         MemoryObject phcSpikeMO;
         phcSpikeMO = m1.createMemoryObject(PHC_SPIKE_MO);
         Idea phcSpikeIdea = new Idea(PHC_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikePhcDataIdea = new Idea(SPIKE_PHC_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        phcSpikeIdea.add(spikePhcDataIdea);
         phcSpikeMO.setI(phcSpikeIdea);
                 
         MemoryObject phcProcess1SpikeMO;
         phcProcess1SpikeMO = m1.createMemoryObject(PHC_PROCESS_1_SPIKE_MO);
         Idea phcProcess1SpikeIdea = new Idea(PHC_PROCESS_1_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikePhcProcess1DataIdea = new Idea(SPIKE_PHC_PROCESS_1_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        phcProcess1SpikeIdea.add(spikePhcProcess1DataIdea);
         phcProcess1SpikeMO.setI(phcProcess1SpikeIdea);
 
         MemoryObject dgSpikeMO;
         dgSpikeMO = m1.createMemoryObject(DG_SPIKE_MO);
         Idea dgSpikeIdea = new Idea(DG_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        Idea spikeDgDataIdea = new Idea(SPIKE_DG_DATA_IDEA,null,CATEGORY_PROPERTY,1);
-        dgSpikeIdea.add(spikeDgDataIdea);
         dgSpikeMO.setI(dgSpikeIdea);
         
         MemoryObject ca3SpikeMO;
         ca3SpikeMO = m1.createMemoryObject(CA3_SPIKE_MO);
         Idea ca3SpikeIdea = new Idea(CA3_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa3DataIdea = new Idea(SPIKE_CA3_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca3SpikeIdea.add(spikeCa3DataIdea);
         ca3SpikeMO.setI(ca3SpikeIdea);
                 
         MemoryObject ca3Process1SpikeMO;
         ca3Process1SpikeMO = m1.createMemoryObject(CA3_PROCESS_1_SPIKE_MO);
         Idea ca3Process1SpikeIdea = new Idea(CA3_PROCESS_1_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa3Process1DataIdea = new Idea(SPIKE_CA3_PROCESS_1_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca3Process1SpikeIdea.add(spikeCa3Process1DataIdea);
         ca3Process1SpikeMO.setI(ca3Process1SpikeIdea);
         
         MemoryObject ca3Process2SpikeMO;
         ca3Process2SpikeMO = m1.createMemoryObject(CA3_PROCESS_2_SPIKE_MO);
         Idea ca3Process2SpikeIdea = new Idea(CA3_PROCESS_2_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa3Process2DataIdea = new Idea(SPIKE_CA3_PROCESS_2_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca3Process2SpikeIdea.add(spikeCa3Process2DataIdea);
         ca3Process2SpikeMO.setI(ca3Process2SpikeIdea);
         
         MemoryObject ca3Process3SpikeMO;
         ca3Process3SpikeMO = m1.createMemoryObject(CA3_PROCESS_3_SPIKE_MO);
         Idea ca3Process3SpikeIdea = new Idea(CA3_PROCESS_3_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa3Process3DataIdea = new Idea(SPIKE_CA3_PROCESS_3_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca3Process3SpikeIdea.add(spikeCa3Process3DataIdea);
         ca3Process3SpikeMO.setI(ca3Process3SpikeIdea);
         
         MemoryObject ca1SpikeMO;
         ca1SpikeMO = m1.createMemoryObject(CA1_SPIKE_MO);
         Idea ca1SpikeIdea = new Idea(CA1_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa1DataIdea = new Idea(SPIKE_CA1_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca1SpikeIdea.add(spikeCa1DataIdea);
         ca1SpikeMO.setI(ca1SpikeIdea);
         
         
         MemoryObject ca1Process1SpikeMO = m1.createMemoryObject(CA1_PROCESS_1_SPIKE_MO);
         Idea ca1Process1SpikeIdea = new Idea(CA1_PROCESS_1_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa1Process1DataIdea = new Idea(SPIKE_CA1_PROCESS_1_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca1Process1SpikeIdea.add(spikeCa1Process1DataIdea);
         ca1Process1SpikeMO.setI(ca1Process1SpikeIdea);
 
         MemoryObject ca1Process2SpikeMO = m1.createMemoryObject(CA1_PROCESS_2_SPIKE_MO);
         Idea ca1Process2SpikeIdea = new Idea(CA1_PROCESS_2_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa1Process2DataIdea = new Idea(SPIKE_CA1_PROCESS_2_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca1Process2SpikeIdea.add(spikeCa1Process2DataIdea);
         ca1Process2SpikeMO.setI(ca1Process2SpikeIdea);
 
         MemoryObject ca1Process3SpikeMO = m1.createMemoryObject(CA1_PROCESS_3_SPIKE_MO);
         Idea ca1Process3SpikeIdea = new Idea(CA1_PROCESS_3_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeCa1Process3DataIdea = new Idea(SPIKE_CA1_PROCESS_3_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        ca1Process3SpikeIdea.add(spikeCa1Process3DataIdea);
         ca1Process3SpikeMO.setI(ca1Process3SpikeIdea);
 
         MemoryObject sbSpikeMO = m1.createMemoryObject(SB_SPIKE_MO);
         Idea sbSpikeIdea = new Idea(SB_SPIKE_IDEA, null, CATEGORY_PROPERTY, 1);
-        Idea spikeSbDataIdea = new Idea(SPIKE_SB_DATA_IDEA, null, CATEGORY_PROPERTY, 1);
-        sbSpikeIdea.add(spikeSbDataIdea);
         sbSpikeMO.setI(sbSpikeIdea);
 
         //INITIALIZE CODELETS
@@ -476,7 +422,7 @@ public final class App {
                 "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard",
                 "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana",
                 "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza", "donut", "cake",
-                "chair", "sofa", "potted plant", "bed", "dining table", "toilet", "tv", "laptop", "mouse",
+                "chair", "sofa", "pottedplant", "bed", "diningtable", "toilet", "tvmonitor", "laptop", "mouse",
                 "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator",
                 "book", "clock", "vase", "scissors", "teddy bear", "hair drier", "toothbrush", "couch"};
 

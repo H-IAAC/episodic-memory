@@ -44,14 +44,16 @@ public class ITCCodelet extends Codelet {
         itcSpikeMO = (MemoryObject) getInput(Configuration.ITC_SPIKE_MO);
         itcSpikeIdea = (Idea) itcSpikeMO.getI();
         
-        Object dataObject = itcSpikeIdea.get(Configuration.SPIKE_ITC_DATA_IDEA).getValue();
+        Object dataObject = itcSpikeIdea.getValue();
         dataSpike = null;
         dataString = null;
         if (dataObject instanceof byte[]) {
             dataSpike = (byte[]) dataObject;
+            System.out.println("Recebeu um spike");
 
         } else if (dataObject instanceof String) {
             dataString = (String) dataObject;
+            System.out.println("Recebeu uma string");
         } else {
             // Caso o tipo não seja o esperado
             System.out.println("Tipo de dado inesperado");
@@ -93,7 +95,9 @@ public class ITCCodelet extends Codelet {
 
                 SpikeObject<ArrayList<CObject>> spike = new SpikeObject(SpikeType.RECOGNIZED_OBJECTS, encapsulatedObjects.getObjects(), encapsulatedObjects.getTime());
                 System.out.println("Processando ITC Codelet dataString : " + spike.getName());
-                prcSpikeIdea.setValue(dataString);
+                
+                prcSpikeIdea.setValue(spike.toBytes());
+                System.out.println("Spike: " + spike.toBytes());
                 prcSpikeMO.setI(prcSpikeIdea);
 //                send(AreaNames.PRC, spike.toBytes());
             }
