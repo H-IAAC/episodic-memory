@@ -14,6 +14,7 @@ import episodicv2.core.entities.SceneRelation;
 import episodicv2.core.spike.SpikeObject;
 import episodicv2.core.spike.SpikeType;
 import episodicv2.core.storage.mpfc.ScenesWMQueue;
+import episodicv2.utils.SimpleLogger;
 import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
@@ -110,25 +111,16 @@ public class MPFCProcess1Codelet extends Codelet {
 
                         sceneRelations = (ArrayList<SceneRelation>) rawSpike.getObject();
                         
-                        if (sceneRelations != null) {
-                                                        
-                            if (!sceneRelations.isEmpty()) {
+                        if (sceneRelations != null && !sceneRelations.isEmpty()) {
 
-                               
-                                items.addRelations(sceneRelations.get(0).getScene2Id(), sceneRelations);
+                            items.addRelations(sceneRelations.get(0).getScene2Id(), sceneRelations);
 
-                                SwingUtilities.invokeLater(new Runnable() {
-                                    public void run() {
-                                        viewer.setItems(items.getItems());
-                                        
-                                       
-                                        //viewer.setRelations(sceneRelations.get(0).getScene2Id(), sceneRelations);
-                                        
-                                        viewer.setRelations(items.getRelations());
-                                    }
-                                });
-
-                            }
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
+                                    viewer.setItems(items.getItems());
+                                    viewer.setRelations(items.getRelations());
+                                }
+                            });
                         }
                     }
 
@@ -137,9 +129,7 @@ public class MPFCProcess1Codelet extends Codelet {
                 case SpikeType.SIMILAR_SCENES:
                 case SpikeType.RETRIEVED_SCENE_TOP_DOWN:
                 case SpikeType.RETRIEVED_SCENE_TOP_DOWN_LTM:
-                    
-                    //SimpleLogger.log(this, "Received TOP-DOWN SS");
-                    
+                                        
                     if (taskSet.getAllowedProcessingFlow() == 0 || rawSpike.getProcessingFlow() == taskSet.getAllowedProcessingFlow()) {
                         similarScenes = (ArrayList<Scene>) rawSpike.getObject();
 
@@ -192,7 +182,6 @@ public class MPFCProcess1Codelet extends Codelet {
 
                         SpikeObject<ArrayList<Scene>> spikeResponse = new SpikeObject(SpikeType.RETRIEVED_SCENE_TOP_DOWN, similarScenes, 0);
 
-//                        send(AreaNames.DLPFC, spikeResponse.toBytes());
                         dlpfcSpikeIdea.setValue(spikeResponse.toBytes());
                         dlpfcSpikeMO.setI(dlpfcSpikeIdea);
                         
@@ -201,16 +190,10 @@ public class MPFCProcess1Codelet extends Codelet {
                         
                         dlpfcSpikeIdea.setValue(sceneRelationsSpike.toBytes());
                         dlpfcSpikeMO.setI(dlpfcSpikeIdea);
-//                        send(AreaNames.DLPFC, sceneRelationsSpike.toBytes());
-
-                        //SimpleLogger.log(this, "Retrieved pattern: " + retrievedScene.getId() + "," + retrievedScene.getPattern());
 
                     } else {
-                        
-                        //SimpleLogger.log(this, "Pattern does not exist, searching in CA3: " + scene.getPattern());
                         encSpikeIdea.setValue(data);
                         encSpikeMO.setI(encSpikeIdea);
-//                        send(AreaNames.ENC, data);
                     }
 
                     break;
@@ -229,19 +212,15 @@ public class MPFCProcess1Codelet extends Codelet {
 
                         SpikeObject<ArrayList<Scene>> spikeResponse = new SpikeObject(SpikeType.RETRIEVED_SCENE_TOP_DOWN, similarScenes, 0);
                         
-//                        send(AreaNames.DLPFC, spikeResponse.toBytes());
                         dlpfcSpikeIdea.setValue(spikeResponse.toBytes());
                         dlpfcSpikeMO.setI(dlpfcSpikeIdea);
 
                         SpikeObject<ArrayList<SceneRelation>> sceneRelationsSpike = new SpikeObject(SpikeType.RETRIEVED_SCENE_RELATION_TOP_DOWN, sceneByID.getRelations(), 0);
 
-//                        send(AreaNames.DLPFC, sceneRelationsSpike.toBytes());
                         dlpfcSpikeIdea.setValue(sceneRelationsSpike.toBytes());
                         dlpfcSpikeMO.setI(dlpfcSpikeIdea);
 
                     } else {
-                        //SimpleLogger.log(this, "Scene with ID: " + idSpike.getObject() + " does not exist, search in CA3");
-//                        send(AreaNames.ENC, data);
                         encSpikeIdea.setValue(data);
                         encSpikeMO.setI(encSpikeIdea);
                     }
@@ -257,7 +236,7 @@ public class MPFCProcess1Codelet extends Codelet {
                 case SpikeType.TASK_SET:
                     
                     taskSet = ((SpikeObject<TaskSet>)rawSpike).getObject();
-                    System.out.println("The Task Set has been changed");
+                    SimpleLogger.log(this, "The Task Set has been changed");
                     
                     break;
             }

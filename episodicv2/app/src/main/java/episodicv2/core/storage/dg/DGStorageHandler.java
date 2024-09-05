@@ -6,6 +6,7 @@
 package episodicv2.core.storage.dg;
 
 import episodicv2.core.configuration.Configuration;
+import static episodicv2.core.configuration.Configuration.DG_SIZE_FILENAME;
 import episodicv2.core.entities.Scene;
 import episodicv2.core.t2string.T2DString;
 import episodicv2.utils.SimpleLogger;
@@ -98,10 +99,10 @@ public class DGStorageHandler {
      */
     public void loadDGSize() {
         try {
-            File file = new File(STORAGE_PATH + "dg_size.txt");
+            File file = new File(STORAGE_PATH + DG_SIZE_FILENAME);
 
             if (file.exists()) {
-                BufferedReader br = new BufferedReader(new FileReader(STORAGE_PATH + "dg_size.txt"));
+                BufferedReader br = new BufferedReader(new FileReader(STORAGE_PATH + DG_SIZE_FILENAME));
 
                 String line = br.readLine();
 
@@ -219,7 +220,7 @@ public class DGStorageHandler {
             }
 
             //SAVE THE CURRENT DG_SIZE
-            File dgSizeFile = new File(STORAGE_PATH + "dg_size.txt");
+            File dgSizeFile = new File(STORAGE_PATH + DG_SIZE_FILENAME);
             PrintWriter dgSizeFileWriter = new PrintWriter(new FileWriter(dgSizeFile));
 
             dgSizeFileWriter.println(DG_SIZE);

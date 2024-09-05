@@ -97,23 +97,21 @@ public class CA1Process1Codelet extends Codelet {
                     break;
             }
 
-            if (scene != null) {
-                if (scene.getId() != 0) {
+            if (scene != null && scene.getId() != 0) {
 
-                    int tuple[] = queue.addSceneId(scene.getId());
+                int tuple[] = queue.addSceneId(scene.getId());
 
-                    if (tuple != null) {
+                if (tuple != null) {
 
-                        affectIntensity = emotionalDecay.getActivation();
+                    affectIntensity = emotionalDecay.getActivation();
 
-                        SceneRelation sr = new SceneRelation(tuple[0], tuple[1], rawSpike.getTime());
+                    SceneRelation sr = new SceneRelation(tuple[0], tuple[1], rawSpike.getTime());
 
-                        graph.addVertex(sr, affectIntensity);
+                    graph.addVertex(sr, affectIntensity);
 
-                        //graph.printGraph();
-                    } else {
-                        SimpleLogger.log(this, "Empty queue");
-                    }
+                    //graph.printGraph();
+                } else {
+                    SimpleLogger.log(this, "Empty queue");
                 }
             }
 

@@ -149,7 +149,7 @@ public final class App {
         MemoryObject itcProcess2SpikeMO;
         itcProcess2SpikeMO = m1.createMemoryObject(ITC_PROCESS_2_SPIKE_MO);
         Idea itcProcess2SpikeIdea = new Idea(ITC_PROCESS_2_SPIKE_IDEA,null,CATEGORY_PROPERTY,1);
-        itcProcess2SpikeMO.setI(itcSpikeIdea);
+        itcProcess2SpikeMO.setI(itcProcess2SpikeIdea);
         
         MemoryObject phcSpikeMO;
         phcSpikeMO = m1.createMemoryObject(PHC_SPIKE_MO);
@@ -462,8 +462,8 @@ public final class App {
         }
 
         // Exibe o resultado
-        System.out.println("Labels ID Map: " + labelsId);
-        System.out.println("Allowed Classes Map: " + allowedClasses);
+//        System.out.println("Labels ID Map: " + labelsId);
+//        System.out.println("Allowed Classes Map: " + allowedClasses);
         return labelsId;
     }
     

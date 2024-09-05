@@ -133,6 +133,9 @@ public class CA3Process3Codelet extends Codelet {
                         returnedType = SpikeType.RETRIEVED_LESS_NEG_AFFECTIVE_SCENE_TOP_DOWN;
                         
                         break;
+                        
+                    default:
+                        break;
                 }
 
                 sceneWrapper.add(affectiveScene);

@@ -120,6 +120,7 @@ public class Configuration {
     public static final String ITC_FEATURES_BASEFILENAME = "class_";
     public static final String PRC_STORAGE_FILENAME = "prc_objects.txt";
     public static final String DG_STORAGE_FILENAME = "dg_scenes.txt";
+    public static final String DG_SIZE_FILENAME = "dg_size.txt";
     public static final String CA3_STORAGE_FILENAME = "ca3_scenes.txt";
     public static final String CA3_STORAGE_POS_AFFECT = "ca3_scenes_positive_affect.txt";
     public static final String CA3_STORAGE_NEG_AFFECT = "ca3_scenes_negative_affect.txt";

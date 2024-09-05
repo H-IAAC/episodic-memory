@@ -4,7 +4,6 @@
  */
 package episodicv2.model.sb;
 
-import episodicv2.FutureCodelets.*;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.representation.idea.Idea;
@@ -41,6 +40,7 @@ public class SBCodelet extends Codelet {
 //        send(AreaNames.ENC, data);
         encSpikeIdea.setValue(data);
         encSpikeMO.setI(encSpikeIdea);
+        
     }
     
     @Override

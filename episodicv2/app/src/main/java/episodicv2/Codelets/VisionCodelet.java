@@ -35,6 +35,7 @@ import static episodicv2.core.configuration.Configuration.*;
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.IOException;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -47,8 +48,6 @@ import org.json.simple.JSONObject;
  * @author karenlima
  */
 public class VisionCodelet extends Codelet {
-    
-    private MemoryObject imageReceivedFromConnectionMO;
     private Idea imageReceivedFromConnectionIdea;
     
     private MemoryObject itcSpikeMO;
@@ -64,6 +63,8 @@ public class VisionCodelet extends Codelet {
     Boolean hasAnyObject = false;
     
     List<String> cocoLabels = new ArrayList<>();
+    
+    String labelString = "label";
     
     String s;
     Net dnnNet;
@@ -86,7 +87,7 @@ public class VisionCodelet extends Codelet {
     
     @Override
     public void accessMemoryObjects() {
-
+        MemoryObject imageReceivedFromConnectionMO;
         imageReceivedFromConnectionMO = (MemoryObject) getInput(Configuration.IMAGE_RECEIVED_FROM_CONNECTION_MO);
         imageReceivedFromConnectionIdea = (Idea) imageReceivedFromConnectionMO.getI();
         
@@ -94,7 +95,6 @@ public class VisionCodelet extends Codelet {
         
         if (image != null) {
             System.out.println("image received on vision");
-//            displayImage(image);
         }
         
         itcSpikeMO = (MemoryObject) getOutput(Configuration.ITC_SPIKE_MO);
@@ -103,19 +103,7 @@ public class VisionCodelet extends Codelet {
         ppcSpikeMO = (MemoryObject) getOutput(Configuration.PPC_SPIKE_MO);
         ppcSpikeIdea = (Idea) ppcSpikeMO.getI();
     }
-    
-    public static void displayImage(BufferedImage image) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        ImageIcon icon = new ImageIcon(image);
-        JLabel label = new JLabel(icon);
-        
-        frame.getContentPane().add(label, BorderLayout.CENTER);
-        frame.pack();
-        frame.setVisible(true);
-    }
-    
+
     @Override
     public void proc() {
         try {
@@ -128,15 +116,7 @@ public class VisionCodelet extends Codelet {
         }
     }
     
-     private void saveObjectsIdea() {//TODO: ver se precisa criar essas novas ideas msms
-//        itcSpikeIdea.setL(new ArrayList());
-//        ppcSpikeIdea.setL(new ArrayList());
-//        Idea spikeITCDataIdea = new Idea(SPIKE_ITC_DATA_IDEA, spikeITCData);
-//        Idea spikePPCDataIdea = new Idea(SPIKE_PPC_DATA_IDEA, spikePPCData);
-//        System.out.println("Saved spike itc: " + spikeITCData);
-//        System.out.println("Saved spike ppc: " + spikePPCData);
-//        itcSpikeIdea.add(spikeITCDataIdea);
-//        ppcSpikeIdea.add(spikePPCDataIdea);
+     private void saveObjectsIdea() {
         itcSpikeIdea.setValue(spikeITCData);
         ppcSpikeIdea.setValue(spikePPCData);
         itcSpikeMO.setI(itcSpikeIdea);
@@ -162,16 +142,19 @@ public class VisionCodelet extends Codelet {
         System.load(s+"/libs/libopencv_java480.so");
         System.out.println("OpenCV lib loaded");
         
-        //  load the COCO class labels our YOLO model was trained on
-        Scanner scan = new Scanner(new FileReader(s+"/yolo/files/coco.names"));
-        
-        while(scan.hasNextLine()) {
-            cocoLabels.add(scan.nextLine());
+        // Load the COCO class labels our YOLO model was trained on
+        try (Scanner scan = new Scanner(new FileReader(s + "/yolo/files/coco.names"))) {
+
+            while(scan.hasNextLine()) {
+                cocoLabels.add(scan.nextLine());
+            }
+            //  load our YOLO object detector trained on COCO dataset
+          dnnNet = Dnn.readNetFromDarknet(s+"/yolo/files/yolov3.cfg", s+"/yolo/files/yolov3.weights");
+            // YOLO on GPU: 
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        
-        //  load our YOLO object detector trained on COCO dataset
-      dnnNet = Dnn.readNetFromDarknet(s+"/yolo/files/yolov3.cfg", s+"/yolo/files/yolov3.weights");
-        // YOLO on GPU: 
+
     }
     
     private void detectObjectOnImage() throws FileNotFoundException {
@@ -314,7 +297,7 @@ public class VisionCodelet extends Codelet {
                 if (indicesList.contains(i)) {
                     Rect2d box = boxes.get(i);  // Obtém a caixa delimitadora (bounding box)
                     String label = cocoLabels.get(classIds.get(i));  // Obtém o rótulo correspondente ao ID da classe
-                    System.out.println("label: " + label);
+                    System.out.println(labelString + ": " + label);
 
                     // Calcula o ponto central da caixa delimitadora
                     Double xpoint = box.x + (box.width / 2);
@@ -322,7 +305,7 @@ public class VisionCodelet extends Codelet {
 
                     // Cria um mapa para armazenar as informações da detecção
                     Map<String, String> detectionData = new HashMap<>();
-                    detectionData.put("label", label);
+                    detectionData.put(labelString, label);
                     detectionData.put("classId", String.valueOf(classIds.get(i)));  // Armazena o ID da classe
                     detectionData.put("xpoint", xpoint.toString());  // Armazena o ponto x
                     detectionData.put("ypoint", ypoint.toString());  // Armazena o ponto y
@@ -348,12 +331,10 @@ public class VisionCodelet extends Codelet {
         // Itera sobre os objetos de detecção
         for (Map<String, String> eachObject : detections) {
             detectionId++;
-            System.out.println("Detected object name: " + eachObject.get("label"));
-
             JSONObject objectData = new JSONObject();
             objectData.put("pid", detectionId);
-            objectData.put("id", this.dictionary.get(eachObject.get("label")));
-            objectData.put("class", eachObject.get("label"));
+            objectData.put("id", this.dictionary.get(eachObject.get(labelString)));
+            objectData.put("class", eachObject.get(labelString));
             objectData.put("features", "");
 
             objectLog.add(objectData);

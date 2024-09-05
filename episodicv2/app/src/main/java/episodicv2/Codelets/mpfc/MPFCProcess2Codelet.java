@@ -104,11 +104,6 @@ public class MPFCProcess2Codelet extends Codelet {
                 case SpikeType.RETRIEVED_AFFECTIVE_SCENE_RELATION_TOP_DOWN:
 
                     SpikeObject<ArrayList<SceneRelation>> sceneRelationsSpike = rawSpike;
-                    /*
-                    for(SceneRelation sr: sceneRelationsSpike.getObject()){
-                        System.out.println(sr.toString());
-                    }*/
-
                     break;
             }
 
@@ -131,7 +126,6 @@ public class MPFCProcess2Codelet extends Codelet {
                 } else {
                     encSpikeIdea.setValue(data);
                     encSpikeMO.setI(encSpikeIdea);
-//                    send(AreaNames.ENC, data);
                 }
 
                 break;
@@ -142,7 +136,6 @@ public class MPFCProcess2Codelet extends Codelet {
                 } else {
                     encSpikeIdea.setValue(data);
                     encSpikeMO.setI(encSpikeIdea);
-//                    send(AreaNames.ENC, data);
                 }
                 break;
             case TopDownParameters.MAX_NEGATIVE_AFFECT:
@@ -151,7 +144,6 @@ public class MPFCProcess2Codelet extends Codelet {
                 } else {
                     encSpikeIdea.setValue(data);
                     encSpikeMO.setI(encSpikeIdea);
-//                    send(AreaNames.ENC, data);
                 }
                 break;
             case TopDownParameters.MIN_NEGATIVE_AFFECT:
@@ -160,7 +152,6 @@ public class MPFCProcess2Codelet extends Codelet {
                 } else {
                     encSpikeIdea.setValue(data);
                     encSpikeMO.setI(encSpikeIdea);
-//                    send(AreaNames.ENC, data);
                 }
                 break;
         }

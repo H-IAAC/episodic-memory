@@ -358,6 +358,9 @@ public class DLPFCCodelet extends DLPFCBaseController {
                 visitedNodesID.add(currentScene.getId());
                 addOrInitializeVR(currentScene.getId());
                 break;
+                
+            default:
+                break;
         }
     }
     
@@ -452,6 +455,9 @@ public class DLPFCCodelet extends DLPFCBaseController {
                     System.out.println("LA ESCENA NO TIENE RELACIONES");
                 }
 
+                break;
+                
+            default:
                 break;
 
         }

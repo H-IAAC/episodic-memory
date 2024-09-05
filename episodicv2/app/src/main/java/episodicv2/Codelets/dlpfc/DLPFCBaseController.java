@@ -24,8 +24,6 @@ import java.util.ArrayList;
 public abstract class DLPFCBaseController extends Codelet {
     
     private TaskSet taskSet;
-    private MemoryObject dlpfcBaseControllerSpikeMO;
-    private Idea dlpfcBaseControllerSpikeIdea;
     private MemoryObject vlpfcProcess1SpikeMO;
     private Idea vlpfcProcess1SpikeIdea;
     private MemoryObject vlpfcProcess2SpikeMO;
@@ -39,20 +37,16 @@ public abstract class DLPFCBaseController extends Codelet {
     
     private byte[] data = null;
     
-    public DLPFCBaseController() {
+    DLPFCBaseController() {
 
         taskSet = new TaskSet();
-        /*
-        this.ID = AreaNames.DLPFC;
-        this.namer = AreaNames.class;
-
-        taskSet = new TaskSet();
-        addProcess(DLPFCProcess1.class);*/
     }
 
 
     @Override
     public void accessMemoryObjects() {
+        MemoryObject dlpfcBaseControllerSpikeMO;
+        Idea dlpfcBaseControllerSpikeIdea;
         dlpfcBaseControllerSpikeMO = (MemoryObject) getInput(Configuration.DLPFC_BASE_CONTROLLER_SPIKE_MO);
         dlpfcBaseControllerSpikeIdea = (Idea) dlpfcBaseControllerSpikeMO.getI();
         
@@ -187,25 +181,21 @@ public abstract class DLPFCBaseController extends Codelet {
     public void searchItem(SpikeObject spike) {
         vlpfcProcess1SpikeIdea.setValue(spike.toBytes());
         vlpfcProcess1SpikeMO.setI(vlpfcProcess1SpikeIdea);
-//        send(AreaNames.VLPFCProcess1, spike.toBytes());
     }
 
     public void searchItemRelations(SpikeObject spike) {
         vlpfcProcess2SpikeIdea.setValue(spike.toBytes());
         vlpfcProcess2SpikeMO.setI(vlpfcProcess2SpikeIdea);
-//        send(AreaNames.VLPFCProcess2, spike.toBytes());
     }
 
     public void searchScenes(SpikeObject spike) {
         mpfcProcess1SpikeIdea.setValue(spike.toBytes());
         mpfcProcess1SpikeMO.setI(mpfcProcess1SpikeIdea);
-//        send(AreaNames.MPFCProcess1, spike.toBytes());
     }
 
     public void searchSceneByID(SpikeObject spike) {
         mpfcProcess1SpikeIdea.setValue(spike.toBytes());
         mpfcProcess1SpikeMO.setI(mpfcProcess1SpikeIdea);
-//        send(AreaNames.MPFCProcess1, spike.toBytes());
     }
 
     public void searchSceneByPattern(String pattern) {
@@ -213,7 +203,6 @@ public abstract class DLPFCBaseController extends Codelet {
         SpikeObject<Scene> spike = new SpikeObject(SpikeType.REQUEST_SIMILAR_SCENES, scene, 0);
         mpfcProcess1SpikeIdea.setValue(spike.toBytes());
         mpfcProcess1SpikeMO.setI(mpfcProcess1SpikeIdea);
-//        send(AreaNames.MPFCProcess1, spike.toBytes());
     }
 
     public void searchSceneByID(int id) {
@@ -237,7 +226,6 @@ public abstract class DLPFCBaseController extends Codelet {
     public void searchItemByAffect(SpikeObject spike) {
         vlpfcProcess3SpikeIdea.setValue(spike.toBytes());
         vlpfcProcess3SpikeMO.setI(vlpfcProcess3SpikeIdea);
-//        send(AreaNames.VLPFCProcess3, spike.toBytes());
     }
 
     public void searchMostAffectiveScene() {
@@ -253,7 +241,6 @@ public abstract class DLPFCBaseController extends Codelet {
     public void searchSceneByAffect(SpikeObject spike) {
         mpfcProcess2SpikeIdea.setValue(spike.toBytes());
         mpfcProcess2SpikeMO.setI(mpfcProcess2SpikeIdea);
-//        send(AreaNames.MPFCProcess2, spike.toBytes());
     }
 
     public void setAllowedClasses(SpikeObject spike) {
@@ -261,18 +248,15 @@ public abstract class DLPFCBaseController extends Codelet {
         //FOR OBJECT
         vlpfcProcess1SpikeIdea.setValue(spike.toBytes());
         vlpfcProcess1SpikeMO.setI(vlpfcProcess1SpikeIdea);
-//        send(AreaNames.VLPFCProcess1, spike.toBytes());
 
         //FOR RELATIONS
         vlpfcProcess2SpikeIdea.setValue(spike.toBytes());
         vlpfcProcess2SpikeMO.setI(vlpfcProcess2SpikeIdea);
-//        send(AreaNames.VLPFCProcess2, spike.toBytes());
     }
 
     public void setAllowedScene(SpikeObject spike) {
         mpfcProcess1SpikeIdea.setValue(spike.toBytes());
         mpfcProcess1SpikeMO.setI(mpfcProcess1SpikeIdea);
-//        send(AreaNames.MPFCProcess1, spike.toBytes());
     }
 
     public TaskSet getTaskSet() {

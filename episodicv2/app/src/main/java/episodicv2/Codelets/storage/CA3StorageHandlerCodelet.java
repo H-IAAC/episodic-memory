@@ -65,15 +65,13 @@ public class CA3StorageHandlerCodelet extends Codelet {
     
     @Override
     public void proc() {
-        if (newEncodedSceneToStoreIdea != null) {
-            if (newEncodedSceneToStoreIdea.get(SCENE_IDEA) != null) {
-                double affectIntensity = (double) newEncodedSceneToStoreIdea.get(AFFECT_INTENSITY_IDEA).getValue();
-                double positiveAffect = (double) newEncodedSceneToStoreIdea.get(POSITIVE_AFFECT_IDEA).getValue();
-                double negativeAffect = (double) newEncodedSceneToStoreIdea.get(NEGATIVE_AFFECT_IDEA).getValue();
-                Idea sceneIdea = (Idea) newEncodedSceneToStoreIdea.get(SCENE_IDEA);
-                storeScene(sceneIdea, positiveAffect, negativeAffect, affectIntensity);
-                persistScenes();
-            }
+        if (newEncodedSceneToStoreIdea != null && newEncodedSceneToStoreIdea.get(SCENE_IDEA) != null) {
+            double affectIntensity = (double) newEncodedSceneToStoreIdea.get(AFFECT_INTENSITY_IDEA).getValue();
+            double positiveAffect = (double) newEncodedSceneToStoreIdea.get(POSITIVE_AFFECT_IDEA).getValue();
+            double negativeAffect = (double) newEncodedSceneToStoreIdea.get(NEGATIVE_AFFECT_IDEA).getValue();
+            Idea sceneIdea = (Idea) newEncodedSceneToStoreIdea.get(SCENE_IDEA);
+            storeScene(sceneIdea, positiveAffect, negativeAffect, affectIntensity);
+            persistScenes();
         }
     }
     
@@ -104,10 +102,8 @@ public class CA3StorageHandlerCodelet extends Codelet {
     public void storeScene(Idea scene, double positiveAffect, double negativeAffect, double affectIntensity) {
         //if has the same id, then just update the values
         int sceneId = (int) scene.get(ID_IDEA).getValue();
-        if (midTermMemoryScenesByID != null) {
-            if (midTermMemoryScenesByID.containsKey(sceneId)) {
-                midTermMemoryScenesByID.remove(sceneId);
-            } 
+        if (midTermMemoryScenesByID != null && midTermMemoryScenesByID.containsKey(sceneId)) {
+            midTermMemoryScenesByID.remove(sceneId);
         }
         midTermMemoryScenesByID.put(sceneId, scene);
     }
