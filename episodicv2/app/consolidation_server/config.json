@@ -1,0 +1,7 @@
+{
+    "port":11001,
+    "scenes_path": "../knowledge/ca3/ca3_scenes.txt",
+    "clusters_path": "../knowledge/ca3/clusters",
+    "clusters_file": "data/scenes_clusters.pkl",
+    "vocabulary_file": "data/vocabulary.pkl"
+}
