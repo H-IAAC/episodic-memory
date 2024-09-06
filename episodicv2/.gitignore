@@ -2,6 +2,7 @@
 .gradle
 /app/yolo
 /app/libs
+/app/knowledge
 /app/consolidation_server/venv
 # Ignore Gradle build output directory
 build
